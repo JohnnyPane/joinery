@@ -25,7 +25,6 @@ const joineryClient = axios.create({
 joineryClient.interceptors.request.use(
   (config) => {
     const token = authService.getAuthToken();
-    const guestToken = localStorage.getItem('guestToken');
 
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
