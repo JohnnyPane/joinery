@@ -5,22 +5,4 @@ class Store < ApplicationRecord
 
   validates :name, presence: true
   validates :owner, presence: true
-
-  scope :default_store, -> { where(is_default: true) }
-
-  after_save :ensure_single_default_store, if: :is_default_changed?
-
-  def has_access?(user)
-
-  end
-
-  private
-
-  def ensure_single_default_store
-    return unless is_default?
-
-    if is_default
-      owner.stores.where.not(id: id).update_all(is_default: false)
-    end
-  end
 end

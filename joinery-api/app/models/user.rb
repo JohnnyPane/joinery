@@ -17,7 +17,7 @@ class User < ApplicationRecord
   end
 
   def default_store
-    stores.find_by(is_default: true) || stores.first
+    stores.joins(:store_users).merge(StoreUser.default_store).first || stores.first
   end
 
   def has_access_to_store?(store_id)

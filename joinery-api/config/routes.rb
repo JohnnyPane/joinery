@@ -14,6 +14,6 @@ Rails.application.routes.draw do
     end
 
     resources :stores, only: [ :index, :show, :create, :update, :destroy ]
-
+    resources :products, only: [ :index, :show, :create, :update, :destroy ]
   end
 end

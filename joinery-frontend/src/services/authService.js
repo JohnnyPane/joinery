@@ -43,7 +43,7 @@ export const authService = {
   // MAJOR TODO: Revisit this, should never be an auth token in the response
   async fetchMe() {
     try {
-      const response = await joineryClient.get('/me');
+      const response = await joineryClient.get('/users/me');
       const authToken = response.headers.authorization?.split(' ')[1];
 
       if (authToken) {

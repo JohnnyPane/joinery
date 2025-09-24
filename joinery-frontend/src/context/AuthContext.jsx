@@ -1,78 +1,29 @@
-import {createContext, useContext, useState, useEffect, useReducer} from "react";
+import { createContext, useContext } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { authService } from "../services/authService.js";
 
 const AuthContext = createContext(null);
 
-const authReducer = (state, action) => {
-  switch (action.type) {
-    case 'LOGIN_START':
-      return { ...state, loading: true, error: null };
-    case 'LOGIN_SUCCESS':
-      return { ...state, loading: false, user: action.payload, error: null, isAuthenticated: true };
-    case 'LOGIN_FAILURE':
-      return { ...state, loading: false, error: action.payload, user: null, isAuthenticated: false };
-    case 'LOGOUT':
-      return { ...state, user: null, isAuthenticated: false };
-    case 'SET_USER':
-      return { ...state, user: action.payload, isAuthenticated: true };
-    default:
-      return state;
-  }
-};
-
 export const AuthProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(authReducer, {
-    user: null,
-    isAuthenticated: false,
-    loading: false,
-    error: null
-  })
-
-  useEffect(() => {
-    const user = authService.getCurrentUser();
-    if (user && authService.isAuthenticated()) {
-      dispatch({ type: 'SET_USER', payload: user });
-    }
-  }, []);
+  const queryClient = useQueryClient();
 
   const login = async(email, password) => {
-    dispatch({ type: 'LOGIN_START' });
-    try {
-      const data = await authService.login(email, password);
-      dispatch({ type: 'LOGIN_SUCCESS', payload: data.data });
-      return data;
-    } catch (error) {
-      dispatch({ type: 'LOGIN_FAILURE', payload: error.message });
-      throw error;
-    }
+    await authService.login(email, password);
+    await queryClient.invalidateQueries({ queryKey: ['me'] });
   };
 
   const signup = async(firstName, lastName, email, password, password_confirmation) => {
-    dispatch({ type: 'LOGIN_START' });
-    try {
-      const data = await authService.signup(firstName, lastName, email, password, password_confirmation);
-      dispatch({ type: 'LOGIN_SUCCESS', payload: data.data });
-      return data;
-    } catch (error) {
-      dispatch({ type: 'LOGIN_FAILURE', payload: error.message });
-      throw error;
-    }
+    await authService.signup(firstName, lastName, email, password, password_confirmation);
+    await queryClient.invalidateQueries({ queryKey: ['me'] });
   };
 
   const logout = async() => {
     await authService.logout();
-    dispatch({ type: 'LOGOUT' });
+    await queryClient.invalidateQueries({ queryKey: ['me'] });
   };
 
-  const value = {
-    ...state,
-    login,
-    signup,
-    logout,
-  }
-
   return (
-    <AuthContext.Provider value={value}>
+    <AuthContext.Provider value={{ login, signup, logout }}>
       {children}
     </AuthContext.Provider>
   );

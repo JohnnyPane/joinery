@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_21_085157) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_21_113653) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -22,10 +22,38 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_21_085157) do
     t.index ["jti"], name: "index_jwt_denylists_on_jti"
   end
 
+  create_table "products", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "description"
+    t.integer "price_in_cents", null: false
+    t.integer "quantity", default: 0, null: false
+    t.bigint "store_id", null: false
+    t.boolean "is_active", default: true, null: false
+    t.string "productable_type", null: false
+    t.bigint "productable_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["productable_type", "productable_id"], name: "index_products_on_productable"
+    t.index ["store_id"], name: "index_products_on_store_id"
+  end
+
+  create_table "slabs", force: :cascade do |t|
+    t.string "species", null: false
+    t.integer "slab_type", default: 0, null: false
+    t.decimal "width", precision: 10, scale: 2, null: false
+    t.decimal "length", precision: 10, scale: 2, null: false
+    t.decimal "height", precision: 10, scale: 2, null: false
+    t.decimal "weight", precision: 10, scale: 2
+    t.boolean "dried", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "store_users", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "store_id", null: false
     t.integer "role", default: 0, null: false
+    t.boolean "is_default", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["store_id"], name: "index_store_users_on_store_id"
@@ -36,7 +64,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_21_085157) do
     t.string "name", null: false
     t.text "description"
     t.string "location"
-    t.boolean "is_default", default: false
     t.bigint "owner_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -57,6 +84,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_21_085157) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "products", "stores"
   add_foreign_key "store_users", "stores"
   add_foreign_key "store_users", "users"
   add_foreign_key "stores", "users", column: "owner_id"

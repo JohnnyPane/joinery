@@ -4,6 +4,7 @@ class CreateStoreUsers < ActiveRecord::Migration[8.0]
       t.references :user, null: false, foreign_key: true
       t.references :store, null: false, foreign_key: true
       t.integer :role, null: false, default: 0
+      t.boolean :is_default, null: false, default: false
 
       t.timestamps
     end
