@@ -7,6 +7,11 @@ import './JoineryNavbar.scss';
 
 const JoineryNavbar = () => {
   const { data: user, isLoading, isError, error } = useMe();
+  const currentStore = user?.current_store;
+
+  if (isLoading) {
+    return
+  }
 
   return (
     <Box>
@@ -16,19 +21,19 @@ const JoineryNavbar = () => {
 
             <h2>The Joinery</h2>
 
-            <Link to="/home" className="navbar-link">
+            <Link to="/" className="navbar-link">
               Home
             </Link>
-            <Link to="/products" className="navbar-link">
+            {user && <Link to="/products" className="navbar-link">
               Products
-            </Link>
-            <Link to="/store" className="navbar-link">
-              My Store
-            </Link>
+            </Link>}
+            {currentStore && <Link to={`/stores/${currentStore.id}`} className="navbar-link">
+              {currentStore.name}
+            </Link>}
           </Group>
 
           <Group visibleFrom="sm">
-            <h5>Hello, {user.name}</h5>
+            {user && <h5>Hello, {user.name}</h5>}
             <LoginLogoutToggle />
           </Group>
         </Group>

@@ -58,9 +58,10 @@ export const authService = {
   async logout() {
     try {
       await joineryClient.delete('/logout');
-      clearAuthTokenAndUser();
     } catch (error) {
       // Handle error if needed
+    } finally {
+      clearAuthTokenAndUser();
     }
   },
 
@@ -73,7 +74,7 @@ export const authService = {
     return user ? JSON.parse(user) : null;
   },
 
-  isAuthenticated() {
+  hasCredentials() {
     const token = this.getAuthToken();
     const user = this.getCurrentUser();
     return !!(token && user);

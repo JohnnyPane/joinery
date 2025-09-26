@@ -2,9 +2,18 @@ class ProductsController < JoineryController
   before_action :authenticate_user!, except: [:index, :show]
 
   def create
-    product = CreateProductService.call(product_params)
+    product = CreateProductService.create(product_params)
     if product.persisted?
       render_resource(product, resource_serializer, status: :created)
+    else
+      render_errors(product.errors, status: :unprocessable_entity)
+    end
+  end
+
+  def update
+    product = CreateProductService.update(product_params.merge(id: params[:id]))
+    if product.errors.empty?
+      render_resource(product, resource_serializer)
     else
       render_errors(product.errors, status: :unprocessable_entity)
     end

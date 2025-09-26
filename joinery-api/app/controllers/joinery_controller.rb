@@ -50,6 +50,14 @@ class JoineryController < ApplicationController
     end
   end
 
+  def upload_images
+    if resource.images.attach(params[:images])
+      render_resource(resource, resource_serializer)
+    else
+      render json: { errors: resource.errors.full_messages }, status: :unprocessable_content
+    end
+  end
+
   protected
 
   def build_resource_with_ownership(params)

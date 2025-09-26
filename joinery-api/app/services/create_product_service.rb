@@ -8,14 +8,28 @@ class CreateProductService
     @productable_type = @params[:productable_type]
   end
 
-  def self.call(params)
-    new(params).call
+  def self.create(params)
+    new(params).create
   end
 
-  def call
+  def self.update(params)
+    new(params).update
+  end
+
+  def create
     ActiveRecord::Base.transaction do
       productable = create_productable
       product = Product.create!(product_params.merge(productable: productable))
+      product
+    end
+  end
+
+  def update
+    ActiveRecord::Base.transaction do
+      product = Product.find(product_params[:id])
+      productable = product.productable
+      productable.update!(productable_params) if productable
+      product.update!(product_params.except(:id))
       product
     end
   end

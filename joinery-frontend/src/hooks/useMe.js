@@ -8,19 +8,20 @@ export function useMe() {
   return useQuery({
     queryKey: ['me'],
     queryFn: async () => {
-      if (!authService.isAuthenticated()) {
+      if (!authService.hasCredentials()) {
         return null;
       }
 
-      const { data } = await joineryClient.get('/users/me');
-      return data;
-    },
-    onError: (error) => {
-      if (error.response?.status === 401) {
+      try {
+        const { data } = await joineryClient.get('/users/me');
+        return data;
+      } catch (error) {
+        await authService.logout();
         queryClient.setQueryData(['me'], null);
+        return null;
       }
     },
     retry: false,
-    enabled: !!authService.isAuthenticated(),
+    enabled: !!authService.hasCredentials(),
   });
 }

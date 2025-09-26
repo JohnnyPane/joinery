@@ -1,5 +1,5 @@
 import { Button } from '@mantine/core'
-import { NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import { useMe } from '../../hooks/useMe.js';
 import { useAuth } from "../../context/AuthContext.jsx";
@@ -23,9 +23,9 @@ const Home = () => {
       <h2>Featured Products</h2>
       <ul>
         {products?.map(product => (
-          <li key={product.attributes.id}>
+          <Link to={`/products/${product.attributes.id}`} key={product.attributes.id}>
             {product.attributes.name} - ${(product.attributes.price_in_cents / 100).toFixed(2)}
-          </li>
+          </Link>
         ))}
       </ul>
     </div>
