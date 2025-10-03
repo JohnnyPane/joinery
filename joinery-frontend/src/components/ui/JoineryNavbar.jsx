@@ -13,13 +13,17 @@ const JoineryNavbar = () => {
     return
   }
 
+  const createStoreLink = !user ? '/login' : '/stores/new';
+  const storeLink = currentStore ? `/stores/${currentStore.id}` : createStoreLink;
+  const storeText = currentStore ? currentStore.name : 'Want to sell?';
+
   return (
     <Box>
       <header className="navbar">
         <Group justify="space-between" h="100%" w="100%" px={20}>
           <Group h="100%" gap={0} visibleFrom="sm">
 
-            <h2>The Joinery</h2>
+            <h2 className="margin-none">The Joinery</h2>
 
             <Link to="/" className="navbar-link">
               Home
@@ -27,9 +31,9 @@ const JoineryNavbar = () => {
             {user && <Link to="/products" className="navbar-link">
               Products
             </Link>}
-            {currentStore && <Link to={`/stores/${currentStore.id}`} className="navbar-link">
-              {currentStore.name}
-            </Link>}
+            <Link to={storeLink} className="navbar-link" state={{ signup: true }}>
+              {storeText}
+            </Link>
           </Group>
 
           <Group visibleFrom="sm">

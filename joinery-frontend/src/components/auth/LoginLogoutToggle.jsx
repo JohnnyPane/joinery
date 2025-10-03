@@ -10,11 +10,11 @@ const LoginLogoutToggle = () => {
 
 
   return user ? (
-    <Button variant="outline" onClick={logout}>
+    <Button variant="subtle" onClick={logout} color="gray">
       Logout
     </Button>
   ) : (
-    <Button variant="outline" component={Link} to="/login">
+    <Button variant="light" color="green" component={Link} to="/login">
       Login
     </Button>
   );

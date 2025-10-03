@@ -168,13 +168,14 @@ const JoineryImageUploader = ({ resourceId, uploadApi, onSuccessfulUpload }) => 
       )}
 
       {files.length > 0 && (
-        <div className="flex row to-right">
+        <div className="flex row">
           <Group position="right" mt="md">
             <Button
               onClick={() => setFiles([])}
-              variant="outline"
+              variant="subtle"
               color="gray"
               disabled={uploading}
+              className="action-button"
             >
               Clear
             </Button>
@@ -183,6 +184,7 @@ const JoineryImageUploader = ({ resourceId, uploadApi, onSuccessfulUpload }) => 
               disabled={uploading || files.length === 0}
               loading={uploading}
               color="violet"
+              className="action-button"
             >
               Upload
             </Button>

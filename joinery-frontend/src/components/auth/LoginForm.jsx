@@ -30,31 +30,33 @@ const LoginForm = () => {
   };
 
   return (
-    <Card shadow="sm" padding="lg" radius="md" withBorder className="login-signup-form">
-      <Text size="lg" weight={500}>
-        Welcome back!
-      </Text>
-      <Text size="sm" color="dimmed" mb="lg">
-        Please log in to your account.
-      </Text>
-      <form onSubmit={form.onSubmit(handleSubmit)}>
-        <TextInput
-          label="Email"
-          placeholder="Enter your email"
-          {...form.getInputProps('email')}
-          className="margin-bottom"
-        />
-        <PasswordInput
-          label="Password"
-          placeholder="Enter your password"
-          {...form.getInputProps('password')}
-          className="margin-bottom"
-        />
-        <div className="flex to-right full-width">
-          <Button type="submit" className="full-width margin-40-t">Log In</Button>
-        </div>
-      </form>
-    </Card>
+    <div className="login-form-container">
+      <Card shadow="sm" padding="lg" radius="md" withBorder className="login-signup-form">
+        <Text size="lg" weight={500}>
+          Welcome back!
+        </Text>
+        <Text size="sm" color="dimmed" mb="lg">
+          Please log in to your account.
+        </Text>
+        <form onSubmit={form.onSubmit(handleSubmit)}>
+          <TextInput
+            label="Email"
+            placeholder="Enter your email"
+            {...form.getInputProps('email')}
+            className="margin-bottom"
+          />
+          <PasswordInput
+            label="Password"
+            placeholder="Enter your password"
+            {...form.getInputProps('password')}
+            className="margin-bottom"
+          />
+          <div className="flex to-right full-width">
+            <Button type="submit" className="full-width double-margin-top">Log In</Button>
+          </div>
+        </form>
+      </Card>
+    </div>
   );
 }
 

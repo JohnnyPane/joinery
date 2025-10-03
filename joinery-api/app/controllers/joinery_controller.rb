@@ -61,7 +61,6 @@ class JoineryController < ApplicationController
   protected
 
   def build_resource_with_ownership(params)
-    binding.break
     resource = resource_class.new(params)
     assign_ownership(resource)
     resource

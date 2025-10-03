@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { useForm } from '@mantine/form';
 import { TextInput, Button, Textarea, Card, Text } from '@mantine/core';
 
@@ -6,6 +7,8 @@ import { createApi } from "../../services/createApi.js";
 const storeApi = createApi('store');
 
 const StoreForm = () => {
+  const navigate = useNavigate();
+
   const form = useForm({
     initialValues: {
       name: '',
@@ -20,9 +23,8 @@ const StoreForm = () => {
 
   const handleSubmit = async (values) => {
     try {
-      await storeApi.create(values);
-      alert('Store created successfully!');
-      // Optionally, redirect or show a success message
+      const store = await storeApi.create(values);
+      navigate('/stores/' + store.id);
     } catch (error) {
       console.error('Store creation failed:', error);
     }

@@ -19,6 +19,16 @@ class ProductsController < JoineryController
     end
   end
 
+  protected
+
+  def included_index_resources
+    [:productable, :shipping_options, images_attachments: :blob]
+  end
+
+  def included_show_resources
+    [:productable, :shipping_options, images_attachments: :blob]
+  end
+
   private
 
   def product_params

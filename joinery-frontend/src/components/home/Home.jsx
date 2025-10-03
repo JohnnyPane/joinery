@@ -1,33 +1,19 @@
-import { Button } from '@mantine/core'
-import { Link } from 'react-router-dom';
-
-import { useMe } from '../../hooks/useMe.js';
-import { useAuth } from "../../context/AuthContext.jsx";
+import { useMe } from "../../hooks/useMe.js";
 import useResources from '../../hooks/useResources.js';
+import ProductCard from "../products/ProductCard.jsx";
+import '../products/Product.scss';
 
 const Home = () => {
-  const { data: user, isLoading, isError, error } = useMe();
-  const { data: products } = useResources({ resourceName: 'products', perPage: 5 });
-  const { logout } = useAuth();
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (isError) {
-    return <div>Error: {error.message}</div>;
-  }
+  const { data: user } = useMe();
+  const { data: products } = useResources({ resourceName: 'products', perPage: 5, extraParams: { image_type: 'small'} });
 
   return (
-    <div>
-      <h2>Featured Products</h2>
-      <ul>
-        {products?.map(product => (
-          <Link to={`/products/${product.attributes.id}`} key={product.attributes.id}>
-            {product.attributes.name} - ${(product.attributes.price_in_cents / 100).toFixed(2)}
-          </Link>
+      <div className="product-list">
+        <div className="product-grid">
+        {products && products.map(product => (
+          <ProductCard key={product.id} cardData={product.attributes} />
         ))}
-      </ul>
+      </div>
     </div>
   );
 }

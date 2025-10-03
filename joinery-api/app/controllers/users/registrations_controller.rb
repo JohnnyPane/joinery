@@ -1,4 +1,10 @@
 class Users::RegistrationsController < Devise::RegistrationsController
+  before_action :authenticate_user!, only: [:destroy]
+
+  include Renderable
+
+  respond_to :json
+
   private
 
   def sign_up_params
@@ -16,5 +22,9 @@ class Users::RegistrationsController < Devise::RegistrationsController
         status: { code: 422, message: "User couldn't be created successfully. #{resource.errors.full_messages.to_sentence}" }
       }, status: :unprocessable_content
     end
+  end
+
+  def sign_up(resource_name, resource)
+    sign_in(resource_name, resource, store: false)
   end
 end

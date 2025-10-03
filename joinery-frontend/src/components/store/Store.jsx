@@ -1,5 +1,6 @@
 import { useParams } from 'react-router-dom';
 import useResource from '../../hooks/useResource';
+import StoreProducts from "./StoreProducts.jsx";
 
 const Store = () => {
   const { id } = useParams();
@@ -18,6 +19,8 @@ const Store = () => {
       <h2>{store.name}</h2>
       <p>{store.description}</p>
       <p>Location: {store.location}</p>
+
+      <StoreProducts storeId={id} />
     </div>
   );
 }

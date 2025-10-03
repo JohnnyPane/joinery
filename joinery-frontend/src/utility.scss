@@ -1,0 +1,114 @@
+.flex {
+  display: flex;
+}
+
+.space-between {
+  justify-content: space-between;
+}
+
+.row {
+  flex-direction: row;
+}
+
+.column {
+  flex-direction: column;
+}
+
+.to-center {
+  justify-content: center;
+}
+
+.to-right {
+  justify-content: flex-end;
+}
+
+.to-left {
+  justify-content: flex-start;
+}
+
+.align-left {
+  align-items: flex-start;
+}
+
+.align-right {
+  align-items: flex-end;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.center-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.margin {
+  margin: 0.5rem;
+}
+
+.margin-none {
+  margin: 0;
+}
+
+.double-margin {
+  margin: 1rem;
+}
+
+.margin-top {
+  margin-top: 0.5rem;
+}
+
+.margin-bottom {
+  margin-bottom: 0.5rem;
+}
+
+.margin-left {
+  margin-left: 0.5rem;
+}
+
+.margin-right {
+  margin-right: 0.5rem;
+}
+
+.double-margin-top {
+  margin-top: 1rem;
+}
+
+.double-margin-bottom {
+  margin-bottom: 1rem;
+}
+
+.padding {
+  padding: 0.5rem;
+}
+
+.header-1 {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.sub-header-1 {
+  font-size: 1rem;
+  font-style: italic;
+}
+
+.label-large {
+  font-size: 0.9rem;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.action-button {
+  width: 140px;
+}
+
+
+

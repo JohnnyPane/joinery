@@ -8,7 +8,11 @@ module Filterable
       scopes.each do |scope|
         next unless respond_to?(scope[:name])
 
-        results = results.public_send(scope[:name])
+        if scope[:args].present?
+          results = results.public_send(scope[:name], *scope[:args])
+        else
+          results = results.public_send(scope[:name])
+        end
       end
 
       results

@@ -15,6 +15,7 @@ Rails.application.routes.draw do
 
     resources :stores, only: [ :index, :show, :create, :update, :destroy ]
     resources :products, only: [ :index, :show, :create, :update, :destroy ]
+    resources :shipping_options, only: [ :index, :show, :create, :update, :destroy ]
 
     post "products/:id/upload_images", to: "products#upload_images"
     delete "products/:id/images/:image_id", to: "products#destroy_image"

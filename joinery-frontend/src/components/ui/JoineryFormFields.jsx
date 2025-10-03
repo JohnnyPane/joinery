@@ -1,4 +1,5 @@
 import { NumberInput, TextInput, Textarea } from "@mantine/core";
+import JoineryIconMap from "./JoineryIconMap.jsx";
 
 const JoineryFormFields = ({ form, fieldConfig, nestedFieldType = null }) => {
   let props = {};
@@ -23,6 +24,7 @@ const JoineryFormFields = ({ form, fieldConfig, nestedFieldType = null }) => {
         <NumberInput
           label={fieldConfig.label}
           placeholder={fieldConfig.placeholder || `Enter ${fieldConfig.label.toLowerCase()}`}
+          leftSection={<JoineryIconMap iconName={fieldConfig.icon} size={12} />}
           {...props}
           className="margin-bottom"
           min={fieldConfig.min || 0}
