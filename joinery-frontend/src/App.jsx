@@ -25,7 +25,6 @@ function App() {
             <Route path="/login" element={<LoginSignupToggle />} />
             <Route path="/stores/new" element={<StoreForm />} />
             <Route path="/stores/:id" element={<Store />} />
-            <Route path="/products" element={<ProductForm />} />
             <Route path="/products/new" element={<ProductForm />} />
             <Route path="/products/:id" element={<Product />} />
           </Routes>

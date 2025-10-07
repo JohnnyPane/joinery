@@ -5,4 +5,5 @@ class Store < ApplicationRecord
 
   validates :name, presence: true
   validates :owner, presence: true
+  validates :stripe_account_id, uniqueness: true, allow_nil: true
 end

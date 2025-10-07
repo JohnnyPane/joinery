@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom';
 import useResource from '../../hooks/useResource';
 import StoreProducts from "./StoreProducts.jsx";
+import CreateStoreStripeAccount from "./CreateStoreStripeAccount.jsx";
 
 const Store = () => {
   const { id } = useParams();
@@ -12,6 +13,14 @@ const Store = () => {
 
   if (isError) {
     return <div>Error: {error.message}</div>;
+  }
+
+  if (!store.stripe_account_id) {
+    return <CreateStoreStripeAccount />
+  }
+
+  if (!store.charges_enabled) {
+    return <div>Your store is not fully set up to receive payments. Please complete the Stripe onboarding process.</div>;
   }
 
   return (

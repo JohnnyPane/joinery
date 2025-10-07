@@ -23,14 +23,10 @@ const JoineryNavbar = () => {
         <Group justify="space-between" h="100%" w="100%" px={20}>
           <Group h="100%" gap={0} visibleFrom="sm">
 
-            <h2 className="margin-none">The Joinery</h2>
-
-            <Link to="/" className="navbar-link">
-              Home
+            <Link to="/" className="navbar-logo">
+              <h2 className="margin-none">The Joinery</h2>
             </Link>
-            {user && <Link to="/products" className="navbar-link">
-              Products
-            </Link>}
+
             <Link to={storeLink} className="navbar-link" state={{ signup: true }}>
               {storeText}
             </Link>

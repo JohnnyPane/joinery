@@ -1,4 +1,6 @@
 class StoresController < JoineryController
+  before_action :authenticate_user!
+
   private
 
   def after_resource_created(store)

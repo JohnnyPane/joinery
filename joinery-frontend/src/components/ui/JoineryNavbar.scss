@@ -7,6 +7,15 @@
   background: white;
 }
 
+.navbar-logo {
+  color: black;
+}
+
+.navbar-logo:hover {
+  text-decoration: none;
+  color: black;
+}
+
 .navbar-link {
   display: flex;
   align-items: center;

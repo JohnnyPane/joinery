@@ -1,5 +1,5 @@
-import {useQuery} from '@tanstack/react-query';
-import {createApi} from "../services/createApi.js";
+import { useQuery } from '@tanstack/react-query';
+import { createApi } from "../services/createApi.js";
 
 const useResource = (resourceName, id, extraParams = {}) => {
   const resourceApi = createApi(resourceName);
