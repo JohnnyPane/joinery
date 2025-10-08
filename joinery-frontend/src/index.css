@@ -24,7 +24,7 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
+  /*display: flex;*/
   /*place-items: center;*/
   font-family: 'Lora', serif;
   min-width: 320px;

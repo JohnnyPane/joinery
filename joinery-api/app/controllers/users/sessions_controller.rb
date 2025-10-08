@@ -1,5 +1,6 @@
 class Users::SessionsController < Devise::SessionsController
   before_action :authenticate_user!, only: [:destroy]
+  after_action :merge_guest_cart, only: [:create]
 
   include Renderable
 
@@ -21,6 +22,26 @@ class Users::SessionsController < Devise::SessionsController
     elsif current_user.stores.any?
       current_user.default_store
     end
+  end
+
+  def merge_guest_cart
+    return unless params[:guest_cart_id] && current_user
+
+    guest_cart = Cart.find_by(id: params[:guest_cart_id], guest: true)
+    return unless guest_cart
+
+    user_cart = Cart.find_or_create_by(user: current_user, guest: false)
+
+    guest_cart.cart_items.each do |item|
+      existing_item = user_cart.cart_items.find_by(product_id: item.product_id)
+      if existing_item
+        existing_item.update(quantity: existing_item.quantity + item.quantity)
+      else
+        item.update(cart: user_cart)
+      end
+    end
+
+    guest_cart.destroy
   end
 
   def respond_with(resource, _opts = {})

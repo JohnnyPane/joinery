@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { Box, Group } from '@mantine/core';
 
 import { useMe } from '../../hooks/useMe.js';
+import NavbarCart from '../cart/NavbarCart.jsx';
 import LoginLogoutToggle from "../auth/LoginLogoutToggle.jsx";
 import './JoineryNavbar.scss';
 
@@ -30,6 +31,10 @@ const JoineryNavbar = () => {
             <Link to={storeLink} className="navbar-link" state={{ signup: true }}>
               {storeText}
             </Link>
+          </Group>
+
+          <Group h="100%" gap={15}>
+            <NavbarCart />
           </Group>
 
           <Group visibleFrom="sm">

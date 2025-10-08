@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom'
-import { Accordion } from '@mantine/core'
+import { Accordion, Text } from '@mantine/core'
 import './Product.scss'
 
 import { productTypeDisplayName } from "../../utils/productConfigs.js"
@@ -7,6 +7,7 @@ import { moneyDisplay } from '../../utils/humanizeText.js'
 import useResource from '../../hooks/useResource.js'
 import JoineryImageCarousel from "../ui/JoineryImageCarousel.jsx"
 import ProductDetails from './ProductDetails.jsx'
+import AddToCart from "../cart/AddToCart.jsx";
 
 const Product = () => {
   const { id } = useParams();
@@ -38,9 +39,12 @@ const Product = () => {
           <ProductDetails product={product} />
         </Accordion>
 
-        <div className="product-detail-price">
+        <div className="product-detail-price flex row space-between padding">
           <span className="label-large padding-left">{moneyDisplay(product.price_in_cents)}</span>
+          <Text size="sm" color="dimmed" className="padding-left">Qty. {product.quantity}</Text>
         </div>
+
+        <AddToCart productId={product.id} />
 
       </div>
     </div>

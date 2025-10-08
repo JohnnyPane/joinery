@@ -54,6 +54,24 @@ export const createApi = (resourceName) => {
       }
     },
 
+    async postMemberRoute ( id, route, data = {} ) {
+      try {
+        const response = await joineryClient.post(`/${pluralName}/${id}/${route}`, data);
+        return response.data;
+      } catch (error) {
+        throw new Error(`Failed to post to ${route} for ${singularName} with ID ${id}`);
+      }
+    },
+
+    async deleteMemberRoute ( id, route, data = {} ) {
+      try {
+        const response = await joineryClient.delete(`/${pluralName}/${id}/${route}`, { data });
+        return response.data;
+      } catch (error) {
+        throw new Error(`Failed to delete to ${route} for ${singularName} with ID ${id}`);
+      }
+    },
+
     async uploadImages (id, files) {
       const formData = new FormData();
       files.forEach(file => formData.append('images[]', file));

@@ -1,5 +1,5 @@
-import {useMutation, useQueryClient} from '@tanstack/react-query';
-import {createApi} from '../services/createApi.js';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { createApi } from '../services/createApi.js';
 
 export const useCreateResource = (modelName) => {
   const queryClient = useQueryClient();

@@ -9,4 +9,8 @@ class Product < ApplicationRecord
   validates :name, :price_in_cents, presence: true
 
   scope :by_store, ->(store_id) { where(store_id: store_id) }
+
+  def has_enough_stock?(requested_quantity)
+    quantity >= requested_quantity
+  end
 end

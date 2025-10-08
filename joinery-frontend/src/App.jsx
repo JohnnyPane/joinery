@@ -10,6 +10,8 @@ import StoreForm from "./components/store/StoreForm.jsx";
 import ProductForm from "./components/products/ProductForm.jsx";
 import Product from "./components/products/Product.jsx";
 import JoineryNavbar from "./components/ui/JoineryNavbar.jsx";
+import StripeProvider from "./context/StripeContext.jsx";
+import Checkout from "./components/cart/Checkout.jsx";
 
 function App() {
 
@@ -22,11 +24,18 @@ function App() {
 
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/checkout" element={
+              <StripeProvider>
+                <Checkout />
+              </StripeProvider>
+            }/>
+
             <Route path="/login" element={<LoginSignupToggle />} />
-            <Route path="/stores/new" element={<StoreForm />} />
-            <Route path="/stores/:id" element={<Store />} />
             <Route path="/products/new" element={<ProductForm />} />
             <Route path="/products/:id" element={<Product />} />
+            <Route path="/stores/new" element={<StoreForm />} />
+            <Route path="/stores/:id" element={<Store />} />
+
           </Routes>
         </AuthProvider>
       </Router>
