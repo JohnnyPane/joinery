@@ -85,7 +85,7 @@ const ProductForm = () => {
       if (optionValues.enabled) {
         const payload = {
           product_id: values.id,
-          option_type: shippingOption.type,
+          shipping_type: shippingOption.type,
           price_in_cents: optionValues.price_in_cents ? Math.round(optionValues.price_in_cents * 100) : 0,
         }
         createShippingOption.mutate(payload);

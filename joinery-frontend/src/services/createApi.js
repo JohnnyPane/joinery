@@ -72,6 +72,12 @@ export const createApi = (resourceName) => {
       }
     },
 
+    async updateMany ( resources ) {
+      const params = { updates: resources };
+      const response = await joineryClient.put(`/${pluralName}/update_many`, params);
+      return response.data;
+    },
+
     async uploadImages (id, files) {
       const formData = new FormData();
       files.forEach(file => formData.append('images[]', file));

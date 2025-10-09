@@ -3,14 +3,18 @@ import { Button } from '@mantine/core';
 
 import { useMe } from '../../hooks/useMe';
 import { useAuth } from "../../context/AuthContext.jsx";
+import { useCart } from "../../hooks/useCart";
 
 const LoginLogoutToggle = () => {
   const { data: user } = useMe();
   const { logout } = useAuth();
+  const { invalidateCart } = useCart();
+
   const navigate = useNavigate();
 
   const handleLogout = async () => {
     await logout();
+    invalidateCart();
     navigate('/');
   };
 

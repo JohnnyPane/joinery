@@ -8,7 +8,6 @@ import { useCart } from '../../hooks/useCart.js';
 
 const NavbarCart = () => {
   const { cart } = useCart();
-  console.log('cart in NavbarCart:', cart);
   const itemCount = cart?.cart_items?.length || 0;
   const [opened, { open, close }] = useDisclosure(false);
 

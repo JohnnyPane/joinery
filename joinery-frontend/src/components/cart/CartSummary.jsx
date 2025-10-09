@@ -11,7 +11,7 @@ const CartSummary = () => {
 
   return (
     <div className="cart-summary">
-      <h3>Cart Summary</h3>
+      {/*<h3>Cart Summary</h3>*/}
       <ul>
         {/*{cart.cart_items.map(item => (*/}
         {/*  <li key={item.id}>*/}

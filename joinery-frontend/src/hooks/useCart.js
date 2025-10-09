@@ -14,7 +14,6 @@ export const useCart = (cartId) => {
         try {
           return await cartApi.get(id);
         } catch (error) {
-          console.error("Error fetching cart:", error);
           localStorage.removeItem('cartId');
           return null;
         }
@@ -53,5 +52,10 @@ export const useCart = (cartId) => {
     }
   });
 
-  return { cart, addItem }
+  const invalidateCart = () => {
+    queryClient.removeQueries(['cart']);
+    localStorage.removeItem('cartId');
+  }
+
+  return { cart, addItem, invalidateCart }
 }

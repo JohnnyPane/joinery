@@ -26,7 +26,7 @@ const Cart = ({ closeModal }) => {
             <div className="double-margin-bottom">
               {cart.cart_items.map(item => (
                 <div key={item.data.id}>
-                  <CartItem cartItem={item} closeModal={closeModal} />
+                  <CartItem cartItem={item} onItemClick={closeModal} />
                   <Divider my="sm" />
                 </div>
               ))}
@@ -39,7 +39,7 @@ const Cart = ({ closeModal }) => {
                 </span>
                 <Button
                   component={Link}
-                  to="checkout"
+                  to="/checkout/shipping_options"
                   onClick={handleGoToCheckout}
                   radius={0}
                   className="full-width"

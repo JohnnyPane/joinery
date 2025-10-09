@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_07_110450) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_09_142410) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -42,6 +42,22 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_07_110450) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "addresses", force: :cascade do |t|
+    t.string "addressable_type", null: false
+    t.bigint "addressable_id", null: false
+    t.string "address_1", null: false
+    t.string "address_2"
+    t.string "city"
+    t.string "state"
+    t.string "zip"
+    t.string "country", default: "US", null: false
+    t.string "address_type", default: "shipping", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["addressable_type", "addressable_id", "address_type"], name: "index_addresses_on_addressable_and_type"
+    t.index ["addressable_type", "addressable_id"], name: "index_addresses_on_addressable"
+  end
+
   create_table "cart_items", force: :cascade do |t|
     t.bigint "cart_id", null: false
     t.bigint "product_id", null: false
@@ -51,8 +67,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_07_110450) do
     t.integer "total_price_in_cents", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "shipping_option_id"
     t.index ["cart_id"], name: "index_cart_items_on_cart_id"
     t.index ["product_id"], name: "index_cart_items_on_product_id"
+    t.index ["shipping_option_id"], name: "index_cart_items_on_shipping_option_id"
     t.index ["store_id"], name: "index_cart_items_on_store_id"
   end
 
@@ -70,6 +88,45 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_07_110450) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["jti"], name: "index_jwt_denylists_on_jti"
+  end
+
+  create_table "order_items", force: :cascade do |t|
+    t.bigint "order_id", null: false
+    t.bigint "product_id", null: false
+    t.bigint "store_id", null: false
+    t.bigint "shipping_option_id", null: false
+    t.integer "quantity", default: 1, null: false
+    t.integer "shipping_cost_in_cents", default: 0, null: false
+    t.integer "unit_price_in_cents", null: false
+    t.integer "total_price_in_cents", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "stripe_transfer_id"
+    t.index ["order_id", "product_id"], name: "index_order_items_on_order_id_and_product_id", unique: true
+    t.index ["order_id"], name: "index_order_items_on_order_id"
+    t.index ["product_id"], name: "index_order_items_on_product_id"
+    t.index ["shipping_option_id"], name: "index_order_items_on_shipping_option_id"
+    t.index ["store_id"], name: "index_order_items_on_store_id"
+  end
+
+  create_table "orders", force: :cascade do |t|
+    t.bigint "user_id"
+    t.integer "status", default: 0, null: false
+    t.string "stripe_charge_id"
+    t.string "stripe_payment_intent_id"
+    t.string "tracking_number"
+    t.string "customer_email", null: false
+    t.string "customer_phone_number"
+    t.string "customer_name"
+    t.integer "total_amount_in_cents", default: 0, null: false
+    t.boolean "paid", default: false, null: false
+    t.boolean "billing_same_as_shipping", default: true, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["customer_email"], name: "index_orders_on_customer_email"
+    t.index ["paid"], name: "index_orders_on_paid"
+    t.index ["status"], name: "index_orders_on_status"
+    t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
   create_table "products", force: :cascade do |t|
@@ -152,8 +209,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_07_110450) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "cart_items", "carts"
   add_foreign_key "cart_items", "products"
+  add_foreign_key "cart_items", "shipping_options"
   add_foreign_key "cart_items", "stores"
   add_foreign_key "carts", "users"
+  add_foreign_key "order_items", "orders"
+  add_foreign_key "order_items", "products"
+  add_foreign_key "order_items", "shipping_options"
+  add_foreign_key "order_items", "stores"
+  add_foreign_key "orders", "users"
   add_foreign_key "products", "stores"
   add_foreign_key "shipping_options", "products"
   add_foreign_key "store_users", "stores"

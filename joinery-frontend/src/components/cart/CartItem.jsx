@@ -2,10 +2,11 @@ import { Link } from "react-router-dom";
 import { Image, Text } from "@mantine/core";
 import { IconTrash } from "@tabler/icons-react";
 import { moneyDisplay } from "../../utils/humanizeText.js";
+import './CartItem.scss'
 
 const rootURL = import.meta.env.VITE_API_ROOT_URL;
 
-const CartItem = ({ cartItem, closeModal }) => {
+const CartItem = ({ cartItem, onItemClick }) => {
   const { data } = cartItem;
   const item = data.attributes
   const product = item.product.data.attributes
@@ -14,8 +15,8 @@ const CartItem = ({ cartItem, closeModal }) => {
   const name = product.name || "Product Image";
 
   return (
-    <div className="flex row space-between padding-right">
-      <Link to={`/products/${item.product.data.id}`} className="link-label flex row align-left" onClick={closeModal} >
+    <div className="flex row space-between padding-right cart-item">
+      <Link to={`/products/${item.product.data.id}`} className="link-label flex row align-left" onClick={onItemClick} >
         <div>
           <Image src={imageUrl} alt={product.name} h={100} style={{ width: "100px"}} fit="contain" className="double-margin-right" />
         </div>
@@ -35,6 +36,7 @@ const CartItem = ({ cartItem, closeModal }) => {
 
       <div className="flex column full-height space-between align-right">
         <span className="bold label">{moneyDisplay(product.price_in_cents)}</span>
+        {item.shipping_price_in_cents > 0 && <Text color="dimmed" className="label">Shipping: {moneyDisplay(item.shipping_price_in_cents)}</Text>}
         {/*{displayOnly && <IconTrash onClick={handleRemove} size={20} className=" clickable" color="red"/>}*/}
       </div>
     </div>

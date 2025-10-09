@@ -10,8 +10,6 @@ const AddToCart = ({ productId }) => {
   const { cart, addItem } = useCart();
   const { data: product, isLoading, isError, error } = useResource('products', productId);
 
-  console.log('product in AddToCart:',cart);
-
   if (isLoading) return <div>Loading...</div>;
 
   const handleAddToCart = async () => {

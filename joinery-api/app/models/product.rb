@@ -5,6 +5,8 @@ class Product < ApplicationRecord
   belongs_to :productable, polymorphic: true
   has_many_attached :images
   has_many :shipping_options, dependent: :destroy
+  has_many :order_items
+  has_many :cart_items
 
   validates :name, :price_in_cents, presence: true
 

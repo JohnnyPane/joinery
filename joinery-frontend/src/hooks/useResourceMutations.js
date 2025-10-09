@@ -28,3 +28,17 @@ export const useUpdateResource = (modelName) => {
     },
   });
 }
+
+  export const useUpdateResources = (modelName) => {
+    const queryClient = useQueryClient();
+    const modelApi = createApi(modelName);
+
+    return useMutation({
+      mutationFn: async (updatedResources) => {
+        return await modelApi.updateMany(updatedResources)
+      },
+      onSuccess: () => {
+        queryClient.invalidateQueries([modelName]);
+      }
+  });
+}

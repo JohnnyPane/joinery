@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useForm } from "@mantine/form";
-import { Button, Grid } from "@mantine/core";
+import { Button, Grid, Card } from "@mantine/core";
 
 import { useMe } from "../../hooks/useMe.js"
 import { useCart } from "../../hooks/useCart.js"
@@ -23,6 +23,7 @@ const formInputs = [
   { name: 'shipping_address.city', label: 'City', type: 'text', required: true, gridSize: 6  },
   { name: 'shipping_address.state', label: 'State', type: 'text', required: true, gridSize: 6  },
   { name: 'shipping_address.zip', label: 'Zip Code', type: 'text', required: true, gridSize: 6  },
+  { name: 'billing_same_as_shipping', label: 'Billing same as shipping', type: 'checkbox', required: false, checked: true },
   // { name: 'shipping_address.country', label: 'Country', type: 'text', required: true },
   { name: 'billing_address.address_1', label: 'Billing Address', type: 'text', required: false, isBilling: true },
   { name: 'billing_address.address_2', label: 'Address Line 2', type: 'text', required: false, isBilling: true, gridSize: 6 },
@@ -30,12 +31,11 @@ const formInputs = [
   { name: 'billing_address.state', label: 'State', type: 'text', required: false, isBilling: true, gridSize: 6  },
   { name: 'billing_address.zip', label: 'Zip Code', type: 'text', required: false, isBilling: true, gridSize: 6  },
   // { name: 'billing_address.country', label: 'Country', type: 'text', required: false, isBilling: true },
-  { name: 'billing_same_as_shipping', label: 'Billing same as shipping', type: 'checkbox', required: false },
 ];
 
 const CheckoutDetails = () => {
   const { data: currentUser } = useMe();
-  const { cart } = useCart();
+  const { cart, invalidateCart } = useCart();
   const stripe = useStripe();
   const elements = useElements();
   const navigate = useNavigate();
@@ -133,6 +133,7 @@ const CheckoutDetails = () => {
 
       const response = await orderApi.create({
         payment_method: paymentMethod.id,
+        cart_id: cart.id,
         customer_name: customer_name,
         customer_email: customer_email,
         customer_phone_number: phone,
@@ -141,7 +142,7 @@ const CheckoutDetails = () => {
         billing_same_as_shipping: billing_same_as_shipping,
       });
 
-      // clearCart();
+      invalidateCart();
       navigate(`/orders/${response.id}`, { replace: true });
     } catch (error) {
       setError("An error occurred while processing your order. Please try again.");
@@ -152,7 +153,6 @@ const CheckoutDetails = () => {
 
   return (
     <div className="checkout">
-      <h2>Checkout</h2>
       <form onSubmit={handleSubmit}>
         <Grid>
           {
@@ -166,6 +166,7 @@ const CheckoutDetails = () => {
                     placeholder={label}
                     required={required}
                     type={type}
+                    checked={type === 'checkbox' ? form.values[name] : undefined}
                     value={form.values[name]}
                     {...form.getInputProps(name, { type: type })}
                     error={form.errors[name]}
@@ -178,17 +179,17 @@ const CheckoutDetails = () => {
         </Grid>
 
 
-        <div className="margin-40-t">
-          <CardElement />
-        </div>
+        <Card shadow="sm" padding="lg" radius="md" withBorder>
+        <CardElement />
+        </Card>
 
         {error && <div className="error">{error}</div>}
-        <Button type="submit" color="violet" disabled={!stripe || !elements || processing} className="margin-40-t full-width">
+        <Button type="submit" color="violet" disabled={!stripe || !elements || processing} className="double-margin-top full-width">
           {processing ? "Processing..." : `Pay ${moneyDisplay(cart.total_price_in_cents)}`}
         </Button>
       </form>
 
-      <div className="margin-40-t">
+      <div className="double-margin-top">
         <Link to="/">Continue Shopping</Link>
       </div>
     </div>
