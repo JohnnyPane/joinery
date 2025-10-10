@@ -24,6 +24,7 @@ Rails.application.routes.draw do
     end
 
     resources :orders, only: [ :index, :show, :create ]
+    resources :order_items, only: [ :index, :show, :create, :update, :destroy ]
     resources :products, only: [ :index, :show, :create, :update, :destroy ]
     resources :shipping_options, only: [ :index, :show, :create, :update, :destroy ]
     resources :stores, only: [ :index, :show, :create, :update, :destroy ]

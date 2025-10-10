@@ -38,6 +38,12 @@ class CartItemsController < JoineryController
     render json: { errors: e.record.errors.full_messages }, status: :unprocessable_entity
   end
 
+  protected
+
+  def included_index_resources
+    [ :product, :shipping_option ]
+  end
+
   private
 
   def set_cart

@@ -12,6 +12,12 @@ class CartsController < JoineryController
     render_resource(@cart, CartSerializer, status: :created)
   end
 
+  protected
+
+  def included_index_resources
+    [ :cart_items ]
+  end
+
   private
 
   def set_cart

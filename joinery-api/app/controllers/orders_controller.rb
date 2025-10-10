@@ -16,7 +16,7 @@ class OrdersController < JoineryController
   protected
 
   def included_show_resources
-    [ :order_items, :shipping_address, :billing_address, :user, { order_items: [ :product, :store ] } ]
+    [ :order_items, :shipping_address, :billing_address, :user, { order_items: [ product: [ images_attachments: :blob ]] } ]
   end
 
   private

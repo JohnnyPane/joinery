@@ -4,7 +4,9 @@ module Renderable
   def render_resource(resource, serializer, options = {})
     render json: serializer.new(
       resource,
-      params: { current_user: current_user }.merge(options),
+      {
+        params: { current_user: current_user }
+      }.merge(options)
       ).serializable_hash[:data][:attributes]
   end
 
@@ -17,13 +19,14 @@ module Renderable
       collection,
       {
         params: { current_user: current_user },
+        is_collection: true,
         meta: {
           page: collection.current_page,
           per_page: collection.limit_value,
           total_pages: collection.total_pages,
           total_count: collection.total_count
-        }.merge(options)
-      }
-    )
+        }
+      }.merge(options)
+    ).serializable_hash
   end
 end

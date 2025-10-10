@@ -19,4 +19,17 @@ class BaseSerializer
       item[:attributes]
     end
   end
+
+  def self.shallow_serialize(object)
+    shallow_attributes = self.shallow_attributes_list
+    object.as_json(only: shallow_attributes)
+  end
+
+  def self.shallow_serialize_collection(collection)
+    collection.map { |obj| shallow_serialize(obj) }
+  end
+
+  def self.shallow_attributes_list
+    raise NotImplementedError, "Subclasses must define `shallow_attributes_list`"
+  end
 end
