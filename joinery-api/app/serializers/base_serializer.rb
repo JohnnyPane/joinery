@@ -22,7 +22,13 @@ class BaseSerializer
 
   def self.shallow_serialize(object)
     shallow_attributes = self.shallow_attributes_list
+
     object.as_json(only: shallow_attributes)
+          .merge(shallow_associations(object))
+  end
+
+  def self.shallow_associations(object)
+    {}
   end
 
   def self.shallow_serialize_collection(collection)

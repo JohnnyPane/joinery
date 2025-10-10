@@ -13,6 +13,7 @@ import JoineryNavbar from "./components/ui/JoineryNavbar.jsx";
 import StripeProvider from "./context/StripeContext.jsx";
 import Checkout from "./components/cart/Checkout.jsx";
 import ShippingOptionsForm from "./components/cart/ShippingOptionsForm.jsx";
+import StoreOrders from "./components/store/StoreOrders.jsx";
 
 function App() {
 
@@ -39,6 +40,7 @@ function App() {
             <Route path="/products/:id" element={<Product />} />
             <Route path="/stores/new" element={<StoreForm />} />
             <Route path="/stores/:id" element={<Store />} />
+            <Route path="/stores/:id/orders" element={<StoreOrders />} />
 
           </Routes>
         </AuthProvider>

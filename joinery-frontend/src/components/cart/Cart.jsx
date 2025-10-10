@@ -25,7 +25,7 @@ const Cart = ({ closeModal }) => {
           <>
             <div className="double-margin-bottom">
               {cart.cart_items.map(item => (
-                <div key={item.data.id}>
+                <div key={item.id}>
                   <CartItem cartItem={item} onItemClick={closeModal} />
                   <Divider my="sm" />
                 </div>

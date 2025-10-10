@@ -15,7 +15,7 @@ class CartsController < JoineryController
   protected
 
   def included_index_resources
-    [ :cart_items ]
+    [ cart_items: [ product: [ images_attachments: :blob ] ] ]
   end
 
   private

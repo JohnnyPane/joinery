@@ -19,6 +19,13 @@ class ProductSerializer < BaseSerializer
   end
 
   def self.shallow_attributes_list
-    [ :id, :name, :price_in_cents, :quantity ]
+    [ :id, :name, :price_in_cents, :quantity, :productable_type ]
+  end
+
+  def self.shallow_associations(product)
+    {
+      images: product.image_urls(:thumb, only_path: true),
+      shipping_options: ShippingOptionSerializer.shallow_serialize_collection(product.shipping_options)
+    }
   end
 end

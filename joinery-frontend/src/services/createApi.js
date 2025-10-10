@@ -18,8 +18,7 @@ export const createApi = (resourceName) => {
 
     async query ( params = {} ) {
       try {
-        const response = await joineryClient.get(`/${pluralName}`, { params });
-        return response.data;
+        return await joineryClient.get(`/${pluralName}`, { params });
       } catch (error) {
         throw new Error(`Failed to query ${pluralName}`);
       }

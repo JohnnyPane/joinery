@@ -10,6 +10,12 @@ class CartItemSerializer < BaseSerializer
   end
 
   def self.shallow_attributes_list
-    [ :id, :cart_id, :product_id, :quantity, :unit_price_in_cents, :total_price_in_cents, :shipping_option_id ]
+    [ :id, :cart_id, :quantity, :unit_price_in_cents, :total_price_in_cents, :shipping_option_id ]
+  end
+
+  def self.shallow_associations(cart_item)
+    {
+      product: ProductSerializer.shallow_serialize(cart_item.product)
+    }
   end
 end

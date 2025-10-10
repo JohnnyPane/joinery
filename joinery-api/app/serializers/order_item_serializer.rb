@@ -1,5 +1,5 @@
 class OrderItemSerializer < BaseSerializer
-  attributes :id, :order_id, :product_id, :quantity, :unit_price_in_cents, :total_price_in_cents
+  attributes :id, :order_id, :product_id, :quantity, :unit_price_in_cents, :total_price_in_cents, :status, :fulfillment_method
 
   attribute :order do |order_item|
     OrderSerializer.shallow_serialize(order_item.order)
@@ -7,6 +7,10 @@ class OrderItemSerializer < BaseSerializer
 
   attribute :shipping_address do |order_item|
     order_item.order.shipping_address ? order_item.order.shipping_address.full_address : nil
+  end
+
+  attribute :shipping_option do |order_item|
+    order_item.shipping_option
   end
 
   attribute :product do |order_item|
@@ -18,6 +22,6 @@ class OrderItemSerializer < BaseSerializer
   end
 
   def self.shallow_attributes_list
-    [ :id, :order_id, :product_id, :quantity, :unit_price_in_cents, :total_price_in_cents ]
+    [ :id, :order_id, :product_id, :quantity, :unit_price_in_cents, :total_price_in_cents, :status ]
   end
 end

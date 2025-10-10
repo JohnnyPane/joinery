@@ -10,13 +10,8 @@ import { useUpdateResources } from "../../hooks/useResourceMutations.js";
 import CartItem from "./CartItem.jsx";
 import './Cart.scss';
 import ShippingInfoModal from "./ShippingInfoModal.jsx";
+import { shippingOptionDisplayNames } from "../../utils/shippingConfigs.js";
 
-
-const shippingOptionDisplayNames = {
-  flat_rate: 'Flat Rate',
-  pickup: 'Free Pickup',
-  quote: 'Request a Quote',
-}
 
 const optionDisplayText = (cents, shipping_type) => {
   const label = shippingOptionDisplayNames[shipping_type] || shipping_type;
@@ -26,7 +21,7 @@ const optionDisplayText = (cents, shipping_type) => {
 }
 
 const ShippingOptionSelector = ({ item, form, index }) => {
-  const shippingOptions = item.data.attributes.product.data.attributes.shipping_options || [];
+  const shippingOptions = item.product.shipping_options || [];
 
   return (
     <div className="shipping-option-selector">
@@ -61,8 +56,8 @@ const ShippingOptionsForm = () => {
   const form = useForm({
     initialValues: {
       cart_items: cartItems.map(item => ({
-        id: item.data.id,
-        shipping_option_id: item.data.attributes.shipping_option_id || null,
+        id: item.id,
+        shipping_option_id: item.shipping_option_id || null,
       })),
     },
   });
@@ -71,8 +66,8 @@ const ShippingOptionsForm = () => {
     if (cartItems.length > 0) {
       form.setValues({
         cart_items: cartItems.map(item => ({
-          id: item.data.id,
-          shipping_option_id: String(item.data.attributes.shipping_option_id) || null,
+          id: item.id,
+          shipping_option_id: String(item.shipping_option_id) || null,
         })),
       });
     }
@@ -99,7 +94,7 @@ const ShippingOptionsForm = () => {
         </Text>
         <form onSubmit={form.onSubmit(handleSubmit)}>
           {cartItems.map((item, index) => (
-            <div key={item.data.id} className="double-margin-bottom flex row align-top space-between">
+            <div key={item.id} className="double-margin-bottom flex row align-top space-between">
               <CartItem cartItem={item} />
               <ShippingOptionSelector item={item} form={form} index={index} />
             </div>

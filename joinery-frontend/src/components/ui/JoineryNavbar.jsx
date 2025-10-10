@@ -31,6 +31,12 @@ const JoineryNavbar = () => {
             <Link to={storeLink} className="navbar-link" state={{ signup: true }}>
               {storeText}
             </Link>
+
+            {currentStore && (
+              <Link to={`/stores/${currentStore.id}/orders`} className="navbar-link">
+                Orders
+              </Link>
+            )}
           </Group>
 
           <Group h="100%" gap={15}>

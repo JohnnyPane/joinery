@@ -7,16 +7,13 @@ import './CartItem.scss'
 const rootURL = import.meta.env.VITE_API_ROOT_URL;
 
 const CartItem = ({ cartItem, onItemClick }) => {
-  const { data } = cartItem;
-  const item = data.attributes
-  const product = item.product.data.attributes
+  const { product } = cartItem;
 
   const imageUrl = product.images.length > 0 ? rootURL + product.images[0].image_url : "";
-  const name = product.name || "Product Image";
 
   return (
     <div className="flex row space-between padding-right cart-item">
-      <Link to={`/products/${item.product.data.id}`} className="link-label flex row align-left" onClick={onItemClick} >
+      <Link to={`/products/${product.id}`} className="link-label flex row align-left" onClick={onItemClick} >
         <div>
           <Image src={imageUrl} alt={product.name} h={100} style={{ width: "100px"}} fit="contain" className="double-margin-right" />
         </div>
@@ -28,7 +25,7 @@ const CartItem = ({ cartItem, onItemClick }) => {
           </div>
 
           <div>
-            <Text color="dimmed" size="sm">Qty. {item.quantity}</Text>
+            <Text color="dimmed" size="sm">Qty. {cartItem.quantity}</Text>
           </div>
         </div>
       </Link>
@@ -36,7 +33,7 @@ const CartItem = ({ cartItem, onItemClick }) => {
 
       <div className="flex column full-height space-between align-right">
         <span className="bold label">{moneyDisplay(product.price_in_cents)}</span>
-        {item.shipping_price_in_cents > 0 && <Text color="dimmed" className="label">Shipping: {moneyDisplay(item.shipping_price_in_cents)}</Text>}
+        {cartItem.shipping_price_in_cents > 0 && <Text color="dimmed" className="label">Shipping: {moneyDisplay(cartItem.shipping_price_in_cents)}</Text>}
         {/*{displayOnly && <IconTrash onClick={handleRemove} size={20} className=" clickable" color="red"/>}*/}
       </div>
     </div>

@@ -31,10 +31,10 @@ const AddToCart = ({ productId }) => {
     }
   }
 
-  const cartItemAlreadyInCart = cart?.cart_items?.find(item => item.data.attributes.product_id === productId);
-  const availableQuantity = product ? product.quantity - (cartItemAlreadyInCart ? cartItemAlreadyInCart.data.attributes.quantity : 0) : product.quantity;
+  const cartItemAlreadyInCart = cart?.cart_items?.find(item => item.product_id === productId);
+  const availableQuantity = product ? product.quantity - (cartItemAlreadyInCart ? cartItemAlreadyInCart.quantity : 0) : product.quantity;
   const isOutOfStock = availableQuantity <= 0;
-  const addedMaxQuantity = product.quantity === (cartItemAlreadyInCart ? cartItemAlreadyInCart.data.attributes.quantity : 0);
+  const addedMaxQuantity = product.quantity === (cartItemAlreadyInCart ? cartItemAlreadyInCart.quantity : 0);
 
   return (
     <div className="flex column">
