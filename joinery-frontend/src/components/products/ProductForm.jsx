@@ -11,6 +11,7 @@ import JoineryStepForm from "../ui/JoineryStepForm.jsx";
 import ProductableDetailsForm from "./ProductableDetailsForm.jsx";
 import JoineryImageUploader from "../ui/JoineryImageUploader.jsx";
 import ProductShippingOptionsForm from "./ProductShippingOptionsForm.jsx";
+import { productableDetailsFilled } from "../../utils/productConfigs.js";
 
 const productsApi = createApi('products');
 
@@ -96,13 +97,14 @@ const ProductForm = () => {
   }
 
   const productTypeSelected = form.values.productable_type;
+  const productDetailsFilled = productableDetailsFilled(form.values);
   const shippingOptionSelected = form.values.flat_rate.enabled || form.values.pickup.enabled || form.values.quote.enabled;
 
   const formSteps = [
     { component: <ProductDetailsForm  form={form} />, title: 'Product Information', isNextDisabled: !productTypeSelected },
     { component: <ProductableDetailsForm form={form} />,
       title: 'Dimensions and Details',
-      isNextDisabled: false,
+      isNextDisabled: !productDetailsFilled,
       onNext: form.onSubmit(handleProductSubmit)
     },
     {

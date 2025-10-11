@@ -40,6 +40,8 @@ class CreateProductService
     case productable_type
     when 'Slab'
       Slab.create!(productable_params)
+    when 'Log'
+      Log.create!(productable_params)
     else
       raise "Unknown productable_type: #{productable_type}"
     end

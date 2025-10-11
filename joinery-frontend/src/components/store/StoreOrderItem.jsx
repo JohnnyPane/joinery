@@ -16,7 +16,6 @@ const StoreOrderItem = ({ item, updateOrderItem }) => {
   const handleStatusChange = async (newStatus) => {
     try {
       await updateOrderItem({id: item.id, status: newStatus });
-      console.log("Status updated to:", newStatus);
     } catch (error) {
       console.error("Failed to update status:", error);
     }

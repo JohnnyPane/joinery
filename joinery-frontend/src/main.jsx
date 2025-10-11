@@ -8,6 +8,7 @@ import { Notifications } from '@mantine/notifications';
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import './index.css'
 import './utility.scss'
+import './components/ui/JoineryUI.scss'
 import App from './App.jsx'
 
 const queryClient = new QueryClient()

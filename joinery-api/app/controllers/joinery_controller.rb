@@ -11,6 +11,7 @@ class JoineryController < ApplicationController
                             .apply_search(search)
 
     paginated_resources = paginated_resources.includes(*included_index_resources) if included_index_resources.present?
+    paginated_resources = paginated_resources.preload(*preloaded_polymorphic_resources) if preloaded_polymorphic_resources.present?
 
     render_resource_collection(paginated_resources, resource_serializer, { image_type: image_size })
   end
@@ -136,6 +137,10 @@ class JoineryController < ApplicationController
   end
 
   def included_show_resources
+    []
+  end
+
+  def preloaded_polymorphic_resources
     []
   end
 

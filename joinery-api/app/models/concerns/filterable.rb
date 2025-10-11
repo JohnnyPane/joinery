@@ -22,9 +22,18 @@ module Filterable
       scope = all
 
       filters_object.each do |field, conditions|
-        if conditions.present? && conditions[:operator].present? && conditions[:value].present?
-          scope = apply_single_filter(scope, field, conditions[:operator], conditions[:value])
+        next unless conditions.present? && conditions[:operator].present? && conditions[:value].present?
+        if field.to_s.include?(".")
+          association, attribute = field.to_s.split(".")
+          reflection = reflect_on_association(association.to_sym)
+
+          if reflection&.polymorphic?
+            scope = apply_polymorphic_filter(scope, association, attribute, conditions[:operator], conditions[:value])
+            next
+          end
         end
+
+        scope = apply_single_filter(scope, field, conditions[:operator], conditions[:value])
       end
 
       scope
@@ -53,6 +62,25 @@ module Filterable
       else
         scope
       end
+    end
+
+    def apply_polymorphic_filter(scope, association, field, operator, value)
+      get_resource_polymorphic_types = "#{association}_types"
+      return scope unless respond_to?(get_resource_polymorphic_types)
+
+      polymorphic_types = send(get_resource_polymorphic_types)
+      matching_ids = []
+      polymorphic_types.each do |type|
+        table_name = type.constantize.table_name
+        joined_scope = scope.joins(
+          "INNER JOIN #{table_name} ON #{table_name}.id = #{self.table_name}.#{association}_id AND #{self.table_name}.#{association}_type = '#{type}'"
+        )
+
+        filtered_scope = apply_single_filter(joined_scope, "#{table_name}.#{field}", operator, value)
+        matching_ids += filtered_scope.pluck("#{self.table_name}.id")
+      end
+
+      scope.where(id: matching_ids.uniq)
     end
   end
 end

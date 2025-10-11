@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_09_160536) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_11_072512) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -88,6 +88,18 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_09_160536) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["jti"], name: "index_jwt_denylists_on_jti"
+  end
+
+  create_table "logs", force: :cascade do |t|
+    t.string "species", null: false
+    t.decimal "length", precision: 10, scale: 2, null: false
+    t.decimal "diameter", precision: 10, scale: 2, null: false
+    t.decimal "weight", precision: 10, scale: 2
+    t.string "origin"
+    t.integer "moisture_content"
+    t.integer "grade"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "order_items", force: :cascade do |t|

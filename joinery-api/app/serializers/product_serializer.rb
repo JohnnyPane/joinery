@@ -2,12 +2,10 @@ class ProductSerializer < BaseSerializer
   attributes :id, :name, :description, :price_in_cents, :quantity, :productable_type, :created_at, :updated_at
 
   attribute :productable_attributes do |product|
-    case product.productable_type
-    when "Slab"
-      SlabSerializer.shallow_serialize(product.productable)
-    else
-      {}
-    end
+    productable_serializer = "#{product.productable_type}Serializer".constantize
+    productable_serializer&.shallow_serialize(product.productable) || {}
+  rescue NameError
+    raise "Serializer for #{product.productable_type} not found"
   end
 
   attribute :shipping_options do |product|

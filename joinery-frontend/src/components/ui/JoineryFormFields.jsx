@@ -1,4 +1,5 @@
-import { NumberInput, TextInput, Textarea } from "@mantine/core";
+import { NumberInput, TextInput, Textarea, Select } from "@mantine/core";
+import { IconSearch } from "@tabler/icons-react";
 import JoineryIconMap from "./JoineryIconMap.jsx";
 
 const JoineryFormFields = ({ form, fieldConfig, nestedFieldType = null }) => {
@@ -15,6 +16,7 @@ const JoineryFormFields = ({ form, fieldConfig, nestedFieldType = null }) => {
         <TextInput
           label={fieldConfig.label}
           placeholder={fieldConfig.placeholder || `Enter ${fieldConfig.label.toLowerCase()}`}
+          leftSection={fieldConfig.icon ? <JoineryIconMap iconName={fieldConfig.icon} size={12} />: null}
           {...props}
           className="margin-bottom"
         />
@@ -35,6 +37,19 @@ const JoineryFormFields = ({ form, fieldConfig, nestedFieldType = null }) => {
         <Textarea
           label={fieldConfig.label}
           placeholder={fieldConfig.placeholder || `Enter ${fieldConfig.label.toLowerCase()}`}
+          {...props}
+          className="margin-bottom"
+        />
+      );
+    case 'select':
+      return (
+        <Select
+          label={fieldConfig.label}
+          placeholder={fieldConfig.placeholder || `Select ${fieldConfig.label.toLowerCase()}`}
+          data={fieldConfig.options || []}
+          searchable={fieldConfig.searchable || false}
+          rightSectionPointerEvents="none"
+          rightSection={fieldConfig.searchable ? <IconSearch size={14} /> : null}
           {...props}
           className="margin-bottom"
         />

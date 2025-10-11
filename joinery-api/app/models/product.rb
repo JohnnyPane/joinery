@@ -12,8 +12,14 @@ class Product < ApplicationRecord
 
   scope :by_store, ->(store_id) { where(store_id: store_id) }
   scope :with_images, -> { includes(images_attachments: :blob) }
+  scope :slabs, -> { where(productable_type: 'Slab') }
+  scope :logs, -> { where(productable_type: 'Log') }
 
   def has_enough_stock?(requested_quantity)
     quantity >= requested_quantity
+  end
+
+  def self.productable_types
+    %w[Log Slab]
   end
 end

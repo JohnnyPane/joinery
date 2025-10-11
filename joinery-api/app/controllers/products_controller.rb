@@ -22,11 +22,15 @@ class ProductsController < JoineryController
   protected
 
   def included_index_resources
-    [ :productable, :shipping_options, images_attachments: :blob ]
+    [ :shipping_options, images_attachments: :blob ]
   end
 
   def included_show_resources
-    [ :productable, :shipping_options, images_attachments: :blob ]
+    [ :shipping_options, images_attachments: :blob ]
+  end
+
+  def preloaded_polymorphic_resources
+    [ :productable ]
   end
 
   private
@@ -34,7 +38,10 @@ class ProductsController < JoineryController
   def product_params
     params.require(:product).permit(
       :name, :description, :price_in_cents, :quantity, :productable_type, :store_id,
-      productable_attributes: [ :species, :height, :length, :width, :weight, :dried, :slab_type ],
+      productable_attributes: [
+        :species, :height, :length, :width, :weight, :dried, :slab_type, :diameter, :origin, :grade,
+        :moisture_content
+      ],
     )
   end
 end

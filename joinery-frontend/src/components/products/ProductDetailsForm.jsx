@@ -1,5 +1,6 @@
 import { IconCurrencyDollar, IconNumber } from '@tabler/icons-react'
 import { NumberInput, Select, Textarea, TextInput, Grid } from "@mantine/core";
+import { productTypeOptions } from "../../utils/productConfigs.js";
 
 const ProductDetailsForm = ({ form }) => {
   return (
@@ -52,7 +53,7 @@ const ProductDetailsForm = ({ form }) => {
         <Select
           label="Product Type"
           placeholder="Select product type"
-          data={['Slab']}
+          data={productTypeOptions}
           {...form.getInputProps('productable_type')}
           className="margin-bottom"
         />

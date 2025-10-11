@@ -18,6 +18,16 @@ const ProductDetails = ({ product }) => {
             <p>Height: {productable.height}"</p>
           </div>
         );
+        case 'Log':
+        return (
+          <div className="product-specifics">
+            <p>Material: {productable.species}</p>
+            <p>Length: {productable.length}"</p>
+            <p>Diameter: {productable.diameter}"</p>
+            <p>Grade: {productable.grade}</p>
+            <p>Moisture Content: {productable.moisture_content}</p>
+          </div>
+        );
       default:
         return null;
     }

@@ -20,7 +20,7 @@ const useResources = ({ page = 1, perPage = 10, sortColumn = 'id', sortDirection
     queryParams
   ];
 
-  const { data, error, isLoading, isError } = useQuery({
+  const { data: queryData, error, isLoading, isError } = useQuery({
     queryKey,
     queryFn: async () => {
       const response = await resourceApi.query(queryParams);
@@ -30,10 +30,12 @@ const useResources = ({ page = 1, perPage = 10, sortColumn = 'id', sortDirection
     staleTime: 60 * 1000, // 1 minute
   });
 
+  const data = queryData?.data || [];
   const meta = data?.meta || {};
 
   return {
-    data: data?.data || [],
+    data,
+    meta,
     total: meta.total_count || 0,
     totalPages: meta.total_pages || 0,
     perPage: meta.per_page || perPage,
