@@ -45,11 +45,16 @@ const StoreForm = () => {
               label="Store Name"
               placeholder="Enter your store name"
               {...form.getInputProps('name')}
-              className="margin-bottom"
+              className="double-margin-bottom"
             />
+            <Text size="sm" fw={500}>
+              Description
+            </Text>
+            <Text size="sm" color="dimmed" mb="xs">
+              Use this space to highlight your background, what you create, and what sets your shop apart. A good description helps buyers understand your values and makes your store standout.
+            </Text>
             <Textarea
-              label="Description"
-              placeholder="Enter a brief description of your store"
+              placeholder="Enter a description of your store"
               {...form.getInputProps('description')}
               className="margin-bottom"
             />
@@ -60,7 +65,7 @@ const StoreForm = () => {
               className="double-margin-bottom"
             />
             <div className="flex to-right full-width double-margin-top">
-              <Button type="submit" className="full-width margin-40-t">Create Store</Button>
+              <Button type="submit" className="full-width margin-40-t" color="teal">Create Store</Button>
             </div>
           </form>
         </Card>

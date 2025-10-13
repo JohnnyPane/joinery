@@ -1,23 +1,57 @@
-import { useParams, useNavigate } from "react-router-dom";
-import { Grid } from '@mantine/core';
+import { useState } from 'react';
+import { useNavigate } from "react-router-dom";
+import { Grid, Modal, Select } from '@mantine/core';
+import { useDisclosure } from "@mantine/hooks";
 
-import useResources from '../../hooks/useResources';
+import useResourceData from "../../hooks/useResourceData.js";
 import { useUpdateResource } from "../../hooks/useResourceMutations.js";
 import { useMe } from '../../hooks/useMe';
 import StoreOrderItem from "./StoreOrderItem.jsx";
+import StoreOrderItemDetails from "./StoreOrderItemDetails.jsx";
 import './Store.scss';
+import ProductSkeletons from "../products/ProductSkeletons.jsx";
+
+const statusOptions = [
+  { value: 'awaiting_fulfillment', label: 'Awaiting Fulfillment' },
+  { value: 'shipped', label: 'Shipped' },
+  { value: 'delivered', label: 'Delivered' },
+  { value: 'complete', label: 'Complete' },
+  { value: 'canceled', label: 'Canceled' },
+];
+
 
 // Named component StoreOrders but it is really StoreOrderItems
-const StoreOrders = () => {
+const StoreOrders = ({ storeId }) => {
   const { data: currentUser } = useMe();
 
-  const { id: storeId } = useParams();
   const navigate = useNavigate();
-  const { data: orders, isLoading, isError } = useResources({ resourceName: 'order_items', scopes: [{ name: 'by_store', args: storeId }] });
-  const { mutate: updateOrderItem } = useUpdateResource('order_item');
+  const { data: orders, isLoading, isError } = useResourceData('order_items');
+  const { mutate: updateOrderItem } = useUpdateResource('order_items');
+  const [detailsOpened, { open: openDetails, close: closeDetails }] = useDisclosure(false);
+  const [item, setItem] = useState(null);
+
+  const onModalOpen = (orderItem) => {
+    setItem(orderItem);
+    openDetails();
+  }
+
+  const onModalClose = () => {
+    setItem(null);
+    closeDetails();
+  }
+
+  const handleStatusChange = async (newStatus) => {
+    try {
+      await updateOrderItem({ id: item.id, status: newStatus });
+      const updatedItem = { ...item, status: newStatus };
+      setItem(updatedItem);
+    } catch (error) {
+      console.error("Failed to update status:", error);
+    }
+  }
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div className="page"><ProductSkeletons /></div>;
   }
 
   if (isError) {
@@ -37,15 +71,34 @@ const StoreOrders = () => {
   const orderItems = orders.data;
 
   return (
-    <div>
+    <div className="page">
       <h3 className="margin-left">Store Orders</h3>
+
+      {orderItems.length === 0 ? (
+        <div className="center-content margin-t-80">
+          <p>No orders have been placed yet.</p>
+        </div>
+      ) : null}
+
       <Grid>
         {orderItems.map(orderItem => (
           <Grid.Col span={4} key={orderItem.id}>
-            <StoreOrderItem item={orderItem.attributes} updateOrderItem={updateOrderItem} />
+            <StoreOrderItem item={orderItem.attributes} updateOrderItem={updateOrderItem} openDetails={onModalOpen} />
           </Grid.Col>
         ))}
       </Grid>
+
+      {item && <Modal opened={detailsOpened} onClose={onModalClose} title={`Order ${item.id} Details`} size="lg">
+        <StoreOrderItemDetails item={item}/>
+        <Select
+          label="Update Status"
+          placeholder="Select new status"
+          data={statusOptions}
+          value={item.status}
+          onChange={handleStatusChange}
+          className="margin-top"
+        />
+      </Modal>}
     </div>
   );
 }

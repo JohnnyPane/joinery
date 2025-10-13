@@ -52,7 +52,7 @@ const LoginForm = () => {
             className="margin-bottom"
           />
           <div className="flex to-right full-width">
-            <Button type="submit" className="full-width double-margin-top">Log In</Button>
+            <Button type="submit" color="teal" className="full-width double-margin-top">Log In</Button>
           </div>
         </form>
       </Card>

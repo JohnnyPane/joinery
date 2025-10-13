@@ -13,10 +13,10 @@ const NavbarCart = () => {
 
   return (
     <>
-      <Button variant="subtle" color="black" onClick={open}>
+      <Button variant="subtle" color="gray" onClick={open}>
         <div className="center-content">
-          <IconShoppingBag size={20} className="margin-right" />
-          <Text size="sm">cart {itemCount > 0 && <span className="cart-count">{itemCount}</span>}</Text>
+          <IconShoppingBag size={18} className="margin-right" color="black" />
+          <Text size="sm" color="black">Cart {itemCount > 0 && <span className="cart-count" >{itemCount}</span>}</Text>
         </div>
       </Button>
 

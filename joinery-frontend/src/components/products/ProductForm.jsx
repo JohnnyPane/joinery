@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useForm } from "@mantine/form";
+import { notifications } from "@mantine/notifications";
 
 import { useMe } from '../../hooks/useMe.js';
 import { useCreateResource, useUpdateResource } from "../../hooks/useResourceMutations.js";
@@ -12,6 +12,7 @@ import ProductableDetailsForm from "./ProductableDetailsForm.jsx";
 import JoineryImageUploader from "../ui/JoineryImageUploader.jsx";
 import ProductShippingOptionsForm from "./ProductShippingOptionsForm.jsx";
 import { productableDetailsFilled } from "../../utils/productConfigs.js";
+import { useProductForm } from "../../hooks/useProductForm.js";
 
 const productsApi = createApi('products');
 
@@ -32,28 +33,7 @@ const ProductForm = () => {
 
   const navigate = useNavigate();
 
-  const form = useForm({
-    initialValues: {
-      name: '',
-      description: '',
-      price_in_cents: 0,
-      quantity: 0,
-      productable_type: '',
-      productable: {},
-      flat_rate: { enabled: false, price_in_cents: 0 },
-      pickup: { enabled: false },
-      quote: { enabled: false },
-    },
-    transformValues: (values) => ({
-      ...values,
-      price_in_cents: Math.round(values.price_in_cents * 100),
-    }),
-    validate: {
-      name: (value) => (value.length > 0 ? null : 'Name is required'),
-      price_in_cents: (value) => (value >= 0 ? null : 'Price must be non-negative'),
-      quantity: (value) => (Number.isInteger(value) && value >= 0 ? null : 'Stock must be a non-negative integer'),
-    },
-  });
+  const form = useProductForm();
 
   const handleProductSubmit = async (values) => {
 
@@ -93,6 +73,7 @@ const ProductForm = () => {
       }
     })
 
+    notifications.show({ message: `${form.values.name} created`, color: 'green', position: 'top-right' });
     navigate(`/products/${values.id}`);
   }
 

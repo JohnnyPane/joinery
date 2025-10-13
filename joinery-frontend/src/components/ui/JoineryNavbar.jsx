@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Box, Group } from '@mantine/core';
+import { Box, Group, Button, Text } from '@mantine/core';
 
 import { useMe } from '../../hooks/useMe.js';
 import NavbarCart from '../cart/NavbarCart.jsx';
@@ -20,30 +20,31 @@ const JoineryNavbar = () => {
 
   return (
     <Box>
-      <header className="navbar">
+      <header className="joinery-navbar">
         <Group justify="space-between" h="100%" w="100%" px={20}>
           <Group h="100%" gap={0} visibleFrom="sm">
 
             <Link to="/" className="navbar-logo">
               <h2 className="margin-none">The Joinery</h2>
             </Link>
-
-            <Link to={storeLink} className="navbar-link" state={{ signup: true }}>
-              {storeText}
-            </Link>
-
-            {currentStore && (
-              <Link to={`/stores/${currentStore.id}/orders`} className="navbar-link">
-                Orders
-              </Link>
-            )}
           </Group>
 
           <Group h="100%" gap={15}>
-            <NavbarCart />
-          </Group>
+            <Button component={Link} to="/products" variant="subtle" color="gray">
+              <Text color="black" size="sm">Products</Text>
+            </Button>
 
-          <Group visibleFrom="sm">
+            <Button component={Link} to={storeLink} state={{ signup: true }} variant="subtle" color="gray">
+              <Text color="black" size="sm">{storeText}</Text>
+            </Button>
+
+            {currentStore && (
+              <Button component={Link} to={`/stores/${currentStore.id}/orders`} variant="subtle" color="gray">
+                <Text color="black" size="sm">Orders</Text>
+              </Button>
+            )}
+
+            <NavbarCart />
             {user && <h5>Hello, {user.name}</h5>}
             <LoginLogoutToggle />
           </Group>

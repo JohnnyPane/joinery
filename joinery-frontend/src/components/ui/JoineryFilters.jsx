@@ -37,7 +37,7 @@ const JoineryFilters = ({ filterConfigs }) => {
   }
 
   return (
-    <div className="joinery-filters">
+    <div className="flex row">
       {filterConfigs.map((filter) => (
         <Select
           key={filter.name}
@@ -50,7 +50,7 @@ const JoineryFilters = ({ filterConfigs }) => {
           rightSection={filter.searchable ? <IconSearch size={14} /> : null}
           clearable
           size="xs"
-          className="filter-select"
+          className="filter-select margin-right"
         />
       ))}
     </div>

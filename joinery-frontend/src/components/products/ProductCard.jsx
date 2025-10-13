@@ -7,7 +7,7 @@ import { productTypeDisplayName } from "../../utils/productConfigs.js";
 
 const rootURL = import.meta.env.VITE_API_ROOT_URL;
 
-const ProductCard = ({ cardData }) => {
+const ProductCard = ({ cardData, clickable = true }) => {
   const { images, name, productable_type, price_in_cents } = cardData;
   const firstImageUrl = images.length > 0 ? images[0]?.image_url : "";
   const [displayImageUrl, setDisplayImageUrl] = useState(firstImageUrl);
@@ -16,7 +16,9 @@ const ProductCard = ({ cardData }) => {
 
   const productTypeText = productTypeDisplayName[productable_type] || "";
   const handleCardClick = () => {
-    navigate(`/products/${cardData.id}`);
+    if (clickable) {
+      navigate(`/products/${cardData.id}`);
+    }
   }
 
   const handleCardEnter = () => {

@@ -1,3 +1,4 @@
+import { Text, Title } from "@mantine/core";
 import JoineryScopes from "../ui/JoineryScopes.jsx";
 import JoineryFilters from "../ui/JoineryFilters.jsx";
 import Products from "./Products.jsx";
@@ -8,7 +9,7 @@ import JoineryPagination from "../ui/JoineryPagination.jsx";
 const productTypeScopes = [{
   type: 'buttons',
   options: [
-    { label: 'All', value: 'all' },
+    { label: 'All Products', value: 'all' },
     { label: 'Slabs', value: 'slabs' },
     { label: 'Logs', value: 'logs' },
   ]
@@ -38,13 +39,27 @@ const filterConfigs = [
 
 const ProductsPage = () => {
   return (
-    <ResourceProvider >
-      <JoineryScopes scopeConfigs={productTypeScopes} />
-      <JoineryFilters filterConfigs={filterConfigs} />
+    <ResourceProvider initial={{ scopes: [{ name: 'in_stock' }]}} >
+      <div className="page">
+        <div>
+          <Title order={1}>Shop Our Collection</Title>
 
-      <Products />
+          <div>
+            <Text size="sm" className="hero-subtext">
+              Browse raw slabs, lumber, and handcrafted pieces from independent sellers. Everything you need to build, create, and decorate.
+            </Text>
+          </div>
+        </div>
 
-      <JoineryPagination resourceName="products" />
+        <div className="flex row align-bottom to-right">
+          <JoineryScopes scopeConfigs={productTypeScopes} />
+          <JoineryFilters filterConfigs={filterConfigs} />
+        </div>
+
+        <Products />
+
+        <JoineryPagination resourceName="products" />
+      </div>
     </ResourceProvider >
   )
 }

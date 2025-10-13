@@ -16,7 +16,7 @@ const ScopeButtonGroup = ({ scopeConfig, setScopes, scopes }) => {
   }
 
   return (
-    <ButtonGroup key={scopeConfig.name} className="scope-button-group" spacing="xs">
+    <ButtonGroup key={scopeConfig.name} className="scope-button-group margin-right" spacing="xs">
       {scopeConfig.options.map((option) => (
         <Button
           key={option.value}

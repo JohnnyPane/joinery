@@ -21,10 +21,11 @@ export const useUpdateResource = (modelName) => {
 
   return useMutation({
     mutationFn: async (updatedResource) => {
-      return await modelApi.update(updatedResource.id, updatedResource);
+      const updates = await modelApi.update(updatedResource.id, updatedResource);
+      return updates;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries([modelName]);
+      queryClient.invalidateQueries([modelName], { exact: false });
     },
   });
 }

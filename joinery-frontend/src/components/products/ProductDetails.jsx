@@ -4,9 +4,9 @@ const ProductDetails = ({ product }) => {
   if (!product) return null;
 
   const renderProductSpecifics = () => {
-    if (!product.productable_attributes) return null;
+    if (!product.productable) return null;
 
-    const productable = product.productable_attributes;
+    const { productable } = product;
 
     switch (product.productable_type) {
       case 'Slab':

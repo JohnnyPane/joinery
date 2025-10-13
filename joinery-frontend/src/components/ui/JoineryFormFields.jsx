@@ -17,6 +17,7 @@ const JoineryFormFields = ({ form, fieldConfig, nestedFieldType = null }) => {
           label={fieldConfig.label}
           placeholder={fieldConfig.placeholder || `Enter ${fieldConfig.label.toLowerCase()}`}
           leftSection={fieldConfig.icon ? <JoineryIconMap iconName={fieldConfig.icon} size={12} />: null}
+          value={fieldConfig.value || ''}
           {...props}
           className="margin-bottom"
         />
@@ -27,6 +28,7 @@ const JoineryFormFields = ({ form, fieldConfig, nestedFieldType = null }) => {
           label={fieldConfig.label}
           placeholder={fieldConfig.placeholder || `Enter ${fieldConfig.label.toLowerCase()}`}
           leftSection={<JoineryIconMap iconName={fieldConfig.icon} size={12} />}
+          value={fieldConfig.value || ''}
           {...props}
           className="margin-bottom"
           min={fieldConfig.min || 0}
@@ -37,6 +39,7 @@ const JoineryFormFields = ({ form, fieldConfig, nestedFieldType = null }) => {
         <Textarea
           label={fieldConfig.label}
           placeholder={fieldConfig.placeholder || `Enter ${fieldConfig.label.toLowerCase()}`}
+          value={fieldConfig.value || ''}
           {...props}
           className="margin-bottom"
         />
@@ -47,6 +50,7 @@ const JoineryFormFields = ({ form, fieldConfig, nestedFieldType = null }) => {
           label={fieldConfig.label}
           placeholder={fieldConfig.placeholder || `Select ${fieldConfig.label.toLowerCase()}`}
           data={fieldConfig.options || []}
+          value={fieldConfig.value || ''}
           searchable={fieldConfig.searchable || false}
           rightSectionPointerEvents="none"
           rightSection={fieldConfig.searchable ? <IconSearch size={14} /> : null}

@@ -10,7 +10,7 @@ const Cart = ({ closeModal }) => {
   const { cart, isLoading, isError, error } = useCart();
   const location = useLocation();
 
-  if (!cart) return null;
+  if (!cart) return <div className="center-content margin-t-80"><p>Your cart is empty.</p></div>;
 
   const cartHasItems = cart.cart_items && cart.cart_items.length > 0;
   const isCheckoutPage = location.pathname.includes('checkout');

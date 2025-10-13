@@ -183,7 +183,7 @@ const JoineryImageUploader = ({ resourceId, uploadApi, onSuccessfulUpload }) => 
               onClick={handleUpload}
               disabled={uploading || files.length === 0}
               loading={uploading}
-              color="violet"
+              color="teal"
               className="action-button"
             >
               Upload

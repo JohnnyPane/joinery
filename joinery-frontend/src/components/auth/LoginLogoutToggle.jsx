@@ -5,7 +5,7 @@ import { useMe } from '../../hooks/useMe';
 import { useAuth } from "../../context/AuthContext.jsx";
 import { useCart } from "../../hooks/useCart";
 
-const LoginLogoutToggle = () => {
+const LoginLogoutToggle = ({ className = "" }) => {
   const { data: user } = useMe();
   const { logout } = useAuth();
   const { invalidateCart } = useCart();
@@ -19,11 +19,11 @@ const LoginLogoutToggle = () => {
   };
 
   return user ? (
-    <Button variant="subtle" onClick={handleLogout} color="gray">
+    <Button variant="subtle" onClick={handleLogout} color="gray" className={className}>
       Logout
     </Button>
   ) : (
-    <Button variant="light" color="green" component={Link} to="/login">
+    <Button variant="subtle" color="gray" component={Link} to="/login" className={className}>
       Login
     </Button>
   );

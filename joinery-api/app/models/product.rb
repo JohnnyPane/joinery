@@ -11,6 +11,7 @@ class Product < ApplicationRecord
   validates :name, :price_in_cents, presence: true
 
   scope :by_store, ->(store_id) { where(store_id: store_id) }
+  scope :in_stock, -> { where('quantity > 0') }
   scope :with_images, -> { includes(images_attachments: :blob) }
   scope :slabs, -> { where(productable_type: 'Slab') }
   scope :logs, -> { where(productable_type: 'Log') }

@@ -1,8 +1,30 @@
-import { useQuery } from '@tanstack/react-query';
-import { createApi } from "../services/createApi.js";
+import {useQuery} from '@tanstack/react-query';
+import {createApi} from "../services/createApi.js";
+import {useResourceContext} from "../context/ResourceContext.jsx";
 
-const useResources = ({ page = 1, perPage = 10, sortColumn = 'id', sortDirection = 'desc', filters = {}, scopes = [], search = '', searchColumn = null, imageSize = 'default', resourceName, extraParams = {} }) => {
+const useResources = (overrides = {}) => {
+  const context = useResourceContext?.() || {};
+
+  const {
+    page = 1,
+    perPage = 10,
+    sortColumn = 'id',
+    sortDirection = 'desc',
+    filters = {},
+    scopes = [],
+    search = '',
+    searchColumn = null,
+    imageSize = 'default',
+    resourceName,
+    extraParams = {},
+  } = { ...context, ...overrides };
+
+  if (!resourceName) {
+    throw new Error("useResources requires a resourceName (either from context or override)");
+  }
+
   const resourceApi = createApi(resourceName);
+
   const queryParams = {
     page,
     per_page: perPage,
@@ -12,19 +34,27 @@ const useResources = ({ page = 1, perPage = 10, sortColumn = 'id', sortDirection
     scopes,
     image_size: imageSize,
     search: { text: search, column: searchColumn },
-    ...extraParams
-  }
+    ...extraParams,
+  };
 
   const queryKey = [
     resourceName,
-    queryParams
+    page,
+    perPage,
+    sortColumn,
+    sortDirection,
+    JSON.stringify(filters),
+    JSON.stringify(scopes),
+    search,
+    searchColumn,
+    imageSize,
+    JSON.stringify(extraParams),
   ];
 
   const { data: queryData, error, isLoading, isError } = useQuery({
     queryKey,
     queryFn: async () => {
-      const response = await resourceApi.query(queryParams);
-      return response;
+      return await resourceApi.query(queryParams);
     },
     keepPreviousData: true,
     staleTime: 60 * 1000, // 1 minute
@@ -44,6 +74,6 @@ const useResources = ({ page = 1, perPage = 10, sortColumn = 'id', sortDirection
     isError,
     error,
   };
-}
+};
 
 export default useResources;

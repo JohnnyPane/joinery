@@ -1,6 +1,8 @@
 import { useParams } from 'react-router-dom';
+import { Text, Title } from '@mantine/core';
 import useResource from '../../hooks/useResource';
 import StoreProducts from "./StoreProducts.jsx";
+import { ResourceProvider } from "../../context/ResourceContext.jsx";
 import CreateStoreStripeAccount from "./CreateStoreStripeAccount.jsx";
 
 const Store = () => {
@@ -24,12 +26,17 @@ const Store = () => {
   }
 
   return (
-    <div>
-      <h2>{store.name}</h2>
-      <p>{store.description}</p>
-      <p>Location: {store.location}</p>
+    <div className="page">
+      <div className="double-padding-lr double-margin-bottom">
+        <Title order={2} className="margin-none">{store.name}</Title>
+        <Text color="dimmed">{store.description}</Text>
+        <Text size="xs">{store.location}</Text>
 
-      <StoreProducts storeId={id} />
+      </div>
+
+      <ResourceProvider>
+        <StoreProducts storeId={id} />
+      </ResourceProvider>
     </div>
   );
 }

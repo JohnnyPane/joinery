@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import './App.css'
 
 import { AuthProvider } from "./context/AuthContext.jsx";
+import { ResourceProvider } from "./context/ResourceContext.jsx";
 
 import Home from "./components/home/Home.jsx";
 import LoginSignupToggle from "./components/auth/LoginSignupToggle.jsx";
@@ -13,7 +14,8 @@ import JoineryNavbar from "./components/ui/JoineryNavbar.jsx";
 import StripeProvider from "./context/StripeContext.jsx";
 import Checkout from "./components/cart/Checkout.jsx";
 import ShippingOptionsForm from "./components/cart/ShippingOptionsForm.jsx";
-import StoreOrders from "./components/store/StoreOrders.jsx";
+import StoreOrdersRoute from "./components/store/StoreOrdersRoute.jsx";
+import ProductsPage from "./components/products/ProductsPage.jsx";
 
 function App() {
 
@@ -34,13 +36,13 @@ function App() {
             }/>
 
             <Route path="/checkout/shipping_options" element={<ShippingOptionsForm />} />
-
             <Route path="/login" element={<LoginSignupToggle />} />
+            <Route path="/products" element={<ProductsPage />} />
             <Route path="/products/new" element={<ProductForm />} />
             <Route path="/products/:id" element={<Product />} />
             <Route path="/stores/new" element={<StoreForm />} />
             <Route path="/stores/:id" element={<Store />} />
-            <Route path="/stores/:id/orders" element={<StoreOrders />} />
+            <Route path="/stores/:id/orders" element={<StoreOrdersRoute />}/>
 
           </Routes>
         </AuthProvider>

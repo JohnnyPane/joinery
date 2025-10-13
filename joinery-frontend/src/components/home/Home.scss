@@ -1,0 +1,51 @@
+.home-grid {
+  height: calc(100dvh - 6.563rem);
+}
+
+.home-left,
+.home-right {
+  height: 100%;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+}
+
+.home-left-content,
+.left-image-container {
+  height: 50%;
+}
+
+.home-left-text {
+  width: 50%;
+}
+
+.home-image {
+  width: 100%;
+}
+
+.animated-link {
+  position: relative;
+  color: inherit;
+  text-decoration: none;
+  font-weight: 500;
+  padding-bottom: 4px;
+}
+
+.animated-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0%;
+  height: 2px;
+  background-color: currentColor;
+  transition: width 0.25s ease-out;
+}
+
+.animated-link:hover::after {
+  width: 100%;
+}
+
+
+

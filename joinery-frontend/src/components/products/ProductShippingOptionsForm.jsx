@@ -23,6 +23,7 @@ const ProductShippingOptionsForm = ({ shippingOptions, form }) => {
             <Switch
               className="clickable margin-right"
               withThumbIndicator={false}
+              color="teal"
               checked={form.values[option.type].enabled}
               onChange={(event) => {
                 const checked = event.currentTarget.checked;

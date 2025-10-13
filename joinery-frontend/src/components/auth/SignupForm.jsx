@@ -76,7 +76,7 @@ const SignupForm = () => {
             {...form.getInputProps("passwordConfirm")}
           />
           <div>
-            <Button type="submit" className="full-width double-margin-top">Sign Up</Button>
+            <Button type="submit" color="teal" className="full-width double-margin-top">Sign Up</Button>
           </div>
         </form>
       </Card>

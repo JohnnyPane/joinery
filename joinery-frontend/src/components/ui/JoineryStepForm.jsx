@@ -31,7 +31,7 @@ const JoineryStepForm = ({ steps, onComplete, nextStepFlag = false, setNextFlag 
   return (
     <>
       <div className="stepper-container">
-        <Stepper active={currentStep} onStepClick={setCurrentStep} allowNextStepsSelect={false} mb="xl">
+        <Stepper active={currentStep} onStepClick={setCurrentStep} color="teal" allowNextStepsSelect={false} mb="xl">
           {steps.map((step, index) => (
             <Stepper.Step key={index} label={step.title || `Step ${index + 1}`} />
           ))}
@@ -55,7 +55,7 @@ const JoineryStepForm = ({ steps, onComplete, nextStepFlag = false, setNextFlag 
               Previous
             </Button>
 
-            {!currentStepConfig.hideNext && <Button onClick={nextStep} disabled={currentStepConfig.isNextDisabled} className="action-button">
+            {!currentStepConfig.hideNext && <Button onClick={nextStep} disabled={currentStepConfig.isNextDisabled} color="teal" className="action-button">
               {currentStep === steps.length - 1 ? 'Finish' : 'Next'}
             </Button>}
           </div>

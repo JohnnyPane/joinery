@@ -49,7 +49,7 @@ const AddToCart = ({ productId }) => {
         />
 
         <div className="center-content column full-width">
-          <Button onClick={handleAddToCart} disabled={isLoading || isError || isOutOfStock} className="product-detail-add-to-cart" fullWidth>
+          <Button onClick={handleAddToCart} variant="filled" color="green" disabled={isLoading || isError || isOutOfStock} className="product-detail-add-to-cart" fullWidth>
             Add to Cart
           </Button>
 

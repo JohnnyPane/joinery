@@ -44,6 +44,10 @@
   align-items: flex-end;
 }
 
+.align-bottom {
+  align-items: flex-end;
+}
+
 .align-center {
   align-items: center;
 }
@@ -108,6 +112,15 @@
 
 .padding {
   padding: 0.5rem;
+}
+
+.double-padding {
+  padding: 1rem;
+}
+
+.double-padding-lr {
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 .padding-none {
@@ -180,7 +193,7 @@
 }
 
 // OVERWRITES
-.mantine-Badge-label {
-  font-family: "Outfit",sans-serif;
-}
+//.mantine-Badge-label {
+//  font-family: "Outfit",sans-serif;
+//}
 
