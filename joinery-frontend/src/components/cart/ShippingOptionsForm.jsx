@@ -36,6 +36,7 @@ const ShippingOptionSelector = ({ item, form, index }) => {
             label={optionDisplayText(option.price_in_cents, option.shipping_type)}
             icon={CheckIcon}
             className="margin-bottom clickable"
+            color="teal"
           />
         ))}
       </Radio.Group>
@@ -86,7 +87,7 @@ const ShippingOptionsForm = () => {
   const allOptionsSelected = form.values.cart_items.every(item => item.shipping_option_id);
 
   return (
-    <div className="center-content">
+    <div className="center-content double-margin-top">
       <Card shadow="sm" padding="lg" radius="md" withBorder className="shipping-options-form">
         <Text size="lg" className="bold margin-bottom">Shipping Options</Text>
         <Text size="sm" color="dimmed" mb="lg">
@@ -100,7 +101,7 @@ const ShippingOptionsForm = () => {
             </div>
           ))}
 
-          <Button type="submit" radius={0} className="full-width double-margin-top" disabled={!allOptionsSelected}>
+          <Button type="submit" color="teal" radius={0} className="full-width double-margin-top" disabled={!allOptionsSelected}>
             Save Shipping Options
           </Button>
         </form>

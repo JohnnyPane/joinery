@@ -5,8 +5,7 @@ import Cart from "./Cart.jsx";
 
 const Checkout = () => {
   return (
-    <div>
-
+    <div className="page double-margin-top">
       <Grid>
         <Grid.Col span={6} md={6}>
           <Fieldset legend="Shipping & Billing" className="margin-bottom">

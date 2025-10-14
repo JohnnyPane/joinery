@@ -34,6 +34,15 @@ const filterConfigs = [
     label: 'Species',
     searchable: true,
     options: woodSpecies
+  },
+  {
+    name: 'productable_type',
+    operator: 'eq',
+    label: 'Product Type',
+    options: [
+      { value: 'Slab', label: 'Slabs' },
+      { value: 'Log', label: 'Logs' },
+    ]
   }
 ]
 

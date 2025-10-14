@@ -1,6 +1,6 @@
-import { useResourceContext } from "../../context/ResourceContext.jsx";
-import { Pagination } from "@mantine/core";
+import { Pagination, Text } from "@mantine/core";
 import useResources from "../../hooks/useResources.js";
+import { useResourceContext } from "../../context/ResourceContext.jsx";
 
 const JoineryPagination = ({ resourceName }) => {
   const { page, setPage } = useResourceContext();

@@ -42,6 +42,7 @@ const Cart = ({ closeModal }) => {
                   to="/checkout/shipping_options"
                   onClick={handleGoToCheckout}
                   radius={0}
+                  color="teal"
                   className="full-width"
                 >
                   <span className="margin-right">Go to Checkout</span>

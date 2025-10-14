@@ -16,6 +16,7 @@ import Checkout from "./components/cart/Checkout.jsx";
 import ShippingOptionsForm from "./components/cart/ShippingOptionsForm.jsx";
 import StoreOrdersRoute from "./components/store/StoreOrdersRoute.jsx";
 import ProductsPage from "./components/products/ProductsPage.jsx";
+import ProductCategories from "./components/products/ProductCategories.jsx";
 
 function App() {
 
@@ -40,6 +41,7 @@ function App() {
             <Route path="/products" element={<ProductsPage />} />
             <Route path="/products/new" element={<ProductForm />} />
             <Route path="/products/:id" element={<Product />} />
+            <Route path="/products/categories/:categorySlug" element={<ProductCategories/>} />
             <Route path="/stores/new" element={<StoreForm />} />
             <Route path="/stores/:id" element={<Store />} />
             <Route path="/stores/:id/orders" element={<StoreOrdersRoute />}/>

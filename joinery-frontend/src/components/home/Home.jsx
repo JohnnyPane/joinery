@@ -5,6 +5,7 @@ import { Button, Image } from "@mantine/core";
 import { IconArrowNarrowRight } from '@tabler/icons-react';
 import { useMe } from "../../hooks/useMe.js";
 import './Home.scss';
+import ShopNowSection from "./ShopNowSection.jsx";
 
 const Home = () => {
   const { data: user } = useMe();
@@ -19,7 +20,7 @@ const Home = () => {
             <div className="home-left-content flex column space-between">
               <h1 className="home-left-text margin-none">Crafted by Nature.</h1>
               <div className="flex to-right">
-                <p className="home-left-text">Discover raw materials and handcrafted goods from makers who respect the grain.</p>
+                <p className="home-left-text">Discover raw materials and handcrafted goods from makers who are passionate about what they do.</p>
               </div>
 
               <div>
@@ -62,6 +63,8 @@ const Home = () => {
           />
         </motion.div>
       </div>
+
+      <ShopNowSection />
     </>
   );
 }

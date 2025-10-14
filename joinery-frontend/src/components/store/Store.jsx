@@ -22,7 +22,7 @@ const Store = () => {
   }
 
   if (!store.charges_enabled) {
-    return <div>Your store is not fully set up to receive payments. Please complete the Stripe onboarding process.</div>;
+    return <div className="margin-t-80 center-content">Your store is not fully set up to receive payments. Please complete the Stripe onboarding process.</div>;
   }
 
   return (
