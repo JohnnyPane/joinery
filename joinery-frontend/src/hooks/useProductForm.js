@@ -8,6 +8,8 @@ export const useProductForm = (product = null) => {
       description: product?.description || '',
       price_in_cents: product?.price_in_cents ? product.price_in_cents / 100 : 0,
       quantity: product?.quantity || 0,
+      requestable: product?.requestable || false,
+      biddable: product?.biddable || false,
       productable_type: product?.productable_type || '',
       productable: product?.productable || {},
       flat_rate: {

@@ -12,6 +12,15 @@ class CartsController < JoineryController
     render_resource(@cart, CartSerializer, status: :created)
   end
 
+  def user_cart
+    if current_user
+      @cart = Cart.find_or_create_by(user: current_user, guest: false)
+      render_resource(@cart, CartSerializer)
+    else
+      render json: { error: 'User not authenticated' }, status: :unauthorized
+    end
+  end
+
   protected
 
   def included_index_resources

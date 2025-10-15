@@ -2,7 +2,6 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import './App.css'
 
 import { AuthProvider } from "./context/AuthContext.jsx";
-import { ResourceProvider } from "./context/ResourceContext.jsx";
 
 import Home from "./components/home/Home.jsx";
 import LoginSignupToggle from "./components/auth/LoginSignupToggle.jsx";
@@ -17,6 +16,7 @@ import ShippingOptionsForm from "./components/cart/ShippingOptionsForm.jsx";
 import StoreOrdersRoute from "./components/store/StoreOrdersRoute.jsx";
 import ProductsPage from "./components/products/ProductsPage.jsx";
 import ProductCategories from "./components/products/ProductCategories.jsx";
+import Quotes from "./components/quotes/Quotes.jsx";
 
 function App() {
 
@@ -42,6 +42,7 @@ function App() {
             <Route path="/products/new" element={<ProductForm />} />
             <Route path="/products/:id" element={<Product />} />
             <Route path="/products/categories/:categorySlug" element={<ProductCategories/>} />
+            <Route path="/quotes" element={<Quotes />} />
             <Route path="/stores/new" element={<StoreForm />} />
             <Route path="/stores/:id" element={<Store />} />
             <Route path="/stores/:id/orders" element={<StoreOrdersRoute />}/>

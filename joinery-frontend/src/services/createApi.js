@@ -53,6 +53,15 @@ export const createApi = (resourceName) => {
       }
     },
 
+    async fetchRoute ( route, params = {} ) {
+      try {
+        const response = await joineryClient.get(`/${pluralName}/${route}`, { params });
+        return response.data;
+      } catch (error) {
+        throw new Error(`Failed to fetch ${route} for ${pluralName}`);
+      }
+    },
+
     async postMemberRoute ( id, route, data = {} ) {
       try {
         const response = await joineryClient.post(`/${pluralName}/${id}/${route}`, data);

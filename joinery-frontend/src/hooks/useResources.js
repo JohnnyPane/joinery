@@ -1,6 +1,6 @@
-import {useQuery} from '@tanstack/react-query';
-import {createApi} from "../services/createApi.js";
-import {useResourceContext} from "../context/ResourceContext.jsx";
+import { useQuery } from '@tanstack/react-query';
+import { createApi } from "../services/createApi.js";
+import { useResourceContext } from "../context/ResourceContext.jsx";
 
 const useResources = (overrides = {}) => {
   const context = useResourceContext?.() || {};

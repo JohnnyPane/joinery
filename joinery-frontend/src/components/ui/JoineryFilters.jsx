@@ -14,7 +14,7 @@ const transformValue = (value, operator) => {
 
 
 const JoineryFilters = ({ filterConfigs }) => {
-  const { filters, setFilters } = useResourceContext();
+  const { filters, setFilters, setPage } = useResourceContext();
 
   const handleFilterChange = (filter, value) => {
     const { name, operator } = filter;
@@ -34,6 +34,9 @@ const JoineryFilters = ({ filterConfigs }) => {
         [name]: { value: filterValue, operator }
       };
     });
+
+    // MAJOR TODO: THIS IS A HACK TO RESET PAGINATION WHEN FILTERS CHANGE
+    setPage(1);
   }
 
   return (

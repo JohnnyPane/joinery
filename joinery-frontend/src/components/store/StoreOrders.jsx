@@ -96,7 +96,8 @@ const StoreOrders = ({ storeId }) => {
           data={statusOptions}
           value={item.status}
           onChange={handleStatusChange}
-          className="margin-top"
+          w={300}
+          className="margin-top double-margin-bottom"
         />
       </Modal>}
     </div>

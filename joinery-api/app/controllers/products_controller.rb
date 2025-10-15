@@ -6,7 +6,7 @@ class ProductsController < JoineryController
     if product.persisted?
       render_resource(product, resource_serializer, status: :created)
     else
-      render_errors(product.errors, status: :unprocessable_entity)
+      render_errors(product.errors, status: :unprocessable_content)
     end
   end
 
@@ -15,7 +15,7 @@ class ProductsController < JoineryController
     if product.errors.empty?
       render_resource(product, resource_serializer)
     else
-      render_errors(product.errors, status: :unprocessable_entity)
+      render_errors(product.errors, status: :unprocessable_content)
     end
   end
 
@@ -37,7 +37,7 @@ class ProductsController < JoineryController
 
   def product_params
     params.require(:product).permit(
-      :name, :description, :price_in_cents, :quantity, :productable_type, :store_id,
+      :name, :description, :price_in_cents, :quantity, :productable_type, :requestable, :biddable, :store_id,
       productable_attributes: [
         :species, :height, :length, :width, :weight, :dried, :slab_type, :diameter, :origin, :grade,
         :moisture_content

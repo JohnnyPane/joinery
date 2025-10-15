@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_14_063602) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_15_131915) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -58,6 +58,22 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_14_063602) do
     t.index ["addressable_type", "addressable_id"], name: "index_addresses_on_addressable"
   end
 
+  create_table "bids", force: :cascade do |t|
+    t.bigint "product_id", null: false
+    t.bigint "buyer_id", null: false
+    t.bigint "seller_id", null: false
+    t.integer "amount_in_cents", null: false
+    t.integer "status", default: 0, null: false
+    t.text "message"
+    t.datetime "accepted_at"
+    t.datetime "rejected_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["buyer_id"], name: "index_bids_on_buyer_id"
+    t.index ["product_id"], name: "index_bids_on_product_id"
+    t.index ["seller_id"], name: "index_bids_on_seller_id"
+  end
+
   create_table "cart_items", force: :cascade do |t|
     t.bigint "cart_id", null: false
     t.bigint "product_id", null: false
@@ -68,8 +84,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_14_063602) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "shipping_option_id"
+    t.bigint "quote_request_id"
     t.index ["cart_id"], name: "index_cart_items_on_cart_id"
     t.index ["product_id"], name: "index_cart_items_on_product_id"
+    t.index ["quote_request_id"], name: "index_cart_items_on_quote_request_id"
     t.index ["shipping_option_id"], name: "index_cart_items_on_shipping_option_id"
     t.index ["store_id"], name: "index_cart_items_on_store_id"
   end
@@ -115,9 +133,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_14_063602) do
     t.datetime "updated_at", null: false
     t.string "stripe_transfer_id"
     t.integer "status", default: 0, null: false
+    t.bigint "quote_request_id"
     t.index ["order_id", "product_id"], name: "index_order_items_on_order_id_and_product_id", unique: true
     t.index ["order_id"], name: "index_order_items_on_order_id"
     t.index ["product_id"], name: "index_order_items_on_product_id"
+    t.index ["quote_request_id"], name: "index_order_items_on_quote_request_id"
     t.index ["shipping_option_id"], name: "index_order_items_on_shipping_option_id"
     t.index ["store_id"], name: "index_order_items_on_store_id"
   end
@@ -159,6 +179,32 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_14_063602) do
     t.index ["productable_type", "productable_id"], name: "index_products_on_productable"
     t.index ["requestable"], name: "index_products_on_requestable"
     t.index ["store_id"], name: "index_products_on_store_id"
+  end
+
+  create_table "quote_requests", force: :cascade do |t|
+    t.bigint "product_id", null: false
+    t.bigint "buyer_id", null: false
+    t.bigint "seller_id", null: false
+    t.integer "status", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["buyer_id"], name: "index_quote_requests_on_buyer_id"
+    t.index ["product_id"], name: "index_quote_requests_on_product_id"
+    t.index ["seller_id"], name: "index_quote_requests_on_seller_id"
+  end
+
+  create_table "quotes", force: :cascade do |t|
+    t.bigint "quote_request_id", null: false
+    t.string "author_type", null: false
+    t.bigint "author_id", null: false
+    t.integer "amount_in_cents", null: false
+    t.integer "action"
+    t.text "message"
+    t.string "role"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["author_type", "author_id"], name: "index_quotes_on_author"
+    t.index ["quote_request_id"], name: "index_quotes_on_quote_request_id"
   end
 
   create_table "shipping_options", force: :cascade do |t|
@@ -224,17 +270,26 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_14_063602) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "bids", "products"
+  add_foreign_key "bids", "stores", column: "seller_id"
+  add_foreign_key "bids", "users", column: "buyer_id"
   add_foreign_key "cart_items", "carts"
   add_foreign_key "cart_items", "products"
+  add_foreign_key "cart_items", "quote_requests"
   add_foreign_key "cart_items", "shipping_options"
   add_foreign_key "cart_items", "stores"
   add_foreign_key "carts", "users"
   add_foreign_key "order_items", "orders"
   add_foreign_key "order_items", "products"
+  add_foreign_key "order_items", "quote_requests"
   add_foreign_key "order_items", "shipping_options"
   add_foreign_key "order_items", "stores"
   add_foreign_key "orders", "users"
   add_foreign_key "products", "stores"
+  add_foreign_key "quote_requests", "products"
+  add_foreign_key "quote_requests", "stores", column: "seller_id"
+  add_foreign_key "quote_requests", "users", column: "buyer_id"
+  add_foreign_key "quotes", "quote_requests"
   add_foreign_key "shipping_options", "products"
   add_foreign_key "store_users", "stores"
   add_foreign_key "store_users", "users"

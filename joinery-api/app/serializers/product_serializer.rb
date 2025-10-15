@@ -1,5 +1,6 @@
 class ProductSerializer < BaseSerializer
-  attributes :id, :name, :description, :price_in_cents, :quantity, :productable_type, :created_at, :updated_at
+  attributes :id, :name, :description, :price_in_cents, :quantity, :productable_type, :requestable, :biddable,
+             :created_at, :updated_at
 
   attribute :productable do |product|
     productable_serializer = "#{product.productable_type}Serializer".constantize

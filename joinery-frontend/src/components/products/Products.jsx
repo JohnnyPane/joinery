@@ -5,9 +5,9 @@ import '../products/Product.scss';
 import ProductSkeletons from "./ProductSkeletons.jsx";
 
 const Products = () => {
-  const { data: products, isLoading, total } = useResourceData('products');
+  const { data: products, isLoading, total, perPage } = useResourceData('products');
 
-  if (isLoading) return <ProductSkeletons count={8} />;
+  if (isLoading) return <ProductSkeletons count={perPage} />;
 
   if (!products || products.data.length === 0) return <div className="center-content margin-t-80 no-products">No products found.</div>;
 

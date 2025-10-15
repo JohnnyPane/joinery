@@ -13,10 +13,16 @@ import App from './App.jsx'
 
 const queryClient = new QueryClient()
 
+const mantineTheme = {
+  fontFamily: 'Lora, serif',
+  cursorType: 'pointer',
+  primaryColor: 'teal',
+}
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <MantineProvider withGlobalStyles withNormalizeCSS theme={{ fontFamily: 'Lora, serif' }} forceColorScheme="light">
+      <MantineProvider withGlobalStyles withNormalizeCSS theme={mantineTheme} forceColorScheme="light">
         <Notifications />
         <App />
       </MantineProvider>

@@ -3,6 +3,7 @@ class OrderItem < ApplicationRecord
   belongs_to :product
   belongs_to :store
   belongs_to :shipping_option
+  belongs_to :quote_request, optional: true
 
   validates :quantity, numericality: { greater_than: 0 }
   validates :unit_price_in_cents, numericality: { greater_than_or_equal_to: 0 }

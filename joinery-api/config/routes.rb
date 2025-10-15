@@ -13,6 +13,7 @@ Rails.application.routes.draw do
       get "/users/me", to: "users/sessions#me"
     end
 
+    get "carts/user_cart", to: "carts#user_cart"
     resources :carts, only: [ :show, :create, :update, :destroy ] do
       resources :cart_items, only: [ :create, :update, :destroy ]
     end
@@ -26,6 +27,8 @@ Rails.application.routes.draw do
     resources :orders, only: [ :index, :show, :create ]
     resources :order_items, only: [ :index, :show, :create, :update, :destroy ]
     resources :products, only: [ :index, :show, :create, :update, :destroy ]
+    resources :quote_requests, only: [ :index, :show, :create, :update, :destroy ]
+    resources :quotes, only: [ :index, :show, :create, :update, :destroy ]
     resources :shipping_options, only: [ :index, :show, :create, :update, :destroy ]
     resources :stores, only: [ :index, :show, :create, :update, :destroy ]
 

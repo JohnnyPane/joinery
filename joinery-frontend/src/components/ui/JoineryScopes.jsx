@@ -16,7 +16,7 @@ const ScopeButtonGroup = ({ scopeConfig, setScopes, scopes }) => {
   }
 
   return (
-    <ButtonGroup key={scopeConfig.name} className="scope-button-group margin-right" spacing="xs">
+    <ButtonGroup className="scope-button-group margin-right" spacing="xs">
       {scopeConfig.options.map((option) => (
         <Button
           key={option.value}
@@ -37,8 +37,8 @@ const JoineryScopes = ({ scopeConfigs }) => {
 
   return (
     <div className="joinery-scopes">
-      {scopeConfigs.map((scope) => (
-        <div key={scope.name} className="scope-item">
+      {scopeConfigs.map((scope, index) => (
+        <div key={index} className="scope-item">
           <ScopeDelegator
             key={scope.name}
             scopeConfig={scope}

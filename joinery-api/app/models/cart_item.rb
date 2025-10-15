@@ -3,6 +3,7 @@ class CartItem < ApplicationRecord
   belongs_to :product
   belongs_to :store
   belongs_to :shipping_option, optional: true
+  belongs_to :quote_request, optional: true
 
   validates :quantity, numericality: { greater_than: 0 }
 
@@ -23,7 +24,7 @@ class CartItem < ApplicationRecord
   end
 
   def ensure_enough_stock
-    unless product.has_enough_stock?(quantity)
+    unless product.has_enough_stock?(quantity) || quote_request.present?
       self.quantity = product.quantity
       errors.add(:quantity, "exceeds available stock. Adjusted to available stock.")
     end

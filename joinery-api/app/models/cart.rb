@@ -6,4 +6,8 @@ class Cart < ApplicationRecord
   def total_price_in_cents
     cart_items.sum(&:total_price_in_cents)
   end
+
+  def clear_cart
+    cart_items.destroy_all
+  end
 end

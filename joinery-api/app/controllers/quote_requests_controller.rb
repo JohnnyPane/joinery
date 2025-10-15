@@ -1,0 +1,54 @@
+class QuoteRequestsController < JoineryController
+  before_action :authenticate_user!
+
+  def create
+    quote_attributes = quote_request_params[:quote_attributes]
+
+    quote_request = QuoteActionService.perform(
+      action: "request",
+      current_user: current_user,
+      product_id: quote_request_params[:product_id],
+      message: quote_attributes[:message],
+    )
+
+    render_resource(quote_request, QuoteRequestSerializer)
+  rescue ActiveRecord::RecordInvalid => e
+    render json: { errors: e.record.errors.full_messages }, status: :unprocessable_content
+  rescue QuoteActionService::UnauthorizedError => e
+    render json: { errors: e.message }, status: :forbidden
+  end
+
+  def update
+    quote_request = QuoteRequest.find(params[:id])
+    quote_attributes = quote_request_params[:quote_attributes] || {}
+
+    quote_request = QuoteActionService.perform(
+      quote_request: quote_request,
+      action: quote_attributes[:action],
+      current_user: current_user,
+      message: quote_attributes[:message],
+      amount_in_cents: quote_attributes[:amount_in_cents],
+    )
+
+    render_resource(quote_request, QuoteRequestSerializer)
+  rescue ActiveRecord::RecordInvalid => e
+    render json: { errors: e.record.errors.full_messages }, status: :unprocessable_content
+  rescue QuoteActionService::UnauthorizedError => e
+    render json: { errors: e.message }, status: :forbidden
+  end
+
+  protected
+
+  def included_index_resources
+    [ :product, :quotes, :buyer, :seller ]
+  end
+
+  private
+
+  def quote_request_params
+    params.require(:quote_request).permit(
+      :product_id, :status,
+      quote_attributes: [ :id, :amount_in_cents, :message, :action ]
+    )
+  end
+end

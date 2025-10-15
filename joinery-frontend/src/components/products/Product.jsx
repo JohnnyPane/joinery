@@ -8,6 +8,21 @@ import useResource from '../../hooks/useResource.js'
 import JoineryImageCarousel from "../ui/JoineryImageCarousel.jsx"
 import ProductDetails from './ProductDetails.jsx'
 import AddToCart from "../cart/AddToCart.jsx";
+import QuoteRequest from "../quotes/QuoteRequest.jsx";
+
+const PricingText = ({ priceInCents, quantity }) => (
+  <div className="product-detail-price flex row space-between padding">
+    <span className="label-large padding-left">{moneyDisplay(priceInCents)}</span>
+    <Text size="sm" color="dimmed" className="padding-left">Qty. {quantity}</Text>
+  </div>
+);
+
+const QuoteRequestText = () => (
+  <div className="product-detail-price flex row space-between padding">
+    <span className="label-large padding-left">Price Upon Request</span>
+    <Text size="sm" color="dimmed" className="padding-left">Please request a quote</Text>
+  </div>
+);
 
 const Product = () => {
   const { id } = useParams();
@@ -39,12 +54,9 @@ const Product = () => {
           <ProductDetails product={product} />
         </Accordion>
 
-        <div className="product-detail-price flex row space-between padding">
-          <span className="label-large padding-left">{moneyDisplay(product.price_in_cents)}</span>
-          <Text size="sm" color="dimmed" className="padding-left">Qty. {product.quantity}</Text>
-        </div>
+        {product.requestable ? <QuoteRequestText /> : <PricingText priceInCents={product.price_in_cents} quantity={product.quantity} />}
 
-        <AddToCart productId={product.id} />
+        { product.requestable ? <QuoteRequest product={product} /> : <AddToCart productId={product.id}/> }
 
       </div>
     </div>

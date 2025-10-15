@@ -21,6 +21,7 @@ const orderStatusDisplayNames = {
 
 const StoreOrderItemDetails = ({ item }) => {
   const { product } = item;
+  const price = item.quote_request ? item.quote_request.amount_in_cents : product.price_in_cents;
 
   const imageUrl = getImageUrl(product.images[0].image_url);
 
@@ -32,7 +33,7 @@ const StoreOrderItemDetails = ({ item }) => {
         <div className="margin-left">
           <Text size="md" className="bold">{product.name}</Text>
           <Text size="sm" color="dimmed" className="italic margin-bottom">{product.productable_type}</Text>
-          <Text size="sm" className="bold">{moneyDisplay(product.price_in_cents)}</Text>
+          <Text size="sm" className="bold">{moneyDisplay(price)}</Text>
           <Text size="sm" color="dimmed" className="margin-bottom">Quantity: {item.quantity}</Text>
           <Badge style={{ textTransform: 'none' }} color={orderStatusColors[item.status]} variant="light">{orderStatusDisplayNames[item.status]}</Badge>
           {/*<Text color={orderStatusColors[item.status]} size="sm" className="bold">{orderStatusDisplayNames[item.status]}</Text>*/}

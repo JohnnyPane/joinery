@@ -45,16 +45,18 @@ class CreateOrderService
   def create_order_item(cart_item)
     product = cart_item.product
     shipping_option = cart_item.shipping_option
+    order_item_price = cart_item.quote_request.present? ? cart_item.quote_request.amount_in_cents : product.price_in_cents
 
     @order.order_items.create!(
       product: product,
       store: product.store,
       shipping_option: shipping_option,
       quantity: cart_item.quantity,
-      unit_price_in_cents: product.price_in_cents,
+      unit_price_in_cents: order_item_price,
       shipping_cost_in_cents: shipping_option.price_in_cents * cart_item.quantity,
-      total_price_in_cents: (product.price_in_cents * cart_item.quantity) + (shipping_option.price_in_cents * cart_item.quantity),
-      )
+      total_price_in_cents: (order_item_price * cart_item.quantity) + (shipping_option.price_in_cents * cart_item.quantity),
+      quote_request: cart_item.quote_request
+    )
   end
 
   def create_order_addresses
@@ -84,6 +86,8 @@ class CreateOrderService
 
   def update_product_inventory
     @order.order_items.each do |item|
+      return if item.quote_request.present?
+
       product = item.product
       product.with_lock do
         raise StandardError, "Insufficient inventory for #{product.name}" if product.quantity < item.quantity

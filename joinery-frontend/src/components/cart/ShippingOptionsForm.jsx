@@ -75,7 +75,7 @@ const ShippingOptionsForm = () => {
   }, [cartItems]);
 
   if (!cart || cartItems.length === 0) {
-    return <div>Your cart is empty.</div>;
+    return <div className="margin-t-80 center-content">Your cart is empty.</div>;
   }
 
   const handleSubmit = async (values) => {
@@ -84,7 +84,7 @@ const ShippingOptionsForm = () => {
     navigate('/checkout');
   }
 
-  const allOptionsSelected = form.values.cart_items.every(item => item.shipping_option_id);
+  const allOptionsSelected = form.values.cart_items.every(item => item.shipping_option_id && item.shipping_option_id !== 'null');
 
   return (
     <div className="center-content double-margin-top">

@@ -6,3 +6,11 @@ export const moneyDisplay = (amount) => {
   const dollars = amount / 100;
   return `$${dollars.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 };
+
+export const readableDate = (date) => {
+  return new Date(date).toLocaleString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  });
+};

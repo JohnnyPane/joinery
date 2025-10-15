@@ -33,6 +33,8 @@ const ProductCard = ({ cardData, clickable = true }) => {
     }
   }
 
+  const priceDisplay = cardData.requestable ? "Request a Quote" : moneyDisplay(price_in_cents);
+
   return (
     <div className="clickable" onClick={handleCardClick}>
       <div onMouseEnter={handleCardEnter} onMouseLeave={handleCardLeave}>
@@ -45,7 +47,7 @@ const ProductCard = ({ cardData, clickable = true }) => {
 
       <div className="flex row space-between">
         <span>{name}</span>
-        <span className="bold">{moneyDisplay(price_in_cents)}</span>
+        <span className="bold">{priceDisplay}</span>
       </div>
 
       <div className="italic saddle-brown">{productTypeText}</div>

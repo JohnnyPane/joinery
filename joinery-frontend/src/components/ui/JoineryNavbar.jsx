@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Box, Group, Button, Text } from '@mantine/core';
+import { Box, Group, Button, Text, Indicator } from '@mantine/core';
 
 import { useMe } from '../../hooks/useMe.js';
 import NavbarCart from '../cart/NavbarCart.jsx';
@@ -30,6 +30,14 @@ const JoineryNavbar = () => {
           </Group>
 
           <Group h="100%" gap={15}>
+            {user &&
+              <Indicator inline size={16} offset={10} color="teal" withBorder disabled={!user || user?.quotes_awaiting_action_count === 0}>
+              <Button component={Link} to="/quotes" variant="subtle" color="gray">
+                <Text color="black" size="sm">Quotes</Text>
+              </Button>
+            </Indicator>}
+
+
             <Button component={Link} to="/products" variant="subtle" color="gray">
               <Text color="black" size="sm">Products</Text>
             </Button>

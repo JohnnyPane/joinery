@@ -17,6 +17,14 @@ class OrderItemSerializer < BaseSerializer
     ProductSerializer.shallow_serialize(order_item.product)
   end
 
+  attribute :quote_request do |order_item|
+    if order_item.quote_request
+      QuoteRequestSerializer.shallow_serialize(order_item.quote_request)
+    else
+      nil
+    end
+  end
+
   attribute :store do |order_item|
     StoreSerializer.shallow_serialize(order_item.store)
   end

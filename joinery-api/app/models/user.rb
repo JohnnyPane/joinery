@@ -2,11 +2,14 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :jwt_authenticatable, jwt_revocation_strategy: JwtDenylist
 
-  has_many :store_users, dependent: :destroy
-  has_many :stores, through: :store_users
-  has_many :owned_stores, class_name: 'Store', foreign_key: 'owner_id', dependent: :destroy
-  has_many :orders, dependent: :nullify
+  has_many :bids, foreign_key: 'buyer_id', dependent: :nullify
   has_many :carts, dependent: :nullify
+  has_many :orders, dependent: :nullify
+  has_many :owned_stores, class_name: 'Store', foreign_key: 'owner_id', dependent: :destroy
+  has_many :quote_requests, foreign_key: 'buyer_id', dependent: :nullify
+  has_many :quotes, as: :author, dependent: :nullify
+  has_many :stores, through: :store_users
+  has_many :store_users, dependent: :destroy
 
   validates :first_name, :last_name, presence: true
   validates :email, presence: true, uniqueness: true

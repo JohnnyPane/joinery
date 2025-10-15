@@ -10,6 +10,7 @@ export const useCart = (cartId) => {
     queryKey: ['cart', cartId],
     queryFn: async () => {
       let id = cartId || localStorage.getItem('cartId');
+
       if (id) {
         try {
           return await cartApi.get(id);
@@ -35,6 +36,18 @@ export const useCart = (cartId) => {
     }
   });
 
+  const fetchUserCart = async () => {
+    try {
+      const cart = await cartApi.fetchRoute('user_cart')
+      queryClient.setQueryData(['cart'], cart);
+      localStorage.setItem('cartId', cart.id);
+      return cart;
+    } catch (error) {
+      console.error('Failed to fetch user cart:', error);
+      return null;
+    }
+  }
+
   const addItem = useMutation({
     mutationFn: async (item) => {
       if (!cart) {
@@ -57,5 +70,5 @@ export const useCart = (cartId) => {
     localStorage.removeItem('cartId');
   }
 
-  return { cart, addItem, invalidateCart }
+  return { cart, addItem, invalidateCart, fetchUserCart }
 }

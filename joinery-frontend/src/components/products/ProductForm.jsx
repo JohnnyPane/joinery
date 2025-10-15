@@ -42,6 +42,8 @@ const ProductForm = () => {
       description: values.description,
       price_in_cents: values.price_in_cents,
       quantity: values.quantity,
+      requestable: values.requestable,
+      biddable: values.biddable,
       store_id: user?.current_store?.id,
       productable_type: values.productable_type,
       productable_attributes: values.productable,
@@ -101,7 +103,7 @@ const ProductForm = () => {
   ]
 
   return (
-    <form>
+    <form className="double-margin-bottom">
       <JoineryStepForm steps={formSteps} onComplete={form.onSubmit(handleShippingOptionsSubmit)} nextStepFlag={goToNextStep} setNextFlag={setGoToNextStep} />
     </form>
   );

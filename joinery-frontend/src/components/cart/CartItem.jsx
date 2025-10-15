@@ -32,7 +32,7 @@ const CartItem = ({ cartItem, onItemClick }) => {
 
 
       <div className="flex column full-height space-between align-right">
-        <span className="bold label">{moneyDisplay(product.price_in_cents)}</span>
+        <span className="bold label">{moneyDisplay(cartItem.unit_price_in_cents)}</span>
         {cartItem.shipping_price_in_cents > 0 && <Text color="dimmed" className="label">Shipping: {moneyDisplay(cartItem.shipping_price_in_cents)}</Text>}
         {/*{displayOnly && <IconTrash onClick={handleRemove} size={20} className=" clickable" color="red"/>}*/}
       </div>
