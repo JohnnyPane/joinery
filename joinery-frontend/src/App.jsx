@@ -13,7 +13,7 @@ import JoineryNavbar from "./components/ui/JoineryNavbar.jsx";
 import StripeProvider from "./context/StripeContext.jsx";
 import Checkout from "./components/cart/Checkout.jsx";
 import ShippingOptionsForm from "./components/cart/ShippingOptionsForm.jsx";
-import StoreOrdersRoute from "./components/store/StoreOrdersRoute.jsx";
+import OrdersRoute from "./components/orders/OrdersRoute.jsx";
 import ProductsPage from "./components/products/ProductsPage.jsx";
 import ProductCategories from "./components/products/ProductCategories.jsx";
 import Quotes from "./components/quotes/Quotes.jsx";
@@ -38,6 +38,7 @@ function App() {
 
             <Route path="/checkout/shipping_options" element={<ShippingOptionsForm />} />
             <Route path="/login" element={<LoginSignupToggle />} />
+            <Route path="/orders" element={<OrdersRoute />}/>
             <Route path="/products" element={<ProductsPage />} />
             <Route path="/products/new" element={<ProductForm />} />
             <Route path="/products/:id" element={<Product />} />
@@ -45,7 +46,6 @@ function App() {
             <Route path="/quotes" element={<Quotes />} />
             <Route path="/stores/new" element={<StoreForm />} />
             <Route path="/stores/:id" element={<Store />} />
-            <Route path="/stores/:id/orders" element={<StoreOrdersRoute />}/>
 
           </Routes>
         </AuthProvider>

@@ -14,6 +14,9 @@ export function useMe() {
 
       try {
         const { data } = await joineryClient.get('/users/me');
+        if (data.cart_id) {
+          localStorage.setItem('cartId', JSON.stringify(data.cart_id));
+        }
         return data;
       } catch (error) {
         await authService.logout();

@@ -2,17 +2,11 @@ import { Image, Text, Badge, Button } from "@mantine/core";
 import { getImageUrl } from "../../utils/imageConfigs.js";
 import { moneyDisplay } from "../../utils/humanizeText.js";
 import { shippingOptionDisplayNames } from "../../utils/shippingConfigs.js";
-
-const orderStatusColors = {
-  awaiting_fulfillment: 'yellow',
-  shipped: 'teal',
-  delivered: 'violet',
-  complete: 'green',
-  cancelled: 'red',
-}
+import { statusColors } from "../../utils/colorConfigs.js";
 
 const orderStatusDisplayNames = {
   awaiting_fulfillment: 'Awaiting Fulfillment',
+  awaiting_pickup: 'Awaiting Pickup',
   shipped: 'Shipped',
   delivered: 'Delivered',
   complete: 'Complete',
@@ -25,6 +19,8 @@ const StoreOrderItemDetails = ({ item }) => {
 
   const imageUrl = getImageUrl(product.images[0].image_url);
 
+  const statusColor = statusColors(item.status);
+
   return (
     <div className="order-item-details">
       <div className="flex row align-top">
@@ -35,7 +31,7 @@ const StoreOrderItemDetails = ({ item }) => {
           <Text size="sm" color="dimmed" className="italic margin-bottom">{product.productable_type}</Text>
           <Text size="sm" className="bold">{moneyDisplay(price)}</Text>
           <Text size="sm" color="dimmed" className="margin-bottom">Quantity: {item.quantity}</Text>
-          <Badge style={{ textTransform: 'none' }} color={orderStatusColors[item.status]} variant="light">{orderStatusDisplayNames[item.status]}</Badge>
+          <Badge style={{ textTransform: 'none' }} color={statusColor} variant="light">{orderStatusDisplayNames[item.status]}</Badge>
           {/*<Text color={orderStatusColors[item.status]} size="sm" className="bold">{orderStatusDisplayNames[item.status]}</Text>*/}
         </div>
       </div>

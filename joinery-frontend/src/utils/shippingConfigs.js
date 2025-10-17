@@ -3,3 +3,12 @@ export const shippingOptionDisplayNames = {
   pickup: 'Free Pickup',
   quote: 'Request a Quote',
 }
+
+export const orderShippingStatuses = {
+  awaiting_pickup: 'Awaiting Pickup',
+  awaiting_fulfillment: 'Awaiting Fulfillment',
+  shipped: 'Shipped',
+  delivered: 'Delivered',
+  complete: 'Complete',
+  canceled: 'Canceled',
+}

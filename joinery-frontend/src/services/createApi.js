@@ -71,9 +71,9 @@ export const createApi = (resourceName) => {
       }
     },
 
-    async deleteMemberRoute ( id, route, data = {} ) {
+    async deleteMemberRoute ( id, member) {
       try {
-        const response = await joineryClient.delete(`/${pluralName}/${id}/${route}`, { data });
+        const response = await joineryClient.delete(`/${pluralName}/${id}/${member.name}/${member.id}`);
         return response.data;
       } catch (error) {
         throw new Error(`Failed to delete to ${route} for ${singularName} with ID ${id}`);

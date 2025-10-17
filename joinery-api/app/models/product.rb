@@ -20,6 +20,11 @@ class Product < ApplicationRecord
 
   scope :by_store, ->(store_id) { where(store_id: store_id) }
   scope :in_stock, -> { where('quantity > 0') }
+  # scope :available_to_shop, -> {
+  #   joins(:shipping_options)
+  #     .where(quantity: 1.., is_active: true)
+  #     .distinct
+  # }
   scope :with_images, -> { includes(images_attachments: :blob) }
   scope :slabs, -> { where(productable_type: 'Slab') }
   scope :logs, -> { where(productable_type: 'Log') }

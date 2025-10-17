@@ -55,7 +55,7 @@ const Cart = ({ closeModal }) => {
             )}
           </>
         ) : (
-          <p>Your cart is empty.</p>
+          <div className="center-content margin-t-80"><p>Your cart is empty.</p></div>
         )}
     </div>
   );

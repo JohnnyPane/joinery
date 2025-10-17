@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
-import { Image, Text } from "@mantine/core";
+import { Image, Text, Button } from "@mantine/core";
 import { IconTrash } from "@tabler/icons-react";
+
+import { useDeleteMemberResource } from "../../hooks/useResourceMutations.js";
+import { useCart } from "../../hooks/useCart.js";
 import { moneyDisplay } from "../../utils/humanizeText.js";
 import './CartItem.scss'
 
@@ -8,6 +11,12 @@ const rootURL = import.meta.env.VITE_API_ROOT_URL;
 
 const CartItem = ({ cartItem, onItemClick }) => {
   const { product } = cartItem;
+  const { cart } = useCart();
+  const deleteCartItem = useDeleteMemberResource('cart');
+
+  const handleRemove = () => {
+    deleteCartItem.mutate({ id: cart.id, member: { name: 'cart_items', id: cartItem.id } });
+  }
 
   const imageUrl = product.images.length > 0 ? rootURL + product.images[0].image_url : "";
 
@@ -31,10 +40,12 @@ const CartItem = ({ cartItem, onItemClick }) => {
       </Link>
 
 
-      <div className="flex column full-height space-between align-right">
+      <div className="flex column cart-item-section space-between align-right">
         <span className="bold label">{moneyDisplay(cartItem.unit_price_in_cents)}</span>
         {cartItem.shipping_price_in_cents > 0 && <Text color="dimmed" className="label">Shipping: {moneyDisplay(cartItem.shipping_price_in_cents)}</Text>}
-        {/*{displayOnly && <IconTrash onClick={handleRemove} size={20} className=" clickable" color="red"/>}*/}
+        <Button size="sm" variant="transparent" color="gray" onClick={handleRemove} className="padding-none">
+          Remove Item
+        </Button>
       </div>
     </div>
   );

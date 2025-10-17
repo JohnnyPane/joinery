@@ -10,4 +10,8 @@ class Store < ApplicationRecord
   validates :name, presence: true
   validates :owner, presence: true
   validates :stripe_account_id, uniqueness: true, allow_nil: true
+
+  def has_order_items_awaiting_action?
+    order_items.awaiting_action_from_store.any?
+  end
 end

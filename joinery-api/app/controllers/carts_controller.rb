@@ -1,6 +1,6 @@
 class CartsController < JoineryController
   before_action :set_cart, only: %i[show update destroy]
-  skip_before_action :authenticate_user!, only: %i[create show]
+  before_action :authenticate_user!, except: %i[create show]
 
   def create
     @cart = if current_user

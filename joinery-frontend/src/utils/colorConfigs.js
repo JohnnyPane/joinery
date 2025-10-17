@@ -5,6 +5,9 @@ export const statusColors = (status) => {
       return 'yellow';
     case 'completed':
       return 'green';
+    case 'awaiting_pickup':
+    case 'awaiting_fulfillment':
+      return 'orange';
     case 'failed':
     case 'declined':
       return 'red';
@@ -14,6 +17,8 @@ export const statusColors = (status) => {
       return 'blue';
     case 'responded':
       return 'violet';
+    case 'delivered':
+      return 'indigo';
     case 'accepted':
       return 'green';
     default:

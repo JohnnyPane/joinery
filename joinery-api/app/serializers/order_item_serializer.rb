@@ -1,8 +1,24 @@
 class OrderItemSerializer < BaseSerializer
-  attributes :id, :order_id, :product_id, :quantity, :unit_price_in_cents, :total_price_in_cents, :status, :fulfillment_method
+  attributes :id, :order_id, :product_id, :quantity, :unit_price_in_cents, :total_price_in_cents, :fulfillment_method
+
+  attribute :status do |order_item|
+    order_item.effective_status
+  end
 
   attribute :order do |order_item|
     OrderSerializer.shallow_serialize(order_item.order)
+  end
+
+  attribute :requires_action do |order_item, params|
+    return false unless params[:current_user]
+
+    if order_item.awaiting_action_from_buyer? && order_item.order.user == params[:current_user]
+      true
+    elsif order_item.awaiting_action_from_store?
+      true
+    else
+      false
+    end
   end
 
   attribute :shipping_address do |order_item|
@@ -30,6 +46,12 @@ class OrderItemSerializer < BaseSerializer
   end
 
   def self.shallow_attributes_list
-    [ :id, :order_id, :product_id, :quantity, :unit_price_in_cents, :total_price_in_cents, :status ]
+    [ :id, :order_id, :product_id, :quantity, :unit_price_in_cents, :total_price_in_cents ]
+  end
+
+  def self.shallow_associations(order_item)
+    {
+      status: order_item.effective_status
+    }
   end
 end

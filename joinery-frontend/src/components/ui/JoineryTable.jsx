@@ -6,17 +6,23 @@ const getNestedValue = (obj, path) => {
   return path.split('.').reduce((acc, part) => acc && acc[part], obj);
 }
 
-const TransformComponent = ({ componentType, value }) => {
+const TransformComponent = ({ column, value }) => {
+  const { type: componentType, textMapping } = column;
+  let displayValue = value;
+  if (textMapping && value in textMapping) {
+    displayValue = textMapping[value];
+  }
+
   switch (componentType) {
     case 'badge':
       const color = statusColors(value);
-      return <Badge variant="light" color={color}>{value}</Badge>;
+      return <Badge variant="light" color={color}>{displayValue}</Badge>;
     case 'boolean':
-      return <Badge variant="light" color={value ? 'teal' : 'gray'}>{value ? 'Yes' : 'No'}</Badge>;
+      return <Badge variant="light" color={value ? 'teal' : 'gray'}>{displayValue ? 'Yes' : 'No'}</Badge>;
     case 'date':
       return readableDate(value);
     default:
-      return value;
+      return displayValue;
   }
 }
 
@@ -60,7 +66,10 @@ const JoineryTable = ({ columns, resourceData, onRowClick }) => {
                     textOverflow: "ellipsis",
                   }}
                 >
-                  <TransformComponent componentType={column.type} value={getNestedValue(row['attributes'], column.accessor)} />
+                  <TransformComponent
+                    column={column}
+                    value={getNestedValue(row['attributes'], column.accessor)}
+                  />
                 </Table.Td>
               ))}
             </Table.Tr>

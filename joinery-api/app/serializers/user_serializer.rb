@@ -9,8 +9,13 @@ class UserSerializer < BaseSerializer
     QuoteRequest.needing_response_from(user: user, store: user.default_store).count
   end
 
-  attribute :created_date do |user|
-    user.created_at && user.created_at.strftime('%m/%d/%Y')
+  attribute :has_orders_awaiting_action do |user|
+    user.default_store ? user.default_store.has_order_items_awaiting_action? : false
+  end
+
+  attribute :cart_id do |user|
+    cart = Cart.find_by(user: user, guest: false)
+    cart ? cart.id : nil
   end
 
   def self.shallow_attributes_list

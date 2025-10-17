@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
 import { Box, Group, Button, Text, Indicator } from '@mantine/core';
 
@@ -9,9 +10,16 @@ import './JoineryNavbar.scss';
 const JoineryNavbar = () => {
   const { data: user, isLoading, isError, error } = useMe();
   const currentStore = user?.current_store;
+  const [processing, setProcessing] = useState(false);
+
+  useEffect(() => {
+    setProcessing(true);
+    const timer = setTimeout(() => setProcessing(false), 5000);
+    return () => clearTimeout(timer);
+  }, []);
 
   if (isLoading) {
-    return
+    return <div>Loading...</div>;
   }
 
   const createStoreLink = !user ? '/login' : '/stores/new';
@@ -31,7 +39,7 @@ const JoineryNavbar = () => {
 
           <Group h="100%" gap={15}>
             {user &&
-              <Indicator inline size={16} offset={10} color="teal" withBorder disabled={!user || user?.quotes_awaiting_action_count === 0}>
+              <Indicator inline size={16} offset={10} color="teal" processing={processing} withBorder disabled={!user || user?.quotes_awaiting_action_count === 0}>
               <Button component={Link} to="/quotes" variant="subtle" color="gray">
                 <Text color="black" size="sm">Quotes</Text>
               </Button>
@@ -47,9 +55,11 @@ const JoineryNavbar = () => {
             </Button>
 
             {currentStore && (
-              <Button component={Link} to={`/stores/${currentStore.id}/orders`} variant="subtle" color="gray">
-                <Text color="black" size="sm">Orders</Text>
-              </Button>
+              <Indicator inline size={16} offset={10} color="teal" processing={processing} withBorder disabled={!user || !user?.has_orders_awaiting_action}>
+                <Button component={Link} to={`/orders`} variant="subtle" color="gray">
+                  <Text color="black" size="sm">Orders</Text>
+                </Button>
+              </Indicator>
             )}
 
             <NavbarCart />
