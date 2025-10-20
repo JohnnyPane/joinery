@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Button, Image } from "@mantine/core";
+import {Button, Divider, Image} from "@mantine/core";
 import { IconArrowNarrowRight } from '@tabler/icons-react';
+
 import { useMe } from "../../hooks/useMe.js";
-import './Home.scss';
 import ShopNowSection from "./ShopNowSection.jsx";
+import AboutUs from "./AboutUs.jsx";
+import './Home.scss';
+import { getBucketImageUrl  } from "../../utils/imageConfigs.js";
 
 const Home = () => {
   const { data: user } = useMe();
@@ -37,7 +40,7 @@ const Home = () => {
             className="left-image-container"
           >
             <Image
-              src="https://joinery-assets.s3.us-east-1.amazonaws.com/joinery-forest.jpeg"
+              src={getBucketImageUrl("joinery-forest.jpeg")}
               className={`home-image home-image-left ${leftLoaded ? "loaded" : ""}`}
               onLoad={() => setLeftLoaded(true)}
               alt="Wood"
@@ -54,7 +57,7 @@ const Home = () => {
           transition={{ duration: 0.8, ease: "easeOut", delay: 0.1 }}
         >
           <Image
-            src="https://joinery-assets.s3.us-east-1.amazonaws.com/joinery-artisan.jpeg"
+            src={getBucketImageUrl("joinery-craftsman.jpeg")}
             className={`home-image home-image-right ${rightLoaded ? "loaded" : ""}`}
             onLoad={() => setRightLoaded(true)}
             alt="Craftsman"
@@ -65,6 +68,10 @@ const Home = () => {
       </div>
 
       <ShopNowSection />
+
+      <Divider className="double-margin" />
+
+      <AboutUs />
     </>
   );
 }

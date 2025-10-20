@@ -1,15 +1,16 @@
 class QuoteActionService
   class UnauthorizedError < StandardError; end
 
-  attr_reader :quote_request, :current_user, :actor, :action, :message, :amount_in_cents, :product
+  attr_reader :quote_request, :current_user, :actor, :action, :message, :amount_in_cents, :product, :quote_type
 
-  def initialize(quote_request: nil, current_user:, action:, message: "", amount_in_cents: 0, product_id: nil)
+  def initialize(quote_request: nil, current_user:, action:, message: "", quote_type: 'product', amount_in_cents: 0, product_id: nil)
     @quote_request = quote_request
     @current_user = current_user
     @action = action
     @message = message
     @amount_in_cents = amount_in_cents
     @product = Product.find(product_id) if product_id.present?
+    @quote_type = quote_type
     set_actor
   end
 
@@ -23,6 +24,7 @@ class QuoteActionService
     when "offer" then create_offer
     when "respond" then respond_to_request
     when "accept" then accept_quote
+    when "accept_with_shipping_quote" then accept_with_shipping_quote
     when "decline" then decline_quote
     when "cancel" then cancel_quote
     else
@@ -33,7 +35,7 @@ class QuoteActionService
   private
 
   def create_request
-    quote_request = QuoteRequest.create!(product: product, buyer: actor, seller: product.store, status: "requested")
+    quote_request = QuoteRequest.create!(quote_type: quote_type, product: product, buyer: actor, seller: product.store, status: "requested")
     Quote.create!(
       quote_request: quote_request,
       author: actor,
@@ -89,6 +91,32 @@ class QuoteActionService
     quote_request
   end
 
+  def accept_with_shipping_quote
+    authorize_buyer!
+    Quote.create!(
+      quote_request: quote_request,
+      author: actor,
+      action: "accepted",
+      role: actor_role,
+      message: message,
+      amount_in_cents: quote_request.latest_quote.amount_in_cents
+    )
+
+    quote_request.update!(status: "accepted")
+
+    shipping_request = QuoteRequest.create!(buyer: quote_request.buyer, seller: quote_request.seller, product: quote_request.product, quote_type: "shipping", status: "requested", parent_quote_request: quote_request)
+    Quote.create!(
+      quote_request: shipping_request,
+      author: actor,
+      action: "requested",
+      role: "buyer",
+      message: "Requesting shipping quote for accepted product quote ##{quote_request.id}",
+      amount_in_cents: 0
+    )
+
+    quote_request
+  end
+
   def decline_quote
     authorize_actor!
     Quote.create!(
@@ -99,6 +127,11 @@ class QuoteActionService
       message: message,
       amount_in_cents: quote_request.latest_quote.amount_in_cents
     )
+
+    if quote_request.parent_quote_request.present?
+      quote_request.parent_quote_request.update!(status: "declined")
+    end
+
     quote_request.update!(status: "declined")
     quote_request
   end

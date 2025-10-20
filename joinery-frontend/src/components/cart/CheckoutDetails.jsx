@@ -180,7 +180,7 @@ const CheckoutDetails = () => {
 
 
         <Card shadow="sm" padding="lg" radius="md" withBorder>
-        <CardElement />
+          <CardElement />
         </Card>
 
         {error && <div className="error">{error}</div>}

@@ -4,24 +4,18 @@ import { Card, Radio, CheckIcon, Button, Text } from '@mantine/core';
 import { useDisclosure } from "@mantine/hooks";
 import { useForm } from '@mantine/form';
 
-import { moneyDisplay } from "../../utils/humanizeText.js";
 import { useCart } from '../../hooks/useCart.js';
 import { useUpdateResources } from "../../hooks/useResourceMutations.js";
 import CartItem from "./CartItem.jsx";
 import './Cart.scss';
 import ShippingInfoModal from "./ShippingInfoModal.jsx";
-import { shippingOptionDisplayNames } from "../../utils/shippingConfigs.js";
+import { optionDisplayText } from "../../utils/shippingConfigs.js";
 
-
-const optionDisplayText = (cents, shipping_type) => {
-  const label = shippingOptionDisplayNames[shipping_type] || shipping_type;
-
-  if (cents === 0) return label;
-  return `${label} - ${moneyDisplay(cents)}`;
-}
 
 const ShippingOptionSelector = ({ item, form, index }) => {
   const shippingOptions = item.product.shipping_options || [];
+
+  const hasQuoteOption = shippingOptions.some(option => option.shipping_type === 'quote');
 
   return (
     <div className="shipping-option-selector">
@@ -35,6 +29,7 @@ const ShippingOptionSelector = ({ item, form, index }) => {
             value={String(option.id)}
             label={optionDisplayText(option.price_in_cents, option.shipping_type)}
             icon={CheckIcon}
+            disabled={hasQuoteOption}
             className="margin-bottom clickable"
             color="teal"
           />

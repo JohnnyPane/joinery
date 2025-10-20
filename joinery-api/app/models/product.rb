@@ -48,4 +48,8 @@ class Product < ApplicationRecord
     self.quantity = 1
     self.price_in_cents = 0
   end
+
+  def has_quote_shipping_option?
+    shipping_options.any? { |option| option.quote? }
+  end
 end

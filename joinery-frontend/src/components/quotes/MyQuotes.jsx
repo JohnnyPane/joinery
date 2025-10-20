@@ -9,6 +9,7 @@ import QuoteDrawerDetails from "./QuoteDrawerDetails.jsx";
 const quoteTableColumns = [
   { header: 'ID', accessor: 'id', type: 'text' },
   { header: 'Product', accessor: 'product.name', type: 'text' },
+  { header: 'Quote Type', accessor: 'quote_type', type: 'text' },
   { header: 'Status', accessor: 'status', type: 'badge' },
   { header: 'Action Needed', accessor: 'requires_action', type: 'boolean' },
   { header: 'Message', accessor: 'latest_quote.message', type: 'text' },

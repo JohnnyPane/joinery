@@ -2,7 +2,9 @@ class QuoteRequest < ApplicationRecord
   belongs_to :product
   belongs_to :buyer, class_name: "User", foreign_key: "buyer_id"
   belongs_to :seller, class_name: "Store", foreign_key: "seller_id"
+  belongs_to :parent_quote_request, class_name: "QuoteRequest", foreign_key: "parent_quote_request_id", optional: true
 
+  has_many :child_quote_requests, class_name: "QuoteRequest", foreign_key: "parent_quote_request_id", dependent: :nullify
   has_many :quotes, dependent: :destroy
   has_many :order_items, dependent: :nullify
   has_many :cart_items, dependent: :nullify
@@ -30,6 +32,7 @@ class QuoteRequest < ApplicationRecord
   end
 
   enum :status, { requested: 0, offered: 1, responded: 2, accepted: 3, declined: 4, completed: 5, cancelled: 6 }
+  enum :quote_type, { product: 0, shipping: 1 }
 
   def latest_quote
     quotes.order(created_at: :desc).first
@@ -54,4 +57,7 @@ class QuoteRequest < ApplicationRecord
   def amount_in_cents
     latest_quote&.amount_in_cents
   end
+
+  def shipping_quote?; quote_type == "shipping"; end
+  def product_quote?; quote_type == "product"; end
 end

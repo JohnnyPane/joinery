@@ -53,39 +53,9 @@ const LoginToRequestQuote = () => {
   )
 }
 
-const QuoteRequest = ({ product }) => {
-  const [details, setDetails] = useState('');
+const QuoteRequest = ({ setMessage, message, quoteRequestSubmit }) => {
   const { data: user } = useMe();
   const [opened, { open, close }] = useDisclosure(false);
-  const createQuoteRequest = useCreateResource('quote_requests');
-  const navigate = useNavigate();
-
-  const handleRequestSubmit = async () => {
-    const payload = {
-      quote_attributes: { message: details },
-      product_id: product.id
-    }
-
-    try {
-      await createQuoteRequest.mutateAsync(payload);
-      close();
-      setDetails('');
-      notifications.show({
-        title: 'Success',
-        message: 'Quote request submitted successfully',
-        position: 'top-right',
-        color: 'green',
-      });
-      navigate('/quotes');
-    } catch (err) {
-      notifications.show({
-        title: 'Error',
-        message: `Error submitting quote request: ${err.response?.data?.error || err.message}`,
-        position: 'top-right',
-        color: 'red',
-      });
-    }
-  };
 
   return (
     <div className="double-margin-top">
@@ -98,8 +68,8 @@ const QuoteRequest = ({ product }) => {
         Request a Quote
       </Button>
 
-      <Modal opened={opened} onClose={close} title={<Title order={3}>Request a Quote</Title>} size="lg">
-        { user ? <RequestAQuoteDetails setDetails={setDetails} details={details} handleRequestSubmit={handleRequestSubmit} /> : <LoginToRequestQuote /> }
+      <Modal opened={opened} onClose={close} title={<Text size="lg" className="bold">Request a Quote</Text>} size="lg">
+        { user ? <RequestAQuoteDetails setDetails={setMessage} details={message} handleRequestSubmit={quoteRequestSubmit} /> : <LoginToRequestQuote /> }
       </Modal>
     </div>
   )

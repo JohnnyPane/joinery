@@ -20,8 +20,9 @@ class CreateCartFromQuoteService
       product: product,
       store: product.store,
       quantity: 1,
-      unit_price_in_cents: quote.amount_in_cents,
-      quote_request: quote_request
+      unit_price_in_cents: cart_item_price,
+      quote_request: quote_request,
+      shipping_option: get_shipping_option
     )
 
     cart.save!
@@ -53,5 +54,25 @@ class CreateCartFromQuoteService
 
   def price_valid?
     quote.amount_in_cents > 0
+  end
+
+  def cart_item_price
+    if quote_request.parent_quote_request.present?
+      quote_request.parent_quote_request.latest_quote.amount_in_cents
+    elsif quote_request.shipping_quote?
+      product.price_in_cents
+    else
+      quote.amount_in_cents
+    end
+  end
+
+  def get_shipping_option
+    if quote_request.shipping_quote?
+      return quote_request.product.shipping_options.find(&:quote?)
+    elsif product.has_quote_shipping_option?
+      return product.shipping_options.find(&:pickup?)
+    end
+
+    nil
   end
 end

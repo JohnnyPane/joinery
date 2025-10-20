@@ -3,24 +3,25 @@ import { Button, Image, Title, Text } from "@mantine/core";
 import { IconArrowNarrowRight } from "@tabler/icons-react";
 import { motion } from "framer-motion";
 import "./Home.scss";
+import {getBucketImageUrl} from "../../utils/imageConfigs.js";
 
 const sections = [
   {
     title: "Raw Materials",
     description: "High-quality raw materials for your next creation.",
-    imageUrl: "https://joinery-assets.s3.us-east-1.amazonaws.com/raw-materials.jpeg",
+    imageUrl: getBucketImageUrl("raw-materials.jpeg"),
     slug: "raw_materials",
   },
   {
     title: "Slabs & Lumber",
     description: "Shaped by nature, ready for the workshop.",
-    imageUrl: "https://joinery-assets.s3.us-east-1.amazonaws.com/slabs-lumber.jpeg",
+    imageUrl: getBucketImageUrl("slabs-lumber.jpeg"),
     slug: "lumber",
   },
   {
     title: "Finished Goods",
     description: "Handcrafted furniture and decor, ready to enhance your space.",
-    imageUrl: "https://joinery-assets.s3.us-east-1.amazonaws.com/finished-goods.jpeg",
+    imageUrl: getBucketImageUrl("finished-goods.jpeg"),
     slug: "finished_goods",
   },
 ];

@@ -53,10 +53,24 @@ class CreateOrderService
       shipping_option: shipping_option,
       quantity: cart_item.quantity,
       unit_price_in_cents: order_item_price,
-      shipping_cost_in_cents: shipping_option.price_in_cents * cart_item.quantity,
+      shipping_cost_in_cents: calculate_shipping_cost(cart_item),
       total_price_in_cents: (order_item_price * cart_item.quantity) + (shipping_option.price_in_cents * cart_item.quantity),
       quote_request: cart_item.quote_request
     )
+  end
+
+  def calculate_shipping_cost(cart_item)
+    shipping_option = cart_item.shipping_option
+    quote_request = cart_item.quote_request
+
+    return 0 unless shipping_option
+
+    if quote_request&.shipping_quote?
+      quote_request.latest_quote.amount_in_cents
+    else
+      shipping_option.price_in_cents * cart_item.quantity
+    end
+
   end
 
   def create_order_addresses

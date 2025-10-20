@@ -14,7 +14,9 @@ class CartItem < ApplicationRecord
   end
 
   def shipping_cost_in_cents
-    shipping_option ? shipping_option.price_in_cents * quantity : 0
+    return shipping_option ? shipping_option.price_in_cents * quantity : 0 if quote_request.nil?
+
+    quote_request.shipping_quote? ? quote_request.latest_quote.amount_in_cents : 0
   end
 
   private

@@ -93,6 +93,7 @@ const storeAuthToken = (token) => {
 const clearAuthTokenAndUser = () => {
   localStorage.removeItem('authToken');
   localStorage.removeItem('currentUser');
+  localStorage.removeItem('cartId');
 }
 
 const storeAuthTokenAndUser = (token, user) => {

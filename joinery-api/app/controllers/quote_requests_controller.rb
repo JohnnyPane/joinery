@@ -8,6 +8,7 @@ class QuoteRequestsController < JoineryController
       action: "request",
       current_user: current_user,
       product_id: quote_request_params[:product_id],
+      quote_type: quote_request_params[:quote_type],
       message: quote_attributes[:message],
     )
 
@@ -47,7 +48,7 @@ class QuoteRequestsController < JoineryController
 
   def quote_request_params
     params.require(:quote_request).permit(
-      :product_id, :status,
+      :product_id, :status, :quote_type,
       quote_attributes: [ :id, :amount_in_cents, :message, :action ]
     )
   end

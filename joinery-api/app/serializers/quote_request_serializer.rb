@@ -1,5 +1,5 @@
 class QuoteRequestSerializer < BaseSerializer
-  attributes :id, :product_id, :buyer_id, :seller_id, :status, :created_at, :updated_at
+  attributes :id, :product_id, :buyer_id, :seller_id, :status, :quote_type, :created_at, :updated_at
 
   attribute :product do |quote_request|
     ProductSerializer.shallow_serialize(quote_request.product)

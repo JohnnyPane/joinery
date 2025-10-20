@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import { Text, Textarea, Button } from '@mantine/core';
+import {Text, Textarea, Button, Radio, CheckIcon} from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 
 import { useCart } from "../../hooks/useCart.js";
 import { useUpdateResource } from '../../hooks/useResourceMutations.js';
 import { moneyDisplay } from "../../utils/humanizeText.js";
+import {optionDisplayText} from "../../utils/shippingConfigs.js";
 
 const actionConfig = {
   accept: {
@@ -45,8 +46,36 @@ const actionConfig = {
   }
 }
 
+const ShippingOptionsSelect = ({ shippingOptions, selectedOption, setSelectedOption }) => {
+
+  return (
+    <div className="double-margin-top double-margin-bottom">
+
+      <Text size="md" className="bold margin-bottom">This product's shipping requires a quote, would you like to request a shipping quote?</Text>
+
+      <Radio.Group
+        name={"shipping_option"}
+        value={selectedOption}
+        onChange={setSelectedOption}
+      >
+        {shippingOptions.map(option => (
+          <Radio
+            key={option.id}
+            value={String(option.id)}
+            label={optionDisplayText(option.price_in_cents, option.shipping_type)}
+            icon={CheckIcon}
+            className="margin-bottom clickable"
+            color="teal"
+          />
+        ))}
+      </Radio.Group>
+    </div>
+  );
+}
+
 const QuoteResponseModal = ({ onClose, quote, action, price }) => {
   const [message, setMessage] = useState('');
+  const [selectedShippingOption, setSelectedShippingOption] = useState(null);
   const { mutateAsync: updateQuoteRequest } = useUpdateResource('quote_requests');
   const { fetchUserCart } = useCart();
 
@@ -55,12 +84,17 @@ const QuoteResponseModal = ({ onClose, quote, action, price }) => {
   const actionDetails = actionConfig[action] || actionConfig['respond'];
   const displayPrice = price > 0 ? "$" + (price).toFixed(2) : moneyDisplay(quote.latest_quote.amount_in_cents);
 
+  const shippingIncludesQuote = quote.product.shipping_options.some(option => option.shipping_type === 'quote');
+  const showShippingOptions = (action === 'accept' && shippingIncludesQuote && quote.quote_type === 'product');
+  const quoteShippingSelected = quote.product.shipping_options.find(option => option.shipping_type === 'quote')?.id === parseInt(selectedShippingOption);
+
   const handleSubmit = async () => {
+    const finalAction = quoteShippingSelected ? 'accept_with_shipping_quote' : action;
     const payload = {
       id: quote.id,
       quote_attributes: {
         message,
-        action,
+        action: finalAction,
         amount_in_cents: price ? parseInt(price * 100) : quote.latest_quote.amount_in_cents
       }
     }
@@ -73,7 +107,7 @@ const QuoteResponseModal = ({ onClose, quote, action, price }) => {
         color: 'green',
       });
       onClose();
-      if (action === 'accept') {
+      if (action === 'accept' && !quoteShippingSelected) {
         await fetchUserCart();
         navigate('/checkout/shipping_options');
       }
@@ -84,14 +118,26 @@ const QuoteResponseModal = ({ onClose, quote, action, price }) => {
         position: 'top-right', color: 'red'
       });
     }
-  }
+  };
 
   return (
     <div>
       <div className="double-margin-bottom">
-        <Text size="lg" className="bold margin-bottom">{actionDetails.title}</Text>
-        <Text className="margin-bottom">{actionDetails.description}</Text>
-        {(price > 0 || quote.latest_quote.amount_in_cents > 0) && <Text className="margin-bottom">{displayPrice}</Text>}
+        <Text size="lg" className="bold">{actionDetails.title}</Text>
+
+        <div className="margin-bottom">
+          <Text size="sm"><strong>Quote for:</strong> {quote.product.name}</Text>
+
+          {(price > 0 || quote.latest_quote.amount_in_cents > 0) && <Text size="sm" className="margin-bottom"><strong>Price:</strong> {displayPrice}</Text>}
+        </div>
+
+        {showShippingOptions &&
+          <ShippingOptionsSelect
+            shippingOptions={quote.product.shipping_options}
+            selectedOption={selectedShippingOption}
+            setSelectedOption={setSelectedShippingOption}
+          />
+        }
 
         <Textarea
           size="lg"
@@ -103,10 +149,12 @@ const QuoteResponseModal = ({ onClose, quote, action, price }) => {
         />
       </div>
 
+      {!quoteShippingSelected && <Text className="">{actionDetails.description}</Text>}
+
       <div className="flex row space-between double-margin-top">
         <Button onClick={onClose} variant="subtle" color="gray">Return to Quote</Button>
         <Button onClick={handleSubmit} color={actionDetails.actionColor} variant="subtle" className="margin-right" disabled={!message}>
-          {actionDetails.actionLabel}
+          {quoteShippingSelected ? "Request Shipping Quote" : actionDetails.actionLabel}
         </Button>
       </div>
     </div>

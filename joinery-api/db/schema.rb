@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_15_131915) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_17_102948) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -188,7 +188,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_15_131915) do
     t.integer "status", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "quote_type", default: 0, null: false
+    t.bigint "parent_quote_request_id"
     t.index ["buyer_id"], name: "index_quote_requests_on_buyer_id"
+    t.index ["parent_quote_request_id"], name: "index_quote_requests_on_parent_quote_request_id"
     t.index ["product_id"], name: "index_quote_requests_on_product_id"
     t.index ["seller_id"], name: "index_quote_requests_on_seller_id"
   end
@@ -287,6 +290,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_15_131915) do
   add_foreign_key "orders", "users"
   add_foreign_key "products", "stores"
   add_foreign_key "quote_requests", "products"
+  add_foreign_key "quote_requests", "quote_requests", column: "parent_quote_request_id"
   add_foreign_key "quote_requests", "stores", column: "seller_id"
   add_foreign_key "quote_requests", "users", column: "buyer_id"
   add_foreign_key "quotes", "quote_requests"

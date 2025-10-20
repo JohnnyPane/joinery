@@ -15,7 +15,8 @@ class CartItemSerializer < BaseSerializer
 
   def self.shallow_associations(cart_item)
     {
-      product: ProductSerializer.shallow_serialize(cart_item.product)
+      product: ProductSerializer.shallow_serialize(cart_item.product),
+      shipping_cost_in_cents: cart_item.shipping_cost_in_cents
     }
   end
 end

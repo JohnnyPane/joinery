@@ -41,8 +41,11 @@ const CartItem = ({ cartItem, onItemClick }) => {
 
 
       <div className="flex column cart-item-section space-between align-right">
-        <span className="bold label">{moneyDisplay(cartItem.unit_price_in_cents)}</span>
-        {cartItem.shipping_price_in_cents > 0 && <Text color="dimmed" className="label">Shipping: {moneyDisplay(cartItem.shipping_price_in_cents)}</Text>}
+        <div className="flex column align-right">
+          <span className="bold label">{moneyDisplay(cartItem.unit_price_in_cents)}</span>
+          {cartItem.shipping_cost_in_cents > 0 && <Text color="dimmed" className="label">Shipping: {moneyDisplay(cartItem.shipping_cost_in_cents)}</Text>}
+        </div>
+
         <Button size="sm" variant="transparent" color="gray" onClick={handleRemove} className="padding-none">
           Remove Item
         </Button>
