@@ -82,7 +82,7 @@ test:
 staging:
   <<: *default
   url: <%= ENV["DATABASE_URL"] %>
-  
+
 production:
   primary: &primary_production
     <<: *default
