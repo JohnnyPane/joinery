@@ -8,13 +8,13 @@ primary_region = "ord"
 console_command = "/rails/bin/rails console"
 
 [build]
+# Optionally pass build args
+build_args = { RAILS_ENV = "staging" }
 
 [env]
-DISABLE_BOOTSNAP = "true"
 RAILS_ENV = "staging"
 RAILS_LOG_TO_STDOUT = "true"
 RAILS_SERVE_STATIC_FILES = "true"
-PORT = "3000"
 
 [http_service]
 internal_port = 3000

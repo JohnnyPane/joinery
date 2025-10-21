@@ -7,7 +7,19 @@
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins /.*/
+    origins(
+      (
+        if Rails.env.production? || Rails.env.staging?
+          [
+            "https://bdf48e3f.joinery-frontend-staging.pages.dev",
+            /https:\/\/.*\.joinery-frontend-staging\.pages\.dev$/  # Preview deployments
+          ]
+        else
+          # Local development
+          [ "http://localhost:5173", "http://localhost:3000", /\Ahttp:\/\/localhost:\d+\z/ ]
+        end
+      )
+    )
 
     resource "*",
       headers: :any,
