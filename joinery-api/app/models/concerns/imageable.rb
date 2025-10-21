@@ -6,11 +6,11 @@ module Imageable
   end
 
   IMAGE_SIZES = {
-    main_image: [1000, 1000],
-    default: [600, 600],
-    thumbnail: [300, 300],
-    small: [200, 200],
-    cart: [150, 150],
+    main_image: [ 1000, 1000 ],
+    default: [ 600, 600 ],
+    thumbnail: [ 300, 300 ],
+    small: [ 200, 200 ],
+    cart: [ 150, 150 ]
   }.freeze
 
   def image_variants(size_key = :default)

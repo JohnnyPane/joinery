@@ -69,7 +69,7 @@ const ProductForm = () => {
         const payload = {
           product_id: values.id,
           shipping_type: shippingOption.type,
-          price_in_cents: optionValues.price_in_cents ? Math.round(optionValues.price_in_cents * 100) : 0,
+          price_in_cents: optionValues.price_in_cents ? optionValues.price_in_cents : 0,
         }
         createShippingOption.mutate(payload);
       }
