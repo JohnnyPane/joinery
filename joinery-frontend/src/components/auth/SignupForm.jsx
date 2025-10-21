@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useForm } from "@mantine/form";
 import { TextInput, PasswordInput, Button, Text, Card, Alert } from "@mantine/core";
 
@@ -7,6 +7,7 @@ import { useAuth } from "../../context/AuthContext.jsx";
 const SignupForm = () => {
   const { signup } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const form = useForm({
     initialValues: {
@@ -29,7 +30,11 @@ const SignupForm = () => {
   const handleSubmit = async (values) => {
     try {
       await signup(values.firstName, values.lastName, values.email, values.password, values.passwordConfirm);
-      navigate("/stores/new");
+      if (location.state && location.state.storeSignup) {
+        navigate("/stores/new");
+      } else {
+        navigate("/products");
+      }
     } catch (error) {
       console.error("Registration failed:", error);
     }

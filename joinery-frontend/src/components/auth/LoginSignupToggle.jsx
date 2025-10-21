@@ -11,7 +11,7 @@ const LoginSignup = () => {
   const state = location.state;
 
   useEffect(() => {
-    if (state && state.signup) {
+    if (state && state.storeSignup) {
       setIsLogin(false);
     }
   }, []);

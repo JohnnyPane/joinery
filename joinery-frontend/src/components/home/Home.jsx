@@ -57,7 +57,7 @@ const Home = () => {
           transition={{ duration: 0.8, ease: "easeOut", delay: 0.1 }}
         >
           <Image
-            src={getBucketImageUrl("joinery-craftsman.jpeg")}
+            src={getBucketImageUrl("joinery-artisan.jpeg")}
             className={`home-image home-image-right ${rightLoaded ? "loaded" : ""}`}
             onLoad={() => setRightLoaded(true)}
             alt="Craftsman"

@@ -35,7 +35,7 @@ Rails.application.routes.draw do
     post "products/:id/upload_images", to: "products#upload_images"
     delete "products/:id/images/:image_id", to: "products#destroy_image"
 
-    post "/stripe/webhook", to: "stripe_webhooks#create"
+    post "/stripe/webhooks", to: "stripe_webhooks#create"
     post "/stripe/create_account_link", to: "stripe#create_account_link"
   end
 end

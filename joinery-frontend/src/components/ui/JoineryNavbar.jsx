@@ -50,7 +50,7 @@ const JoineryNavbar = () => {
               <Text color="black" size="sm">Products</Text>
             </Button>
 
-            <Button component={Link} to={storeLink} state={{ signup: true }} variant="subtle" color="gray">
+            <Button component={Link} to={storeLink} state={{ storeSignup: true }} variant="subtle" color="gray">
               <Text color="black" size="sm">{storeText}</Text>
             </Button>
 
