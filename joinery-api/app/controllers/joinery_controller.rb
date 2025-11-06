@@ -11,7 +11,8 @@ class JoineryController < ApplicationController
                             .apply_search(search)
 
     paginated_resources = paginated_resources.includes(*included_index_resources) if included_index_resources.present?
-    paginated_resources = paginated_resources.preload(*preloaded_polymorphic_resources) if preloaded_polymorphic_resources.present?
+    paginated_resources = paginated_resources.preload(*preloaded_index_resources) if preloaded_index_resources.present?
+    paginated_resources =  paginated_resources.includes(images_attachments: { blob: :variant_records }) if resource_class.reflect_on_association(:images)
 
     render_resource_collection(paginated_resources, resource_serializer, { image_type: image_size })
   end
@@ -140,7 +141,7 @@ class JoineryController < ApplicationController
     []
   end
 
-  def preloaded_polymorphic_resources
+  def preloaded_index_resources
     []
   end
 

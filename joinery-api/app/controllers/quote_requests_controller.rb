@@ -40,9 +40,17 @@ class QuoteRequestsController < JoineryController
 
   protected
 
-  def included_index_resources
-    [ :product, :quotes, :buyer, :seller ]
+  def included_show_resources
+    { product: { shipping_options: {}, images_attachments: { blob: :variant_records } }, quotes: {}, buyer: {}, seller: {} }
   end
+
+  def included_index_resources
+    [ product: { images_attachments: { blob: :variant_records } }, quotes: {}, buyer: {}, seller: {} ]
+  end
+
+  # def included_preload_resources
+  #   [ :latest_quote ]
+  # end
 
   private
 

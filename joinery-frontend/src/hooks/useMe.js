@@ -26,5 +26,6 @@ export function useMe() {
     },
     retry: false,
     enabled: !!authService.hasCredentials(),
+    staleTime: 500,
   });
 }

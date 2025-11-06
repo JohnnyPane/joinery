@@ -6,10 +6,6 @@ class BaseSerializer
     super
   end
 
-  def self.current_user(params)
-    params.dig(:current_user)
-  end
-
   def self.serialize_object(object, options = {})
     new(object, options).serializable_hash[:data][:attributes]
   end
@@ -37,5 +33,9 @@ class BaseSerializer
 
   def self.shallow_attributes_list
     raise NotImplementedError, "Subclasses must define `shallow_attributes_list`"
+  end
+
+  def current_user
+    @current_user ||= params.dig(:current_user)
   end
 end

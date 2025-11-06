@@ -6,14 +6,11 @@ class QuoteRequestSerializer < BaseSerializer
   end
 
   attribute :quotes do |quote_request|
-    quote_request.quotes.order(created_at: :desc).map do |quote|
-      QuoteSerializer.shallow_serialize(quote)
-    end
+    QuoteSerializer.shallow_serialize_collection(quote_request.quotes)
   end
 
   attribute :latest_quote do |quote_request|
-    latest_quote = quote_request.quotes.order(created_at: :desc).first
-    latest_quote ? QuoteSerializer.shallow_serialize(latest_quote) : {}
+    QuoteSerializer.shallow_serialize(quote_request.latest_quote)
   end
 
   attribute :buyer do |quote_request|

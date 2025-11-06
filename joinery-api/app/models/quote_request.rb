@@ -5,7 +5,7 @@ class QuoteRequest < ApplicationRecord
   belongs_to :parent_quote_request, class_name: "QuoteRequest", foreign_key: "parent_quote_request_id", optional: true
 
   has_many :child_quote_requests, class_name: "QuoteRequest", foreign_key: "parent_quote_request_id", dependent: :nullify
-  has_many :quotes, dependent: :destroy
+  has_many :quotes, -> { order(created_at: :asc) }, dependent: :destroy
   has_many :order_items, dependent: :nullify
   has_many :cart_items, dependent: :nullify
 
@@ -35,7 +35,7 @@ class QuoteRequest < ApplicationRecord
   enum :quote_type, { product: 0, shipping: 1 }
 
   def latest_quote
-    quotes.order(created_at: :desc).first
+    quotes.last
   end
 
   def open?

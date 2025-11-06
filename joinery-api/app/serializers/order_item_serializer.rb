@@ -26,7 +26,7 @@ class OrderItemSerializer < BaseSerializer
   end
 
   attribute :shipping_option do |order_item|
-    order_item.shipping_option
+    ShippingOptionSerializer.shallow_serialize(order_item.shipping_option)
   end
 
   attribute :product do |order_item|

@@ -19,17 +19,22 @@ class QuoteActionService
   end
 
   def perform
-    case action
-    when "request" then create_request
-    when "offer" then create_offer
-    when "respond" then respond_to_request
-    when "accept" then accept_quote
-    when "accept_with_shipping_quote" then accept_with_shipping_quote
-    when "decline" then decline_quote
-    when "cancel" then cancel_quote
-    else
-      raise ArgumentError, "Invalid action: #{action}"
-    end
+    @quote_request =
+      case action
+      when "request" then create_request
+      when "offer" then create_offer
+      when "respond" then respond_to_request
+      when "accept" then accept_quote
+      when "accept_with_shipping_quote" then accept_with_shipping_quote
+      when "decline" then decline_quote
+      when "cancel" then cancel_quote
+      else
+        raise ArgumentError, "Invalid action: #{action}"
+      end
+
+    update_counter_cache
+
+    @quote_request
   end
 
   private
@@ -148,6 +153,14 @@ class QuoteActionService
     )
     quote_request.update!(status: "cancelled")
     quote_request
+  end
+
+  def update_counter_cache
+    buyer = @quote_request.buyer
+    buyer.update_column(:quotes_awaiting_action_count, QuoteRequest.needing_response_from(user: buyer).count)
+
+    seller_user = @quote_request.seller.owner
+    seller_user.update_column(:quotes_awaiting_action_count, QuoteRequest.needing_response_from(user: seller_user, store: @quote_request.seller).count)
   end
 
   def actor_role

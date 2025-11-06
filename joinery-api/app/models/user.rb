@@ -22,7 +22,7 @@ class User < ApplicationRecord
   end
 
   def default_store
-    stores.joins(:store_users).merge(StoreUser.default_store).first || stores.first
+    @default_store ||= stores.joins(:store_users).merge(StoreUser.default_store).first || stores.first
   end
 
   def has_access_to_store?(store_id)

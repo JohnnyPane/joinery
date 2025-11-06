@@ -1,5 +1,6 @@
 module Imageable
   extend ActiveSupport::Concern
+  include Rails.application.routes.url_helpers
 
   included do
     has_many_attached :images
@@ -22,9 +23,11 @@ module Imageable
 
   def image_urls(size_key = :default, only_path: true)
     image_variants(size_key).map do |image|
+      blob = image.blob
+
       {
-        id: image.blob.id,
-        image_url: Rails.application.routes.url_helpers.rails_blob_url(image, only_path: only_path)
+        id: blob.id,
+        image_url: rails_blob_url(image, only_path: only_path)
       }
     end
   end

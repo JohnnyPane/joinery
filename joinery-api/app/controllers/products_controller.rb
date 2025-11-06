@@ -22,14 +22,14 @@ class ProductsController < JoineryController
   protected
 
   def included_index_resources
-    [ :shipping_options, images_attachments: :blob ]
+    [ :shipping_options, images_attachments: { blob: :variant_records } ]
   end
 
   def included_show_resources
     [ :shipping_options, images_attachments: :blob ]
   end
 
-  def preloaded_polymorphic_resources
+  def preloaded_index_resources
     [ :productable ]
   end
 

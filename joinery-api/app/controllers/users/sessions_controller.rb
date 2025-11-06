@@ -1,6 +1,6 @@
 class Users::SessionsController < Devise::SessionsController
-  before_action :authenticate_user!, only: [:destroy]
-  after_action :merge_guest_cart, only: [:create]
+  before_action :authenticate_user!, only: [ :destroy ]
+  after_action :merge_guest_cart, only: [ :create ]
 
   include Renderable
 
@@ -8,7 +8,13 @@ class Users::SessionsController < Devise::SessionsController
 
   def me
     if current_user
-      render_resource(current_user, UserSerializer, { current_store: current_store })
+      user = User.includes(
+        stores: [ :order_items, :store_users ],
+        quote_requests: :quotes,
+        carts: []
+      ).find(current_user.id)
+
+      render_resource(user, UserSerializer, { params: { current_store: current_store } })
     else
       throw(:warden, scope: :user)
     end
@@ -17,10 +23,14 @@ class Users::SessionsController < Devise::SessionsController
   private
 
   def current_store
-    @current_store ||= if params[:store_id]
-      Store.find_by(id: params[:store_id]) if current_user.has_access_to_store?(params[:store_id])
-    elsif current_user.stores.any?
-      current_user.default_store
+    return @current_store if defined?(@current_store)
+
+    if params[:store_id] && current_user.has_access_to_store?(params[:store_id])
+      @current_store = Store.find_by(id: params[:store_id])
+    elsif current_user.stores.exists?
+      @current_store = current_user.default_store
+    else
+      @current_store = nil
     end
   end
 
