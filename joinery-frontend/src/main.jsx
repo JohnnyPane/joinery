@@ -23,7 +23,7 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <MantineProvider withGlobalStyles withNormalizeCSS theme={mantineTheme} forceColorScheme="light">
-        <Notifications />
+        <Notifications position="top-right" />
         <App />
       </MantineProvider>
     </QueryClientProvider>

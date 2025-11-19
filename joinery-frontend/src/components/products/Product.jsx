@@ -76,7 +76,7 @@ const Product = () => {
   return (
     <div className="product-detail-container">
       <div className="product-image-carousel">
-        <JoineryImageCarousel images={product.images} height={600} />
+        <JoineryImageCarousel images={product.images} height={600} objectFit='contain' />
       </div>
 
       <div className="product-info">

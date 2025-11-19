@@ -1,5 +1,5 @@
 class StoresController < JoineryController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: [ :index, :show ]
 
   protected
 
@@ -18,6 +18,20 @@ class StoresController < JoineryController
   end
 
   def store_params
-    params.require(:store).permit(:name, :description, :location, :owner_id)
+    params.require(:store).permit(
+      :name,
+      :description,
+      :location,
+      :owner_id,
+      address_attributes: [
+        :id,
+        :address_1,
+        :address_2,
+        :city,
+        :state,
+        :zip,
+        :country
+      ]
+    )
   end
 end

@@ -5,10 +5,11 @@ import {Button, Divider, Image} from "@mantine/core";
 import { IconArrowNarrowRight } from '@tabler/icons-react';
 
 import { useMe } from "../../hooks/useMe.js";
-import ShopNowSection from "./ShopNowSection.jsx";
-import AboutUs from "./AboutUs.jsx";
-import './Home.scss';
 import { getBucketImageUrl  } from "../../utils/imageConfigs.js";
+import ShopNowSection from "./ShopNowSection.jsx";
+import AboutUsSection from "./AboutUsSection.jsx";
+import Footer from "./Footer.jsx";
+import './Home.scss';
 
 const Home = () => {
   const { data: user } = useMe();
@@ -71,7 +72,9 @@ const Home = () => {
 
       <Divider className="double-margin" />
 
-      <AboutUs />
+      <AboutUsSection />
+
+      <Footer />
     </>
   );
 }

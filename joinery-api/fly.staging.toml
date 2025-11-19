@@ -1,0 +1,31 @@
+app = "joinery-api-test"
+primary_region = "ord"
+console_command = "/rails/bin/rails console"
+
+[build]
+build_args = { RAILS_ENV = "staging" }
+
+[env]
+RAILS_ENV = "staging"
+RAILS_MAX_THREADS = "3"
+MAX_THREADS = "3"
+MIN_THREADS = "3"
+WEB_CONCURRENCY = "1"
+RAILS_LOG_TO_STDOUT = "true"
+RAILS_SERVE_STATIC_FILES = "true"
+
+[http_service]
+internal_port = 3000
+force_https = true
+auto_stop_machines = false
+auto_start_machines = true
+min_machines_running = 1
+processes = ["app"]
+
+[[vm]]
+memory = "256mb"
+cpu_kind = "shared"
+cpus = 1
+
+[deploy]
+release_command = "bundle exec rails db:migrate"

@@ -5,6 +5,8 @@ import { useDisclosure } from "@mantine/hooks";
 
 import { useMe } from '../../hooks/useMe';
 import useResourceData from '../../hooks/useResourceData';
+import useResource from "../../hooks/useResource.js";
+
 import ProductCard from "../products/ProductCard.jsx";
 import StoreProduct from "./StoreProduct.jsx";
 import ProductSkeletons from "../products/ProductSkeletons.jsx";
@@ -12,12 +14,13 @@ import ProductSkeletons from "../products/ProductSkeletons.jsx";
 const StoreProducts = ({ storeId }) => {
   const { id } = useParams();
   const { data: user } = useMe();
-  const { data: products, isLoading, isError, error } = useResourceData('products', { scopes: [{ name: 'by_store', args: [id] }] });
+  const { data: products, isLoading, isError, error } = useResourceData('products');
+  const { data: store } = useResource('stores', storeId || id);
   const [opened, { open, close }] = useDisclosure(false);
   const [product, setProduct] = useState(null);
 
   if (isLoading) {
-    return <ProductSkeletons />
+    return <ProductSkeletons />;
   }
 
   if (isError) {

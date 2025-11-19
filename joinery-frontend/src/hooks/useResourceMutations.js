@@ -21,7 +21,9 @@ export const useUpdateResource = (modelName) => {
 
   return useMutation({
     mutationFn: async (updatedResource) => {
-      const updates = await modelApi.update(updatedResource.id, updatedResource);
+      const { id, ...data } = updatedResource;
+
+      const updates = await modelApi.update(id, data);
       return updates;
     },
     onSuccess: () => {

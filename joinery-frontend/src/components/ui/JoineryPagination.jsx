@@ -1,4 +1,4 @@
-import {useState, useCallback, useEffect} from "react";
+import { useCallback } from "react";
 import { Pagination } from "@mantine/core";
 import useResources from "../../hooks/useResources.js";
 import { useResourceContext } from "../../context/ResourceContext.jsx";

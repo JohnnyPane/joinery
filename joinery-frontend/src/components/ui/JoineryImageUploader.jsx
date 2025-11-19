@@ -3,7 +3,7 @@ import { Group, Text, Button, Card, Image, ActionIcon, Alert, Badge, SimpleGrid 
 import { IconUpload, IconPhoto, IconX, IconTrash } from '@tabler/icons-react';
 import { Dropzone, IMAGE_MIME_TYPE } from '@mantine/dropzone';
 
-const JoineryImageUploader = ({ resourceId, uploadApi, onSuccessfulUpload }) => {
+const JoineryImageUploader = ({ resourceId, uploadApi, onSuccessfulUpload, maxFileCount = 5 }) => {
   const [files, setFiles] = useState([]);
   const [uploadedImages, setUploadedImages] = useState([]);
   const [uploading, setUploading] = useState(false);
@@ -37,7 +37,6 @@ const JoineryImageUploader = ({ resourceId, uploadApi, onSuccessfulUpload }) => 
       setUploading(true);
       const images = await uploadApi.uploadImages(resourceId, files);
 
-      // Update uploaded images if the API returns image URLs
       if (images.image_urls) {
         setUploadedImages([...uploadedImages, ...images.image_urls]);
       }
@@ -101,21 +100,21 @@ const JoineryImageUploader = ({ resourceId, uploadApi, onSuccessfulUpload }) => 
 
   return (
     <>
-      <Dropzone
+      {files.length <= maxFileCount && <Dropzone
         onDrop={handleDrop}
         onReject={(files) => setError(`Rejected files: ${files.map(file => file.name).join(', ')}`)}
         maxSize={5 * 1024 ** 2}
         accept={IMAGE_MIME_TYPE}
       >
-        <Group justify="center" gap="xl" mih={220} style={{ pointerEvents: 'none' }}>
+        <Group justify="center" gap="xl" mih={220} style={{pointerEvents: 'none'}}>
           <Dropzone.Accept>
-            <IconUpload size={52} color="var(--mantine-color-blue-6)" stroke={1.5} />
+            <IconUpload size={52} color="var(--mantine-color-blue-6)" stroke={1.5}/>
           </Dropzone.Accept>
           <Dropzone.Reject>
-            <IconX size={52} color="var(--mantine-color-red-6)" stroke={1.5} />
+            <IconX size={52} color="var(--mantine-color-red-6)" stroke={1.5}/>
           </Dropzone.Reject>
           <Dropzone.Idle>
-            <IconPhoto size={52} color="var(--mantine-color-dimmed)" stroke={1.5} />
+            <IconPhoto size={52} color="var(--mantine-color-dimmed)" stroke={1.5}/>
           </Dropzone.Idle>
 
           <div>
@@ -127,7 +126,7 @@ const JoineryImageUploader = ({ resourceId, uploadApi, onSuccessfulUpload }) => 
             </Text>
           </div>
         </Group>
-      </Dropzone>
+      </Dropzone>}
 
       {error && (
         <Alert color="red" title="Error" withCloseButton onClose={() => setError(null)} mt="md">
@@ -167,30 +166,28 @@ const JoineryImageUploader = ({ resourceId, uploadApi, onSuccessfulUpload }) => 
         </div>
       )}
 
-      {files.length > 0 && (
-        <div className="flex row">
-          <Group position="right" mt="md">
-            <Button
-              onClick={() => setFiles([])}
-              variant="subtle"
-              color="gray"
-              disabled={uploading}
-              className="action-button"
-            >
-              Clear
-            </Button>
-            <Button
-              onClick={handleUpload}
-              disabled={uploading || files.length === 0}
-              loading={uploading}
-              color="teal"
-              className="action-button"
-            >
-              Upload
-            </Button>
-          </Group>
-        </div>
-      )}
+      <div className="flex row">
+        <Group position="right" mt="md">
+          <Button
+            onClick={() => setFiles([])}
+            variant="subtle"
+            color="gray"
+            disabled={uploading}
+            className="action-button"
+          >
+            Clear
+          </Button>
+          <Button
+            onClick={handleUpload}
+            disabled={uploading || files.length === 0}
+            loading={uploading}
+            color="teal"
+            className="action-button"
+          >
+            Upload
+          </Button>
+        </Group>
+      </div>
     </>
   );
 };

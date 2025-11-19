@@ -5,8 +5,8 @@ import { AuthProvider } from "./context/AuthContext.jsx";
 
 import Home from "./components/home/Home.jsx";
 import LoginSignupToggle from "./components/auth/LoginSignupToggle.jsx";
-import Store from "./components/store/Store.jsx";
-import StoreForm from "./components/store/StoreForm.jsx";
+import Store from "./components/stores/Store.jsx";
+import StoreForm from "./components/stores/StoreForm.jsx";
 import ProductForm from "./components/products/ProductForm.jsx";
 import Product from "./components/products/Product.jsx";
 import JoineryNavbar from "./components/ui/JoineryNavbar.jsx";
@@ -17,6 +17,7 @@ import OrdersRoute from "./components/orders/OrdersRoute.jsx";
 import ProductsPage from "./components/products/ProductsPage.jsx";
 import ProductCategories from "./components/products/ProductCategories.jsx";
 import Quotes from "./components/quotes/Quotes.jsx";
+import AboutUs from "./components/home/AboutUs.jsx";
 
 function App() {
 
@@ -29,6 +30,7 @@ function App() {
 
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/about" element={<AboutUs />} />
 
             <Route path="/checkout" element={
               <StripeProvider>

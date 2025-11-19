@@ -14,7 +14,7 @@ class ProductSerializer < BaseSerializer
   end
 
   attribute :images do |product, params|
-    product.image_urls(params[:image_type], only_path: true)
+    product.image_urls(size_key: params[:image_type])
   end
 
   def self.shallow_attributes_list
@@ -23,7 +23,7 @@ class ProductSerializer < BaseSerializer
 
   def self.shallow_associations(product)
     {
-      images: product.image_urls(:thumb, only_path: true),
+      images: product.image_urls(size_key: :thumbnail),
       shipping_options: ShippingOptionSerializer.shallow_serialize_collection(product.shipping_options)
     }
   end

@@ -4,7 +4,7 @@ class StripeController < ApplicationController
   def create_account_link
     store = current_user.default_store
 
-    return render json: { error: "User does not have a store" }, status: :unprocessable_content unless store
+    return render json: { error: "User does not have a stores" }, status: :unprocessable_content unless store
     return render json: { error: "Store already has a Stripe account" }, status: :unprocessable_content if store.stripe_account_id.present?
 
     account = Stripe::Account.create({

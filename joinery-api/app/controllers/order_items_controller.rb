@@ -7,7 +7,7 @@ class OrderItemsController < JoineryController
   end
 
   def included_index_resources
-    # [ shipping_option: {}, product: { shipping_options: {}, images_attachments: { blob: :variant_records } }, order: { shipping_address: {} }, store: {}, quote_request: { quotes: {} } ]
+    # [ shipping_option: {}, product: { shipping_options: {}, images_attachments: { blob: :variant_records } }, order: { shipping_address: {} }, stores: {}, quote_request: { quotes: {} } ]
 
     [
       :store,

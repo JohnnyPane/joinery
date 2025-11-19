@@ -6,12 +6,7 @@ const ProductableDetailsForm = ({ form, productable }) => {
 
     return (
       <div key={index}>
-        {JoineryFormFields({
-          form,
-          fieldConfig,
-          nestedFieldType: 'productable',
-          resource: productable
-        })}
+        <JoineryFormFields form={form} fieldConfig={fieldConfig} nestedFieldType="productable"  resource={productable} />
       </div>
     )
   })

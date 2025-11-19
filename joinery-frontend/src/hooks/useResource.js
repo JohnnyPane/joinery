@@ -11,7 +11,7 @@ const useResource = (resourceName, id, extraParams = {}) => {
       return await resourceApi.get(id, extraParams);
     },
     enabled: !!id,
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: 5 * 60 * 1000,
   });
 
   return {

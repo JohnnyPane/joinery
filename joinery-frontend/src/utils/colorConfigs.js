@@ -7,7 +7,7 @@ export const statusColors = (status) => {
       return 'green';
     case 'awaiting_pickup':
     case 'awaiting_fulfillment':
-      return 'orange';
+      return 'pink';
     case 'failed':
     case 'declined':
       return 'red';

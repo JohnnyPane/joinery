@@ -41,16 +41,16 @@ const ProductCard = ({ cardData, clickable = true }) => {
         <Image
           src={rootURL + displayImageUrl}
           alt={name}
-          className="product-image margin-bottom"
+          className="product-card-image margin-4-b"
         />
       </div>
 
       <div className="flex row space-between">
         <span>{name}</span>
-        <span className="bold">{priceDisplay}</span>
+        <div className="italic">{productTypeText}</div>
       </div>
 
-      <div className="italic saddle-brown">{productTypeText}</div>
+      <span className="bold">{priceDisplay}</span>
     </div>
   );
 }

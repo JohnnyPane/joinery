@@ -53,10 +53,19 @@ class JoineryController < ApplicationController
   end
 
   def upload_images
-    if resource.images.attach(params[:images])
+    attachment_config = resource.class.imageable_config
+    attachment_name = attachment_config[:attachment_name]
+    attachment_proxy = resource.send(attachment_name)
+    files_to_attach = params[:images]
+
+    if attachment_config[:type] == :one
+      files_to_attach = Array(params[:images]).first
+    end
+
+    if attachment_proxy.attach(files_to_attach)
       render_resource(resource, resource_serializer)
     else
-      render json: { errors: resource.errors.full_messages }, status: :unprocessable_content
+      render json: { errors: resource.errors.full_messages }, status: :unprocessable_entity
     end
   end
 

@@ -36,6 +36,7 @@ export const createApi = (resourceName) => {
 
     async update ( id, data ) {
       const formattedData = { [singularName]: data };
+
       try {
         const response = await joineryClient.put(`/${pluralName}/${id}`, formattedData);
         return response.data;

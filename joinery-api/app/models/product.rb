@@ -3,7 +3,6 @@ class Product < ApplicationRecord
 
   belongs_to :store
   belongs_to :productable, polymorphic: true
-  has_many_attached :images
   has_many :shipping_options, dependent: :destroy
   has_many :order_items
   has_many :cart_items
@@ -11,6 +10,8 @@ class Product < ApplicationRecord
   has_many :carts, through: :cart_items
   has_many :quote_requests, dependent: :destroy
   has_many :bids, dependent: :destroy
+
+  acts_as_imageable_many :images
 
   validates :name, :price_in_cents, presence: true
 

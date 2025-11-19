@@ -8,10 +8,10 @@ import { useUpdateResource } from "../../hooks/useResourceMutations.js";
 import { useResourceContext } from "../../context/ResourceContext.jsx";
 
 import JoineryTablePage from "../ui/JoineryTablePage.jsx";
-import StoreOrderItemDetails from "../store/StoreOrderItemDetails.jsx";
+import StoreOrderItemDetails from "../stores/StoreOrderItemDetails.jsx";
 
 import { orderShippingStatuses, shippingOptionDisplayNames } from "../../utils/shippingConfigs.js";
-import '../store/Store.scss';
+import '../stores/Store.scss';
 
 const orderItemTableColumns = [
   { header: 'ID', accessor: 'id', type: 'text' },
@@ -38,19 +38,20 @@ const OrdersPage = ({ currentUser, store }) => {
   const { data: orders, isLoading, isError } = useResourceData('order_items');
   const { mutate: updateOrderItem } = useUpdateResource('order_items');
   const [detailsOpened, { open: openDetails, close: closeDetails }] = useDisclosure(false);
+  const [orderModalOpened, { open: openOrderModal, close: closeOrderModal }] = useDisclosure(false);
   const [confirmOpened, { open: openConfirm, close: closeConfirm }] = useDisclosure(false);
   const [item, setItem] = useState(null);
   const [newStatus, setNewStatus] = useState(null);
   const [storeTabActive, setStoreTabActive] = useState(false);
 
-  const onModalOpen = (orderItem) => {
-    setItem(orderItem);
-    openDetails();
-  }
-
   const onDrawerClose = () => {
     setItem(null);
     closeDetails();
+  }
+
+  const handleDetailsClose = () => {
+    setItem(null);
+    closeOrderModal();
   }
 
   const handleStatusSelect = (value) => {
@@ -75,13 +76,12 @@ const OrdersPage = ({ currentUser, store }) => {
   }
 
   const handleRowClick = (row) => {
-    if (storeTabActive) {
-      if (currentUser.current_store.id !== row.attributes.store.id) {
-        return;
-      }
+    setItem(row.attributes);
 
-      setItem(row.attributes);
+    if (storeTabActive && (currentUser.current_store.id === row.attributes.store.id)) {
       openDetails();
+    } else {
+      openOrderModal();
     }
   }
 
@@ -127,6 +127,10 @@ const OrdersPage = ({ currentUser, store }) => {
             />
           </>}
       </Drawer>
+
+      <Modal opened={orderModalOpened} onClose={handleDetailsClose} title={<Text size="lg" className="bold">Order Details</Text>}>
+        {item && <StoreOrderItemDetails item={item}/>}
+      </Modal>
 
       <Modal opened={confirmOpened} onClose={handleCancelStatusChange} title={<Text size="lg" className="bold">Confirm Status Change</Text>}>
         <Text className="double-margin-bottom">Are you sure you want to change the status of Order Item {item?.id} to "{statusOptions.find(option => option.value === newStatus)?.label}"?</Text>
