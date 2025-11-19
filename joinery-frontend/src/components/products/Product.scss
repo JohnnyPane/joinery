@@ -16,6 +16,10 @@
   margin: 0.5rem 0 2rem 0;
 }
 
+.product-info {
+  padding: 1rem;
+}
+
 .product-detail-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -24,7 +28,24 @@
 }
 
 .product-image-carousel {
-  width: 600px;
+  width: 100%;
+}
+
+.product-image-carousel img {
+  width: 100%;
+  height: auto;
+  max-height: 80vh;
+  object-fit: contain;
+}
+
+@media (max-width: 768px) {
+  .product-info {
+    padding: 0;
+  }
+
+  .product-detail-container {
+    grid-template-columns: 1fr;
+  }
 }
 
 .product-card {
@@ -85,7 +106,6 @@
 
 .product-detail-stock {
   font-size: 1.2rem;
-  margin-left: 1rem;
 }
 
 .product-form {

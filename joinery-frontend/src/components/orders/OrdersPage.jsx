@@ -1,25 +1,14 @@
 import { useState } from 'react';
-import { useNavigate } from "react-router-dom";
 import { Drawer, Select, Tabs, Text, Modal, Button } from '@mantine/core';
 import { useDisclosure } from "@mantine/hooks";
 
-import useResourceData from "../../hooks/useResourceData.js";
 import { useUpdateResource } from "../../hooks/useResourceMutations.js";
 import { useResourceContext } from "../../context/ResourceContext.jsx";
 
-import JoineryTablePage from "../ui/JoineryTablePage.jsx";
 import StoreOrderItemDetails from "../stores/StoreOrderItemDetails.jsx";
-
-import { orderShippingStatuses, shippingOptionDisplayNames } from "../../utils/shippingConfigs.js";
+import OrdersTablePage from "./OrdersTablePage.jsx";
 import '../stores/Store.scss';
-
-const orderItemTableColumns = [
-  { header: 'ID', accessor: 'id', type: 'text' },
-  { header: 'Product', accessor: 'product.name', type: 'text' },
-  { header: 'Status', accessor: 'status', type: 'badge', textMapping: orderShippingStatuses },
-  { header: 'Action Needed', accessor: 'requires_action', type: 'boolean' },
-  { header: 'Shipping Method', accessor: 'shipping_option.shipping_type', type: 'text', textMapping: shippingOptionDisplayNames },
-];
+import './Order.scss'
 
 const statusOptions = [
   { value: 'awaiting_fulfillment', label: 'Awaiting Fulfillment' },
@@ -33,13 +22,12 @@ const statusOptions = [
 // Named component OrdersPage but it is really OrderItems page
 const OrdersPage = ({ currentUser, store }) => {
   const { setScopes } = useResourceContext();
-
-  const navigate = useNavigate();
-  const { data: orders, isLoading, isError } = useResourceData('order_items');
   const { mutate: updateOrderItem } = useUpdateResource('order_items');
+
   const [detailsOpened, { open: openDetails, close: closeDetails }] = useDisclosure(false);
   const [orderModalOpened, { open: openOrderModal, close: closeOrderModal }] = useDisclosure(false);
   const [confirmOpened, { open: openConfirm, close: closeConfirm }] = useDisclosure(false);
+
   const [item, setItem] = useState(null);
   const [newStatus, setNewStatus] = useState(null);
   const [storeTabActive, setStoreTabActive] = useState(false);
@@ -75,7 +63,7 @@ const OrdersPage = ({ currentUser, store }) => {
     closeConfirm();
   }
 
-  const handleRowClick = (row) => {
+  const handleOrderClick = (row) => {
     setItem(row.attributes);
 
     if (storeTabActive && (currentUser.current_store.id === row.attributes.store.id)) {
@@ -103,11 +91,11 @@ const OrdersPage = ({ currentUser, store }) => {
           {store && <Tabs.Tab value="store-orders"><Text className="bold" size="md">Store Orders</Text></Tabs.Tab>}
         </Tabs.List>
         <Tabs.Panel value="my-orders" pt="xs">
-          <JoineryTablePage onRowClick={handleRowClick} resourceData={orders} columns={orderItemTableColumns} resourceName={'order_items'} />
+          <OrdersTablePage onOrderClick={handleOrderClick} />
         </Tabs.Panel>
         {store && (
           <Tabs.Panel value="store-orders" pt="xs">
-            <JoineryTablePage onRowClick={handleRowClick} resourceData={orders} columns={orderItemTableColumns} resourceName={'order_items'} />
+            <OrdersTablePage onOrderClick={handleOrderClick} />
           </Tabs.Panel>
         )}
       </Tabs>

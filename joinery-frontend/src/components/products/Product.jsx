@@ -1,7 +1,9 @@
 import { useState } from "react";
-import { notifications } from "@mantine/notifications";
 import { useParams, useNavigate } from 'react-router-dom'
-import { Accordion, Text } from '@mantine/core'
+
+import { Accordion, Text, Title } from '@mantine/core'
+import { notifications } from "@mantine/notifications";
+
 import './Product.scss'
 
 import { productTypeDisplayName } from "../../utils/productConfigs.js"
@@ -76,12 +78,12 @@ const Product = () => {
   return (
     <div className="product-detail-container">
       <div className="product-image-carousel">
-        <JoineryImageCarousel images={product.images} height={600} objectFit='contain' />
+        <JoineryImageCarousel images={product.images} objectFit='contain' />
       </div>
 
       <div className="product-info">
-        <h1 className="header-1">{product.name}</h1>
-        <p className="sub-header-1">{productTypeDisplayName[product.productable_type]}</p>
+        <Title order={2} className="header-1">{product.name}</Title>
+        <Text className="sub-header-1">{productTypeDisplayName[product.productable_type]}</Text>
         <Accordion defaultValue="description">
           <Accordion.Item key="description" value="description">
             <Accordion.Control value="description" className="accordion-panel-header">Description</Accordion.Control>

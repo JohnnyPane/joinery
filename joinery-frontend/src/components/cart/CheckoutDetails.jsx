@@ -178,7 +178,6 @@ const CheckoutDetails = () => {
           }
         </Grid>
 
-
         <Card shadow="sm" padding="lg" radius="md" withBorder>
           <CardElement />
         </Card>

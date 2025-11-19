@@ -12,9 +12,24 @@ const transformValue = (value, operator) => {
   }
 }
 
+const untransformValue = (value, operator) => {
+  if (!value) return null;
 
-const JoineryFilters = ({ filterConfigs }) => {
+  switch(operator) {
+    case 'between':
+      return value.join('-');
+    default:
+      return value;
+  }
+}
+
+
+const JoineryFilters = ({ filterConfigs, orientation = 'horizontal' }) => {
   const { filters, setFilters, setPage } = useResourceContext();
+  const isHorizontalLayout = orientation === "horizontal"
+  const filterDirection = isHorizontalLayout ? 'flex row' : 'flex column'
+  const filterClass = isHorizontalLayout ? "horizontal-filter-select margin-right" : "vertical-filter-select double-margin-bottom"
+  const size = isHorizontalLayout ? "xs" : "sm"
 
   const handleFilterChange = (filter, value) => {
     const { name, operator } = filter;
@@ -40,20 +55,21 @@ const JoineryFilters = ({ filterConfigs }) => {
   }
 
   return (
-    <div className="flex row">
+    <div className={filterDirection}>
       {filterConfigs.map((filter) => (
         <Select
           key={filter.name}
           label={filter.label}
           placeholder={filter.placeholder || `Select ${filter.label}`}
+          value={untransformValue(filters[filter.name]?.value, filter.operator) || ''}
           data={filter.options}
           onChange={(value) => handleFilterChange(filter, value)}
           searchable={filter.searchable || false}
           rightSectionPointerEvents="none"
           rightSection={filter.searchable ? <IconSearch size={14} /> : null}
           clearable
-          size="xs"
-          className="filter-select margin-right"
+          size={size}
+          className={filterClass}
         />
       ))}
     </div>

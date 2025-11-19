@@ -30,7 +30,7 @@ const JoineryImageCarousel = ({ images, height = 300, objectFit = 'cover' }) => 
       loop
       withIndicators={displayControls}
       withControls={displayControls}
-      height={height}
+      // height={height}
       styles={{
         viewport: {
           // maxWidth: 400,

@@ -1,24 +1,11 @@
 import { useState } from "react";
-import { Tabs, Drawer, Title, Text } from "@mantine/core";
+import { Tabs, Drawer, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useResourceContext } from "../../context/ResourceContext.jsx";
-import useResourceData from "../../hooks/useResourceData.js";
-import JoineryTablePage from "../ui/JoineryTablePage.jsx";
 import QuoteDrawerDetails from "./QuoteDrawerDetails.jsx";
-
-const quoteTableColumns = [
-  { header: 'ID', accessor: 'id', type: 'text' },
-  { header: 'Product', accessor: 'product.name', type: 'text' },
-  { header: 'Quote Type', accessor: 'quote_type', type: 'text' },
-  { header: 'Status', accessor: 'status', type: 'badge' },
-  { header: 'Action Needed', accessor: 'requires_action', type: 'boolean' },
-  { header: 'Message', accessor: 'latest_quote.message', type: 'text' },
-  { header: 'Last Updated', accessor: 'latest_quote.updated_at', type: 'date' }
-];
-
+import QuotesTablePage from "./QuotesTablePage.jsx";
 
 const MyQuotes = ({ user, store }) => {
-  const { data: quotes, isLoading, isError } = useResourceData('quote_requests');
   const [drawerOpened, { open: openDrawer, close: closeDrawer }] = useDisclosure(false);
   const [selectedQuote, setSelectedQuote] = useState(null);
   const { setScopes } = useResourceContext();
@@ -31,7 +18,7 @@ const MyQuotes = ({ user, store }) => {
     }
   }
 
-  const handleRowClick = (quote) => {
+  const handleQuoteClick = (quote) => {
     setSelectedQuote(quote);
     openDrawer();
   }
@@ -49,11 +36,11 @@ const MyQuotes = ({ user, store }) => {
           {store && <Tabs.Tab value="store-quotes"><Text className="bold" size="md">Store Requests</Text></Tabs.Tab>}
         </Tabs.List>
         <Tabs.Panel value="my-quotes" pt="xs">
-          <JoineryTablePage onRowClick={handleRowClick} resourceData={quotes} columns={quoteTableColumns} resourceName={'quote_requests'} />
+          <QuotesTablePage onQuoteClick={handleQuoteClick} />
         </Tabs.Panel>
         {store && (
           <Tabs.Panel value="store-quotes" pt="xs">
-            <JoineryTablePage onRowClick={handleRowClick} resourceData={quotes} columns={quoteTableColumns} resourceName={'quote_requests'} />
+            <QuotesTablePage onQuoteClick={handleQuoteClick} />
           </Tabs.Panel>
         )}
       </Tabs>

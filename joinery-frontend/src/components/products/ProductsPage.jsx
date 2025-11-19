@@ -1,4 +1,6 @@
-import { Text, Title } from "@mantine/core";
+import { Text, Title, Group, Button, Drawer, Stack } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
+import { IconPlus } from "@tabler/icons-react"
 import JoineryScopes from "../ui/JoineryScopes.jsx";
 import JoineryFilters from "../ui/JoineryFilters.jsx";
 import Products from "./Products.jsx";
@@ -47,6 +49,8 @@ const filterConfigs = [
 ]
 
 const ProductsPage = () => {
+  const [filtersOpened, { open, close }] = useDisclosure(false)
+
   return (
     <ResourceProvider initial={{ scopes: [{ name: 'in_stock' }]}} >
       <div className="page">
@@ -60,15 +64,27 @@ const ProductsPage = () => {
           </div>
         </div>
 
-        <div className="flex row align-bottom to-right">
+        <Group hiddenFrom="sm" justify="end">
+          <Button onClick={open} variant="subtle" color="black" className="margin" rightSection={<IconPlus size={16} />}>
+            Add Filters
+          </Button>
+        </Group>
+
+        <Group visibleFrom="sm" className="flex row align-bottom to-right">
           <JoineryScopes scopeConfigs={productTypeScopes} />
           <JoineryFilters filterConfigs={filterConfigs} />
-        </div>
+        </Group>
 
         <Products />
 
         <JoineryPagination resourceName="products" />
       </div>
+
+      <Drawer opened={filtersOpened} size="sm" onClose={close} position="right">
+        <Stack>
+          <JoineryFilters filterConfigs={filterConfigs} orientation="vertical" />
+        </Stack>
+      </Drawer>
     </ResourceProvider >
   )
 }
