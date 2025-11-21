@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_06_161226) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_21_120422) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -176,6 +176,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_06_161226) do
     t.boolean "requestable", default: false, null: false
     t.boolean "biddable", default: false, null: false
     t.integer "min_bid_amount_in_cents"
+    t.virtual "name_vector", type: :tsvector, as: "to_tsvector('simple'::regconfig, (COALESCE(name, ''::character varying))::text)", stored: true
+    t.index ["name_vector"], name: "index_products_on_name_vector", using: :gin
     t.index ["productable_type", "productable_id"], name: "index_products_on_productable"
     t.index ["requestable"], name: "index_products_on_requestable"
     t.index ["store_id"], name: "index_products_on_store_id"

@@ -7,6 +7,7 @@ import Products from "./Products.jsx";
 import { ResourceProvider } from "../../context/ResourceContext.jsx";
 import { woodSpecies } from "../../utils/woodSpecies.js";
 import JoineryPagination from "../ui/JoineryPagination.jsx";
+import JoinerySearch from "../ui/JoinerySearch.jsx";
 
 const productTypeScopes = [{
   type: 'buttons',
@@ -52,7 +53,7 @@ const ProductsPage = () => {
   const [filtersOpened, { open, close }] = useDisclosure(false)
 
   return (
-    <ResourceProvider initial={{ scopes: [{ name: 'in_stock' }]}} >
+    <ResourceProvider initial={{ searchColumn: 'name', scopes: [{ name: 'in_stock' }]}} >
       <div className="page">
         <div>
           <Title order={1}>Shop Our Collection</Title>
@@ -62,6 +63,10 @@ const ProductsPage = () => {
               Browse raw slabs, lumber, and handcrafted pieces from independent sellers. Everything you need to build, create, and decorate.
             </Text>
           </div>
+        </div>
+
+        <div className="flex row to-right margin-top margin-bottom">
+          <JoinerySearch searchLabel="our products" />
         </div>
 
         <Group hiddenFrom="sm" justify="end">

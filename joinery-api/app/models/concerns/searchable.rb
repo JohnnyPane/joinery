@@ -4,17 +4,11 @@ module Searchable
   DISALLOWED_TSQUERY_CHARACTERS_REGEX = /['?\\:''ʻʼ]/
 
   included do
-    scope :search, -> (query, column) {
-      column_with_table_name = column.to_s.include?(".") ? column : "#{table_name}.#{column}"
-      join_table_name = join_table(column)
-
-      scope = join_table_name.present? ? left_joins(join_table_name) : self
-
-      scope.where("to_tsvector('simple', #{column_with_table_name}) @@ to_tsquery('simple', ?)", sanitize_tsquery(query))
-    }
-
-    scope :search_local, -> (query, column) {
-      where("to_tsvector('simple', #{table_name}.#{column}) @@ to_tsquery('simple', ?)", sanitize_tsquery(query))
+    scope :search_column, ->(query, tsvector_column) {
+      where(
+        "#{tsvector_column} @@ to_tsquery('simple', ?)",
+        sanitize_tsquery(query)
+      )
     }
   end
 
@@ -27,47 +21,43 @@ module Searchable
       @searchable_attributes || []
     end
 
-    def is_valid_search_attribute?(attribute)
-      searchable_attributes.include?(attribute)
+    def valid_search_attribute?(attribute)
+      return false if attribute.nil?
+      searchable_attributes.include?(attribute.to_sym)
     end
 
     def apply_search(search_params)
       scope = all
-      return scope if search_params.blank? || search_params[:text].blank? || search_params[:column].blank?
+      return scope if search_params.blank? || search_params[:text].blank?
 
-      column = search_params[:column].to_sym
-      raise ArgumentError, "Searching by scope: #{search_params[:column]} is not supported" unless is_valid_search_attribute?(column)
+      query = search_params[:text]
+      column = search_params[:column]&.to_sym
 
-      if search_params[:column].include?(".")
-        scope.search(search_params[:text], search_params[:column])
-      else
-        scope.search_local(search_params[:text], search_params[:column])
+      unless valid_search_attribute?(column)
+        raise ArgumentError, "Searching by '#{column}' is not supported. Available columns: #{searchable_attributes.join(', ')}"
       end
-    end
 
-    def join_table(column)
-      return nil unless column.to_s.include?(".")
-      association_name = column.to_s.split(".").first
-      association_name.singularize.to_sym
-    end
-
-    def reference_table(column)
-      return nil unless column.to_s.include?(".")
-      association_name = column.to_s.split(".").first
-      association_name.to_sym
+      tsvector_column = "#{column}_vector"
+      scope.search_column(query, tsvector_column)
     end
 
     def sanitize_tsquery(query)
-      query.split(/\s+/).map { |word| sanitize_search_token(word) }.join(" & ")
+      tokens = query.to_s.split(/\s+/)
+                    .map { |token| sanitize_search_token(token) }
+                    .compact
+                    .reject(&:empty?)
+
+      return "*" if tokens.empty?
+      tokens.join(" & ")
     end
 
+    private
+
     def sanitize_search_token(token)
-      token = token.gsub(DISALLOWED_TSQUERY_CHARACTERS_REGEX, '')
-      token = Regexp.escape(token)
+      cleaned = token.gsub(DISALLOWED_TSQUERY_CHARACTERS_REGEX, "").strip
+      return nil if cleaned.empty?
 
-      return '' if token.empty?
-
-      "#{token}:*"
+      "#{cleaned}:*"
     end
   end
 end

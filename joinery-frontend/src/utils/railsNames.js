@@ -8,4 +8,8 @@ function toSingularName(name) {
   return pluralize.singular(name);
 }
 
-export { toPluralName, toSingularName };
+function normalizeModelName(name){
+  return name.split("_").join(" ")
+}
+
+export { toPluralName, toSingularName, normalizeModelName };

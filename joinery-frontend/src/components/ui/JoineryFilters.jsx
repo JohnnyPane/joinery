@@ -7,6 +7,8 @@ const transformValue = (value, operator) => {
   switch(operator) {
     case 'between':
       return value.split('-').map(v => v.trim());
+    case 'in':
+      return value.split(',');
     default:
       return value;
   }

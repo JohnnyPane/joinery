@@ -7,6 +7,7 @@ export default function useResourceController(initial = {}) {
   const [sortDirection, setSortDirection] = useState(initial.sortDirection || 'desc');
   const [filters, setFilters] = useState(initial.filters || {});
   const [scopes, setScopes] = useState(initial.scopes || []);
+  const [searchColumn, setSearchColumn] = useState(initial.searchColumn || null);
   const [search, setSearch] = useState(initial.search || '');
 
   const reset = useCallback(() => {
@@ -16,6 +17,7 @@ export default function useResourceController(initial = {}) {
     setSortDirection('desc');
     setFilters({});
     setScopes([]);
+    setSearchColumn(searchColumn);
     setSearch('');
   }, []);
 
@@ -27,6 +29,7 @@ export default function useResourceController(initial = {}) {
     filters, setFilters,
     scopes, setScopes,
     search, setSearch,
+    searchColumn, setSearchColumn,
     reset
   }
 }

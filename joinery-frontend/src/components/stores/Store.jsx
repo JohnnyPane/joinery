@@ -20,12 +20,8 @@ const Store = () => {
   const [isLogoDrawerOpen, { open: openLogoDrawer, close: closeLogoDrawer }] = useDisclosure(false);
   const [editStoreDrawerOpen, { open: openEditStoreDrawer, close: closeEditStoreDrawer }] = useDisclosure(false);
 
-  if (isLoading) {
+  if (!store) {
     return <div>Loading...</div>;
-  }
-
-  if (isError) {
-    return <div>Error: {error.message}</div>;
   }
 
   const isOwner = user && user.current_store?.id === store.id;
@@ -55,17 +51,16 @@ const Store = () => {
           </div>
 
           <div className="double-margin-left">
-            <div className="flex row align-center">
               <Title order={2}>{store.name}</Title>
 
-              {isOwner &&
-                <Button variant="outline" color="blue" size="compact-xs" className="double-margin-left"
-                        onClick={openEditStoreDrawer}>
-                  Edit Store Info
-                </Button>}
-            </div>
-            {/*<Text color="dimmed">{store.description}</Text>*/}
-            <Text size="sm" color="dimmed">{store.location}</Text>
+            <Text color="dimmed" size="sm">{store.description}</Text>
+            {/*<Text size="sm" color="dimmed">{store.location}</Text>*/}
+
+            {isOwner &&
+              <Button variant="outline" color="blue" size="compact-xs"
+                      onClick={openEditStoreDrawer}>
+                Edit Store Info
+              </Button>}
           </div>
         </div>
       </div>
@@ -77,7 +72,7 @@ const Store = () => {
         </Tabs.List>
 
         <Tabs.Panel value="products">
-          <ResourceProvider resourceName="products" initial={{ scopes: [{ name: 'by_store', args: [id] }, { name: 'in_stock' }] }} >
+          <ResourceProvider resourceName="products" initial={{ searchColumn: 'name', scopes: [{ name: 'by_store', args: [id] }, { name: 'in_stock' }] }} >
             <StoreProducts storeId={id} />
 
             <JoineryPagination resourceName="products" />

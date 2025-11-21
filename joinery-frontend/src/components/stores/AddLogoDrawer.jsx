@@ -1,4 +1,5 @@
-import { useQueryClient } from '@tanstack/react-query';import { Drawer } from "@mantine/core";
+import { useQueryClient } from '@tanstack/react-query';
+import { Drawer, Card } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 
 import JoineryImageUploader from "../ui/JoineryImageUploader.jsx";
@@ -30,11 +31,13 @@ const AddLogoDrawer = ({ storeId, isOpen, onClose }) => {
       size="lg"
       position="right"
     >
-      <JoineryImageUploader
-        resourceId={storeId}
-        uploadApi={storesApi}
-        onSuccessfulUpload={handleSuccessfulUpload}
-      />
+      <Card shadow="sm" withBorder>
+        <JoineryImageUploader
+          resourceId={storeId}
+          uploadApi={storesApi}
+          onSuccessfulUpload={handleSuccessfulUpload}
+        />
+      </Card>
     </Drawer>
   );
 }

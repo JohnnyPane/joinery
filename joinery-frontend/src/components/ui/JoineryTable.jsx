@@ -31,7 +31,7 @@ const JoineryTable = ({ columns, resourceData, onRowClick }) => {
   const meta = resourceData?.meta;
 
   if (!data || data.length === 0) {
-    return <div>No data available.</div>;
+    return <div>No resources found.</div>;
   }
 
   const handleRowClick = (row) => {

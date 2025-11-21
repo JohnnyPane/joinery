@@ -33,6 +33,8 @@ class Product < ApplicationRecord
   scope :raw_materials, -> { where(productable_type: RAW_MATERIAL_TYPES) }
   scope :lumber, -> { where(productable_type: LUMBER_TYPES) }
 
+  searchable_by :name
+
   before_validation :set_defaults_for_requestable, if: :requestable?
 
   def has_enough_stock?(requested_quantity)

@@ -7,17 +7,9 @@ import { useResourceContext } from "../../context/ResourceContext.jsx";
 
 import StoreOrderItemDetails from "../stores/StoreOrderItemDetails.jsx";
 import OrdersTablePage from "./OrdersTablePage.jsx";
+import { orderStatusOptions } from "../../utils/orderUtils.js";
 import '../stores/Store.scss';
 import './Order.scss'
-
-const statusOptions = [
-  { value: 'awaiting_fulfillment', label: 'Awaiting Fulfillment' },
-  { value: 'awaiting_pickup', label: 'Awaiting Pickup' },
-  { value: 'shipped', label: 'Shipped' },
-  { value: 'delivered', label: 'Delivered' },
-  { value: 'complete', label: 'Complete' },
-  { value: 'cancelled', label: 'Cancelled' },
-];
 
 // Named component OrdersPage but it is really OrderItems page
 const OrdersPage = ({ currentUser, store }) => {
@@ -107,7 +99,7 @@ const OrdersPage = ({ currentUser, store }) => {
             <Select
               label="Update Order Status"
               placeholder="Select new status"
-              data={statusOptions}
+              data={orderStatusOptions}
               value={item.status}
               onChange={handleStatusSelect}
               w={300}
@@ -121,7 +113,7 @@ const OrdersPage = ({ currentUser, store }) => {
       </Modal>
 
       <Modal opened={confirmOpened} onClose={handleCancelStatusChange} title={<Text size="lg" className="bold">Confirm Status Change</Text>}>
-        <Text className="double-margin-bottom">Are you sure you want to change the status of Order Item {item?.id} to "{statusOptions.find(option => option.value === newStatus)?.label}"?</Text>
+        <Text className="double-margin-bottom">Are you sure you want to change the status of Order Item {item?.id} to "{orderStatusOptions.find(option => option.value === newStatus)?.label}"?</Text>
         <div className="flex row space-between double-margin-top">
           <Button variant="subtle" color="gray" onClick={handleCancelStatusChange}>Cancel</Button>
           <Button variant="subtle" color="teal" onClick={() => handleStatusChange()}>Confirm</Button>

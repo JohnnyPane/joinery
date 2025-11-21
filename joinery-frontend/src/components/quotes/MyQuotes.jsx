@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Tabs, Drawer, Text } from "@mantine/core";
+import { Tabs, Drawer, Text, Title } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useResourceContext } from "../../context/ResourceContext.jsx";
 import QuoteDrawerDetails from "./QuoteDrawerDetails.jsx";
@@ -30,6 +30,7 @@ const MyQuotes = ({ user, store }) => {
 
   return (
     <div className="page">
+      <Title className="center-text" order={2}>My Quotes</Title>
       <Tabs onChange={handleTabChange} defaultValue={"my-quotes"} className="margin-top">
         <Tabs.List className="margin-bottom">
           <Tabs.Tab value="my-quotes"><Text className="bold" size="md">My Requests</Text></Tabs.Tab>

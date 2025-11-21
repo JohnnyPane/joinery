@@ -10,22 +10,16 @@ import useResource from "../../hooks/useResource.js";
 import ProductCard from "../products/ProductCard.jsx";
 import StoreProduct from "./StoreProduct.jsx";
 import ProductSkeletons from "../products/ProductSkeletons.jsx";
+import JoinerySearch from "../ui/JoinerySearch.jsx";
+import { IconPlus } from "@tabler/icons-react";
 
 const StoreProducts = ({ storeId }) => {
   const { id } = useParams();
   const { data: user } = useMe();
-  const { data: products, isLoading, isError, error } = useResourceData('products');
+  const { data: products, isLoading } = useResourceData('products');
   const { data: store } = useResource('stores', storeId || id);
   const [opened, { open, close }] = useDisclosure(false);
   const [product, setProduct] = useState(null);
-
-  if (isLoading) {
-    return <ProductSkeletons />;
-  }
-
-  if (isError) {
-    return <div>Error: {error.message}</div>;
-  }
 
   const isOwner = user && user.current_store?.id === parseInt(storeId || id);
 
@@ -41,28 +35,41 @@ const StoreProducts = ({ storeId }) => {
       <div className="flex row align-center double-padding-lr space-between">
         <Text size="xl" className="bold margin-right">{storeProductText}</Text>
 
-        {isOwner && <Button component={Link} to="/products/new" variant="filled" color="teal" disabled={!isOwner}>
+        {isOwner && <Button
+          component={Link}
+          to="/products/new"
+          variant="outline"
+          color="teal"
+          disabled={!isOwner}
+          rightSection={<IconPlus size={16} />}
+        >
           Add New Product
         </Button>}
       </div>
 
-      {products.data.length === 0 ? (
-        <div className="center-content margin-t-80"><p>You have not listed any products - click "Add new product" to get started</p></div>
-      ) : (
-        <div className="product-list">
-          <div className="product-grid">
-            {products && products.data.map(product => (
-              <div key={product.id} className="product-card-wrapper" onClick={isOwner ? open : null}>
-                <ProductCard key={product.id} cardData={product.attributes} clickable={false} />
+      <div className="margin-top double-margin-bottom flex row to-center">
+        <JoinerySearch searchLabel={`${store.name} products`} />
+      </div>
 
-                {isOwner && <Button onClick={() => onProductClick(product.attributes)} disabled={!isOwner} variant="outline" color="black" fullWidth mt="xs">
-                  Manage Product
-                </Button>}
-              </div>
-            ))}
-          </div>
+      {products?.data?.length === 0 && !isLoading &&
+        <div className="center-content margin-t-80"><p>No products found.</p></div>
+      }
+
+      { isLoading && <ProductSkeletons /> }
+
+      <div className="product-list">
+        <div className="product-grid">
+          {products && products?.data?.map(product => (
+            <div key={product.id} className="product-card-wrapper" onClick={isOwner ? open : null}>
+              <ProductCard key={product.id} cardData={product.attributes} clickable={false} />
+
+              {isOwner && <Button onClick={() => onProductClick(product.attributes)} disabled={!isOwner} variant="outline" color="black" fullWidth mt="xs">
+                Manage Product
+              </Button>}
+            </div>
+          ))}
         </div>
-      )}
+      </div>
 
       {isOwner && product && (
         <Drawer

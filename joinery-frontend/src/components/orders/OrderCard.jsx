@@ -14,7 +14,7 @@ const OrderCard = ({ item, onClick }) => {
   const imageUrl = getImageUrl(product.images[0].image_url)
 
   return (
-    <Card shadow="sm" onClick={handleClick}>
+    <Card shadow="sm" onClick={handleClick} className="clickable">
       <div className="flex row space-between margin-4-b">
         <Text size="sm">Order: {id}</Text>
 
