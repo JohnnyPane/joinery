@@ -1,5 +1,6 @@
 class Store < ApplicationRecord
   include Imageable
+  include Ownable
 
   has_many :order_items
   belongs_to :owner, class_name: 'User', foreign_key: 'owner_id'
@@ -13,6 +14,7 @@ class Store < ApplicationRecord
   accepts_nested_attributes_for :address, allow_destroy: true
 
   acts_as_imageable_one :logo, processing_method: :resize_to_fill
+  owned_by :owner
 
   validates :name, presence: true
   validates :owner, presence: true

@@ -7,7 +7,7 @@ const FormGridInputs = ({ form, formInputs, nestedFieldType = null }) => {
       {
         formInputs.map((input) => {
           return (
-            <Grid.Col key={name} span={{ base: 12, sm: input.gridSize || 12 }}>
+            <Grid.Col key={input.name} span={{ base: 12, sm: input.gridSize || 12 }}>
               <JoineryFormFields form={form} fieldConfig={input} nestedFieldType={nestedFieldType} />
             </Grid.Col>
           )

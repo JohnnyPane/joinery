@@ -9,6 +9,7 @@ import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 
 import { createApi } from "../../services/createApi.js";
 import { moneyDisplay } from "../../utils/humanizeText.js";
+import { usStates } from "../../utils/stateUtils.js";
 
 import FormInput from "../ui/FormInput.jsx";
 
@@ -21,14 +22,14 @@ const formInputs = [
   { name: 'shipping_address.address_1', label: 'Shipping Address', type: 'text', required: true },
   { name: 'shipping_address.address_2', label: 'Address Line 2', type: 'text', required: false, gridSize: 6 },
   { name: 'shipping_address.city', label: 'City', type: 'text', required: true, gridSize: 6  },
-  { name: 'shipping_address.state', label: 'State', type: 'text', required: true, gridSize: 6  },
+  { name: 'shipping_address.state', label: 'State', type: 'select', data: usStates, required: true, gridSize: 6  },
   { name: 'shipping_address.zip', label: 'Zip Code', type: 'text', required: true, gridSize: 6  },
   { name: 'billing_same_as_shipping', label: 'Billing same as shipping', type: 'checkbox', required: false, checked: true },
   // { name: 'shipping_address.country', label: 'Country', type: 'text', required: true },
   { name: 'billing_address.address_1', label: 'Billing Address', type: 'text', required: false, isBilling: true },
   { name: 'billing_address.address_2', label: 'Address Line 2', type: 'text', required: false, isBilling: true, gridSize: 6 },
   { name: 'billing_address.city', label: 'City', type: 'text', required: false, isBilling: true, gridSize: 6  },
-  { name: 'billing_address.state', label: 'State', type: 'text', required: false, isBilling: true, gridSize: 6  },
+  { name: 'billing_address.state', label: 'State', type: 'select', data: usStates, required: false, isBilling: true, gridSize: 6  },
   { name: 'billing_address.zip', label: 'Zip Code', type: 'text', required: false, isBilling: true, gridSize: 6  },
   // { name: 'billing_address.country', label: 'Country', type: 'text', required: false, isBilling: true },
 ];
@@ -171,6 +172,7 @@ const CheckoutDetails = () => {
                     {...form.getInputProps(name, { type: type })}
                     error={form.errors[name]}
                     hidden={input.isBilling && billingSameAsShipping}
+                    data={input.data}
                   />
                 </Grid.Col>
               )

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Drawer, Select, Tabs, Text, Modal, Button } from '@mantine/core';
+import { Drawer, Tabs, Text, Modal, Button } from '@mantine/core';
 import { useDisclosure } from "@mantine/hooks";
 
 import { useUpdateResource } from "../../hooks/useResourceMutations.js";
@@ -17,21 +17,16 @@ const OrdersPage = ({ currentUser, store }) => {
   const { mutate: updateOrderItem } = useUpdateResource('order_items');
 
   const [detailsOpened, { open: openDetails, close: closeDetails }] = useDisclosure(false);
-  const [orderModalOpened, { open: openOrderModal, close: closeOrderModal }] = useDisclosure(false);
   const [confirmOpened, { open: openConfirm, close: closeConfirm }] = useDisclosure(false);
 
   const [item, setItem] = useState(null);
+  const [viewerType, setViewerType] = useState('buyer');
   const [newStatus, setNewStatus] = useState(null);
   const [storeTabActive, setStoreTabActive] = useState(false);
 
   const onDrawerClose = () => {
     setItem(null);
     closeDetails();
-  }
-
-  const handleDetailsClose = () => {
-    setItem(null);
-    closeOrderModal();
   }
 
   const handleStatusSelect = (value) => {
@@ -57,11 +52,12 @@ const OrdersPage = ({ currentUser, store }) => {
 
   const handleOrderClick = (row) => {
     setItem(row.attributes);
+    openDetails();
 
     if (storeTabActive && (currentUser.current_store.id === row.attributes.store.id)) {
-      openDetails();
+      setViewerType('store');
     } else {
-      openOrderModal();
+      setViewerType('buyer');
     }
   }
 
@@ -93,24 +89,8 @@ const OrdersPage = ({ currentUser, store }) => {
       </Tabs>
 
       <Drawer opened={detailsOpened} position="right" onClose={onDrawerClose} title={`Order ${item?.id} Details`}>
-        {item &&
-          <>
-            <StoreOrderItemDetails item={item}/>
-            <Select
-              label="Update Order Status"
-              placeholder="Select new status"
-              data={orderStatusOptions}
-              value={item.status}
-              onChange={handleStatusSelect}
-              w={300}
-              className="margin-top double-margin-bottom"
-            />
-          </>}
+        {item && <StoreOrderItemDetails itemId={item.id} viewerType={viewerType} handleStatusSelect={handleStatusSelect} />}
       </Drawer>
-
-      <Modal opened={orderModalOpened} onClose={handleDetailsClose} title={<Text size="lg" className="bold">Order Details</Text>}>
-        {item && <StoreOrderItemDetails item={item}/>}
-      </Modal>
 
       <Modal opened={confirmOpened} onClose={handleCancelStatusChange} title={<Text size="lg" className="bold">Confirm Status Change</Text>}>
         <Text className="double-margin-bottom">Are you sure you want to change the status of Order Item {item?.id} to "{orderStatusOptions.find(option => option.value === newStatus)?.label}"?</Text>

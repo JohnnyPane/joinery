@@ -1,4 +1,4 @@
-import { TextInput, Checkbox, Textarea, NumberInput } from "@mantine/core";
+import { TextInput, Checkbox, Textarea, NumberInput, Select } from "@mantine/core";
 
 const FormInput = ({ label, placeholder, required, type, value, onChange, error, hidden = false, small = false, description, ...rest }) => {
   const formComponent = formInputDelegator[type];
@@ -83,11 +83,22 @@ const CheckboxField = ({ label, onChange, ...rest }) => {
   );
 }
 
+const SelectField = ({ label, onChange, ...rest }) => {
+  return (
+    <Select
+      label={label}
+      onChange={onChange}
+      {...rest}
+    />
+  )
+}
+
 const formInputDelegator = {
   text: TextInputField,
   checkbox: CheckboxField,
   textarea: TextareaField,
   number: NumberInputField,
+  select: SelectField,
 };
 
 export default FormInput;

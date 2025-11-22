@@ -2,12 +2,11 @@ export const statusColors = (status) => {
   switch (status) {
     case 'pending':
     case 'offered':
+    case 'awaiting_pickup':
+    case 'awaiting_fulfillment':
       return 'yellow';
     case 'completed':
       return 'green';
-    case 'awaiting_pickup':
-    case 'awaiting_fulfillment':
-      return 'pink';
     case 'failed':
     case 'declined':
       return 'red';

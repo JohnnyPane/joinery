@@ -1,5 +1,8 @@
 class Product < ApplicationRecord
   include Imageable
+  include Ownable
+
+  PRODUCTABLE_TYPES = %w[Log Slab]
 
   belongs_to :store
   belongs_to :productable, polymorphic: true
@@ -10,8 +13,11 @@ class Product < ApplicationRecord
   has_many :carts, through: :cart_items
   has_many :quote_requests, dependent: :destroy
   has_many :bids, dependent: :destroy
+  has_many :reviews, as: :reviewable
 
   acts_as_imageable_many :images
+
+  owned_by :store
 
   validates :name, :price_in_cents, presence: true
 
@@ -42,7 +48,11 @@ class Product < ApplicationRecord
   end
 
   def self.productable_types
-    %w[Log Slab]
+    PRODUCTABLE_TYPES
+  end
+
+  def review_by_user(user)
+    reviews.find_by(user: user)
   end
 
   private

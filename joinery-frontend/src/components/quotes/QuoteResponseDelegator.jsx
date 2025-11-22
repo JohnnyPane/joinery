@@ -51,9 +51,9 @@ const SellerResponseActions = ({ setPrice, price, handleButtonClick, cancelOnly 
 const BuyerResponseActions = ({ handleButtonClick }) => {
   return (
     <div>
-      <Button onClick={() => handleButtonClick('decline')} color="red" className="margin-right" variant="light">Decline Quote</Button>
+      <Button onClick={() => handleButtonClick('accept')} color="green" className="margin-right" variant="light">Accept Quote</Button>
       <Button onClick={() => handleButtonClick('respond')} color="blue" className="margin-right" variant="light">Send Response</Button>
-      <Button onClick={() => handleButtonClick('accept')} color="green" variant="light">Accept Quote</Button>
+      <Button onClick={() => handleButtonClick('decline')} color="red" variant="light">Decline Quote</Button>
     </div>
   );
 }

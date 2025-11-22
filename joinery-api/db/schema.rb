@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_21_120422) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_21_155941) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -212,6 +212,19 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_21_120422) do
     t.index ["quote_request_id"], name: "index_quotes_on_quote_request_id"
   end
 
+  create_table "reviews", force: :cascade do |t|
+    t.integer "rating"
+    t.text "body"
+    t.bigint "user_id", null: false
+    t.string "reviewable_type", null: false
+    t.bigint "reviewable_id", null: false
+    t.boolean "verified_purchase"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["reviewable_type", "reviewable_id"], name: "index_reviews_on_reviewable"
+    t.index ["user_id"], name: "index_reviews_on_user_id"
+  end
+
   create_table "shipping_options", force: :cascade do |t|
     t.string "name", default: ""
     t.integer "price_in_cents", default: 0
@@ -297,6 +310,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_21_120422) do
   add_foreign_key "quote_requests", "stores", column: "seller_id"
   add_foreign_key "quote_requests", "users", column: "buyer_id"
   add_foreign_key "quotes", "quote_requests"
+  add_foreign_key "reviews", "users"
   add_foreign_key "shipping_options", "products"
   add_foreign_key "store_users", "stores"
   add_foreign_key "store_users", "users"

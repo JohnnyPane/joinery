@@ -1,8 +1,17 @@
-import { Image, Text, Badge, Button } from "@mantine/core";
+import { useState } from 'react';
+import { Image, Text, Title, Badge, Button, Select, ThemeIcon } from "@mantine/core";
+import { IconStarFilled } from '@tabler/icons-react';
+
 import { getImageUrl } from "../../utils/imageConfigs.js";
 import { moneyDisplay } from "../../utils/humanizeText.js";
 import { shippingOptionDisplayNames } from "../../utils/shippingConfigs.js";
 import { statusColors } from "../../utils/colorConfigs.js";
+import { orderStatusOptions } from "../../utils/orderUtils.js";
+
+import ProductReviewForm from "../products/ProductReviewForm.jsx";
+import useResource from "../../hooks/useResource.js";
+import StarRatingDisplay from "../ui/StarRatingDisplay.jsx";
+
 
 const orderStatusDisplayNames = {
   awaiting_fulfillment: 'Awaiting Fulfillment',
@@ -13,7 +22,14 @@ const orderStatusDisplayNames = {
   cancelled: 'Cancelled',
 }
 
-const StoreOrderItemDetails = ({ item }) => {
+const StoreOrderItemDetails = ({ itemId, handleStatusSelect, viewerType = 'buyer' }) => {
+  const [reviewing, setReviewing] = useState(false);
+  const { data: item, isLoading } = useResource('order_items', itemId)
+
+  if (isLoading) {
+    return <div className="margin-t-80 center-text">Loading Order...</div>
+  }
+
   const { product } = item;
   const price = item.quote_request ? item.quote_request.amount_in_cents : product.price_in_cents;
 
@@ -21,13 +37,21 @@ const StoreOrderItemDetails = ({ item }) => {
 
   const statusColor = statusColors(item.status);
 
+  const isBuyer = viewerType === 'buyer';
+  const isSeller = viewerType === 'store';
+  const alreadyReviewed = !!item.current_user_review
+
+  const toggleReviewing = () => {
+    setReviewing(!reviewing)
+  }
+
   return (
     <div className="order-item-details">
       <div className="flex row align-top">
         <Image radius={8} src={imageUrl} alt={product.name} style={{ width: "150px"}} fit="contain" className="double-margin-bottom" />
 
         <div className="margin-left">
-          <Text size="md" className="bold">{product.name}</Text>
+          <Title order={4}>{product.name}</Title>
           <Text size="sm" color="dimmed" className="italic margin-bottom">{product.productable_type}</Text>
           <Text size="sm" className="bold">{moneyDisplay(price)}</Text>
           <Text size="sm" color="dimmed" className="margin-bottom">Quantity: {item.quantity}</Text>
@@ -38,13 +62,46 @@ const StoreOrderItemDetails = ({ item }) => {
 
       <div>
         {item.fulfillment_method === "shipping" && <>
-          <Text size="md" className="bold margin-right">Shipping Address</Text>
+          <Title order={4} className="margin-right">Shipping Address</Title>
           <Text>{item.shipping_address}</Text>
         </>}
 
-        <Text size="md" className="bold margin-top">Shipping Method</Text>
+        <Title order={4} className="margin-top">Shipping Method</Title>
         <Text className="italic">{shippingOptionDisplayNames[item.shipping_option.shipping_type]}</Text>
       </div>
+
+      {isSeller && <Select
+        label="Update Order Status"
+        placeholder="Select new status"
+        data={orderStatusOptions}
+        value={item.status}
+        onChange={handleStatusSelect}
+        w={300}
+        className="margin-top double-margin-bottom"
+      />}
+
+      {reviewing && <ProductReviewForm product={product} onSuccess={toggleReviewing} />}
+
+      {isBuyer &&
+        <div>
+          {alreadyReviewed ? (
+            <div className="margin-top">
+              <Title order={4}>Your Review</Title>
+
+              <StarRatingDisplay rating={item.current_user_review.rating} size={22} />
+
+              <Text className="italic">"{item.current_user_review.body}"</Text>
+            </div>
+            ) : (
+              <Button variant="default" className="double-margin-top full-width" onClick={toggleReviewing}>
+                { reviewing ? 'Cancel' : 'Add' } Review
+                <ThemeIcon color="yellow" variant="transparent" >
+                  <IconStarFilled size={16} />
+                </ThemeIcon>
+              </Button>
+            )}
+        </div>
+      }
     </div>
   );
 }

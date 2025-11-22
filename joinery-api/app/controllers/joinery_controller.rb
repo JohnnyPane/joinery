@@ -14,11 +14,11 @@ class JoineryController < ApplicationController
     paginated_resources = paginated_resources.preload(*preloaded_index_resources) if preloaded_index_resources.present?
     paginated_resources =  paginated_resources.includes(images_attachments: { blob: :variant_records }) if resource_class.reflect_on_association(:images)
 
-    render_resource_collection(paginated_resources, resource_serializer, { image_type: image_size })
+    render_resource_collection(paginated_resources, resource_serializer, params: { current_user: current_user, image_type: image_size })
   end
 
   def show
-    render_resource(resource, resource_serializer, { image_type: :main_image })
+    render_resource(resource, resource_serializer, params: { current_user: current_user, image_type: :main_image, show_page: true })
   end
 
   def new
@@ -73,14 +73,9 @@ class JoineryController < ApplicationController
 
   def build_resource_with_ownership(params)
     resource = resource_class.new(params)
-    assign_ownership(resource)
-    resource
-  end
+    resource.assign_owner(current_user) if resource.respond_to?(:assign_owner)
 
-  def assign_ownership(resource)
-    if resource.respond_to?(:owner=) && current_user
-      resource.owner = current_user
-    end
+    resource
   end
 
   def resource

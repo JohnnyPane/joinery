@@ -1,6 +1,7 @@
 import { NumberInput, TextInput, Textarea, Select } from "@mantine/core";
 import { IconSearch } from "@tabler/icons-react";
 import JoineryIconMap from "./JoineryIconMap.jsx";
+import StarRatingInput from "./StarRatingInput.jsx";
 
 const JoineryFormFields = ({ form, fieldConfig, nestedFieldType = null }) => {
   let props = {};
@@ -27,11 +28,11 @@ const JoineryFormFields = ({ form, fieldConfig, nestedFieldType = null }) => {
         <NumberInput
           label={fieldConfig.label}
           placeholder={fieldConfig.placeholder || `Enter ${fieldConfig.label.toLowerCase()}`}
-          leftSection={<JoineryIconMap iconName={fieldConfig.icon} size={12} />}
+          leftSection={<JoineryIconMap iconName={fieldConfig.icon} size={14} />}
           value={fieldConfig.value || ''}
           {...props}
-          className="margin-bottom"
           min={fieldConfig.min || 0}
+          max={fieldConfig.max || 999999999999999 }
         />
       );
     case 'textarea':
@@ -58,6 +59,10 @@ const JoineryFormFields = ({ form, fieldConfig, nestedFieldType = null }) => {
           className="margin-bottom"
         />
       );
+    case 'star_rating':
+        return (
+          <StarRatingInput {...form.getInputProps('rating')} />
+        )
     default:
       return null;
   }

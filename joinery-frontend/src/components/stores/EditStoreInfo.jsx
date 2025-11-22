@@ -5,6 +5,7 @@ import { notifications } from "@mantine/notifications";
 import { useUpdateResource } from "../../hooks/useResourceMutations.js";
 import useResource from "../../hooks/useResource.js";
 import FormGridInputs from "../ui/FormGridInputs.jsx";
+import { usStates } from "../../utils/stateUtils.js";
 
 const storeInfoInputs = [
   { name: 'name', label: 'Store Name', type: 'text', required: true },
@@ -16,7 +17,7 @@ const addressInputs = [
   { name: 'address_attributes.address_1', label:  'Address 1', type: 'text', required: true },
   { name: 'address_attributes.address_2', label: 'Address 2', type: 'text', required: false, gridSize: 6 },
   { name: 'address_attributes.city', label: 'City', type: 'text', required: true, gridSize: 6  },
-  { name: 'address_attributes.state', label: 'State', type: 'text', required: true, gridSize: 6  },
+  { name: 'address_attributes.state', label: 'State', type: 'select', options: usStates, searchable: true, required: true, gridSize: 6  },
   { name: 'address_attributes.zip', label: 'Zip Code', type: 'text', required: true, gridSize: 6  },
 ];
 

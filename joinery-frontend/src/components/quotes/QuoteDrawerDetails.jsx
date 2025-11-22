@@ -57,8 +57,8 @@ const QuoteDrawerDetails = ({ quote, closeDrawer }) => {
       {(needsToRespond || sellerCanCancel) && <QuoteResponseDelegator quote={quote} responderType={responderType} closeDrawer={closeDrawer} cancelOnly={sellerCanCancel} />}
 
       {(isBuyer || isSeller) && quote.quotes.length > 0 && (
-        <div className="margin-top">
-          <Title order={4} className="margin-bottom">Previous Responses</Title>
+        <div className="double-margin-top">
+          <Title order={4} className="margin-bottom">Quote Activity</Title>
           {quote.quotes.map((response) => (
             <div key={response.id} className="margin-bottom">
               <Text><strong>{partiesInvolved[response.role]}: </strong>{response.message}</Text>

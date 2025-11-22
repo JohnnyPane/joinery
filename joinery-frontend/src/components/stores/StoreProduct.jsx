@@ -23,6 +23,7 @@ const StoreProduct = ({ close, product }) => {
     updateProduct.mutate(payload, {
       onSuccess: () => {
         notifications.show({ message: 'Product updated successfully', color: 'green', position: 'top-right' });
+        close();
       },
       onError: (error) => {
         notifications.show({ message: `Failed to update product: ${error.message}`, color: 'red' });

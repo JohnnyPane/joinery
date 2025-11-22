@@ -5,7 +5,7 @@ import ResponsiveList from "../ui/ResponsiveResourceList.jsx";
 import { orderStatusOptions } from "../../utils/orderUtils.js";
 
 const orderItemTableColumns = [
-  { header: 'ID', accessor: 'id', type: 'text' },
+  { header: 'Order ID', accessor: 'id', type: 'text' },
   { header: 'Product', accessor: 'product.name', type: 'text' },
   { header: 'Status', accessor: 'status', type: 'badge', textMapping: orderShippingStatuses },
   { header: 'Action Needed', accessor: 'requires_action', type: 'boolean' },

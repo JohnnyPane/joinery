@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import { Image } from "@mantine/core";
+import { Image, Text } from "@mantine/core";
 
 import { moneyDisplay } from "../../utils/humanizeText.js";
 import { productTypeDisplayName } from "../../utils/productConfigs.js";
@@ -21,23 +21,23 @@ const ProductCard = ({ cardData, clickable = true }) => {
     }
   }
 
-  const handleCardEnter = () => {
-    if (images.length > 1) {
-      setDisplayImageUrl(images[1]?.image_url);
-    }
-  }
-
-  const handleCardLeave = () => {
-    if (images.length > 0) {
-      setDisplayImageUrl(images[0]?.image_url);
-    }
-  }
+  // const handleCardEnter = () => {
+  //   if (images.length > 1) {
+  //     setDisplayImageUrl(images[1]?.image_url);
+  //   }
+  // }
+  //
+  // const handleCardLeave = () => {
+  //   if (images.length > 0) {
+  //     setDisplayImageUrl(images[0]?.image_url);
+  //   }
+  // }
 
   const priceDisplay = cardData.requestable ? "Request a Quote" : moneyDisplay(price_in_cents);
 
   return (
-    <div className="clickable" onClick={handleCardClick}>
-      <div onMouseEnter={handleCardEnter} onMouseLeave={handleCardLeave}>
+    <div className="clickable product-card" onClick={handleCardClick}>
+      <div className="product-card-image-container">
         <Image
           src={rootURL + displayImageUrl}
           alt={name}
@@ -45,12 +45,12 @@ const ProductCard = ({ cardData, clickable = true }) => {
         />
       </div>
 
-      <div className="flex row space-between">
-        <span>{name}</span>
-        <div className="italic">{productTypeText}</div>
+      <div className="flex row align-bottom space-between">
+        <Text size="sm" className="text-truncate" title={name}>{name}</Text>
+        <Text color="dimmed" size="sm" className="italic">{productTypeText}</Text>
       </div>
 
-      <span className="bold">{priceDisplay}</span>
+      <Text className="bold">{priceDisplay}</Text>
     </div>
   );
 }

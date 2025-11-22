@@ -3,7 +3,13 @@ class OrderItemsController < JoineryController
   protected
 
   def included_show_resources
-    [ :product, :shipping_option, :order, :store, order: :shipping_address ]
+    [
+      :store,
+      :shipping_option,
+      product: [ :shipping_options, { images_attachments: { blob: :variant_records } } ],
+      quote_request: [ :quotes ],
+      order: [ :shipping_address ]
+    ]
   end
 
   def included_index_resources

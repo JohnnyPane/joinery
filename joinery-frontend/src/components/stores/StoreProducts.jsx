@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { Button, Drawer, Text } from '@mantine/core';
+import { Button, Drawer, Text, Title } from '@mantine/core';
 import { useDisclosure } from "@mantine/hooks";
 
 import { useMe } from '../../hooks/useMe';
@@ -33,7 +33,7 @@ const StoreProducts = ({ storeId }) => {
   return (
     <div>
       <div className="flex row align-center double-padding-lr space-between">
-        <Text size="xl" className="bold margin-right">{storeProductText}</Text>
+        <Title order={2}>{storeProductText}</Title>
 
         {isOwner && <Button
           component={Link}

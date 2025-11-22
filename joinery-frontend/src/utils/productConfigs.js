@@ -3,7 +3,18 @@ import { woodSpecies } from "./woodSpecies.js";
 export const productConfigs = {
   Slab: [
     { name: 'species', label: 'Species', type: 'select', options: woodSpecies, searchable: true, required: true },
-    { name: 'slab_type', label: 'Type', type: 'select', required: true, options: ['Live Edge', 'Bookmatched', 'Square Edge', 'Edge Glued'] },
+    {
+      name: 'slab_type',
+      label: 'Type',
+      type: 'select',
+      required: true,
+      options: [
+        { value: 'live_edge', label: 'Live Edge'},
+        { value: 'bookmatched', label: 'Bookmatched'},
+        { value: 'square_edge', label: 'Square Edge' },
+        { value: 'edge_glued', label: 'Edge Glued' }
+      ]
+    },
     { name: 'length', label: 'Length (inches)', type: 'number', required: true, icon: 'rulerHeight' },
     { name: 'width', label: 'Width (inches)', type: 'number', required: true, icon: 'rulerWidth' },
     { name: 'height', label: 'Height (inches)', type: 'number', required: true, icon: 'rulerHeight' },

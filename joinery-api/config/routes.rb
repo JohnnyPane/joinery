@@ -29,6 +29,7 @@ Rails.application.routes.draw do
     resources :products, only: [ :index, :show, :create, :update, :destroy ]
     resources :quote_requests, only: [ :index, :show, :create, :update, :destroy ]
     resources :quotes, only: [ :index, :show, :create, :update, :destroy ]
+    resources :reviews, only: [ :index, :show, :create, :update, :destroy ]
     resources :shipping_options, only: [ :index, :show, :create, :update, :destroy ]
     resources :stores, only: [ :index, :show, :create, :update, :destroy ]
 
