@@ -61,7 +61,7 @@ const StoreProducts = ({ storeId }) => {
         <div className="product-grid">
           {products && products?.data?.map(product => (
             <div key={product.id} className="product-card-wrapper" onClick={isOwner ? open : null}>
-              <ProductCard key={product.id} cardData={product.attributes} clickable={false} />
+              <ProductCard key={product.id} cardData={product.attributes} clickable={true} />
 
               {isOwner && <Button onClick={() => onProductClick(product.attributes)} disabled={!isOwner} variant="outline" color="black" fullWidth mt="xs">
                 Manage Product
@@ -71,15 +71,15 @@ const StoreProducts = ({ storeId }) => {
         </div>
       </div>
 
-      {isOwner && product && (
+      {isOwner && (
         <Drawer
           opened={opened}
           onClose={close}
-          title={`Manage ${product.name}`}
+          title={`Manage ${product?.name}`}
           position="right"
           size="lg"
         >
-          <StoreProduct close={close} product={product} />
+          {product && <StoreProduct close={close} product={product}/>}
         </Drawer>
       )}
     </div>

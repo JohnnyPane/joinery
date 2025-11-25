@@ -23,4 +23,25 @@ class Store < ApplicationRecord
   def has_order_items_awaiting_action?
     order_items.awaiting_action_from_store.any?
   end
+
+  # MAJOR TODO: Move to background job
+  def recalculate_combined_score
+    products_with_reviews = products.where('reviews_count > 0')
+
+    total_count = products_with_reviews.sum(:reviews_count)
+
+    if total_count > 0
+      weighted_sum = products_with_reviews.sum("reviews_count * average_rating")
+
+      new_average = weighted_sum / total_count
+    else
+      total_count = 0
+      new_average = 0
+    end
+
+    update(
+      combined_reviews_count: total_count,
+      overall_average_rating: new_average
+    )
+  end
 end

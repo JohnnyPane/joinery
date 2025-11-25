@@ -1,11 +1,11 @@
-import { Text, Card, Badge, Image, Group } from "@mantine/core";
+import { Text, Card, Badge, Image, Group, Anchor } from "@mantine/core";
 import { orderShippingStatuses, shippingOptionDisplayNames } from "../../utils/shippingConfigs.js";
 import { getImageUrl } from '../../utils/imageConfigs.js'
 import { statusColors } from "../../utils/colorConfigs.js";
 
 const OrderCard = ({ item, onClick }) => {
   const { id, attributes } = item;
-  const { product, status, requires_action, shipping_option } = attributes
+  const { product, status, requires_action, shipping_option, store } = attributes
 
   const handleClick = () => {
     onClick(item);

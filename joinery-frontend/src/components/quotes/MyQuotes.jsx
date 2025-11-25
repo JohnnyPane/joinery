@@ -51,7 +51,7 @@ const MyQuotes = ({ user, store }) => {
         onClose={onDrawerClose}
         title={<Text size="lg" className="bold">{selectedQuote ? `Quote Request #${selectedQuote.id}` : 'Quote Request'}</Text>}
         position="right"
-        padding="xl"
+        padding="lg"
         size="lg"
       >
         {selectedQuote && <QuoteDrawerDetails quote={selectedQuote.attributes} closeDrawer={onDrawerClose} />}

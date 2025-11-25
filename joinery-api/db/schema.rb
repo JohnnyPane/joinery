@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_21_155941) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_23_114115) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -177,6 +177,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_21_155941) do
     t.boolean "biddable", default: false, null: false
     t.integer "min_bid_amount_in_cents"
     t.virtual "name_vector", type: :tsvector, as: "to_tsvector('simple'::regconfig, (COALESCE(name, ''::character varying))::text)", stored: true
+    t.integer "reviews_count", default: 0, null: false
+    t.decimal "average_rating", precision: 4, scale: 2, default: "0.0", null: false
     t.index ["name_vector"], name: "index_products_on_name_vector", using: :gin
     t.index ["productable_type", "productable_id"], name: "index_products_on_productable"
     t.index ["requestable"], name: "index_products_on_requestable"
@@ -268,6 +270,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_21_155941) do
     t.string "stripe_account_id"
     t.boolean "charges_enabled", default: false, null: false
     t.boolean "details_submitted", default: false, null: false
+    t.integer "combined_reviews_count", default: 0, null: false
+    t.decimal "overall_average_rating", precision: 4, scale: 2, default: "0.0", null: false
     t.index ["owner_id"], name: "index_stores_on_owner_id"
     t.index ["stripe_account_id"], name: "index_stores_on_stripe_account_id", unique: true
   end

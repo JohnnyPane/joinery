@@ -1,5 +1,6 @@
 class StoreSerializer < BaseSerializer
-  attributes :id, :name, :location, :description, :stripe_account_id, :charges_enabled
+  attributes :id, :name, :location, :description, :stripe_account_id, :charges_enabled, :overall_average_rating,
+             :combined_reviews_count
 
   attribute :logo_url do |store|
     store.image_urls(size_key: :small).first

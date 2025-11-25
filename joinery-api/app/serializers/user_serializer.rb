@@ -15,6 +15,12 @@ class UserSerializer < BaseSerializer
   end
 
   def self.shallow_attributes_list
-    [ :id, :email, :first_name, :last_name ]
+    [ :id, :email, :first_name, :last_name, :name ]
+  end
+
+  def self.shallow_associations(user)
+    {
+      name: user.name
+    }
   end
 end

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Image, Text, Title, Badge, Button, Select, ThemeIcon } from "@mantine/core";
+import { Image, Text, Title, Badge, Button, Select, ThemeIcon, Anchor } from "@mantine/core";
 import { IconStarFilled } from '@tabler/icons-react';
 
 import { getImageUrl } from "../../utils/imageConfigs.js";
@@ -31,7 +31,6 @@ const StoreOrderItemDetails = ({ itemId, handleStatusSelect, viewerType = 'buyer
   }
 
   const { product } = item;
-  const price = item.quote_request ? item.quote_request.amount_in_cents : product.price_in_cents;
 
   const imageUrl = getImageUrl(product.images[0].image_url);
 
@@ -48,15 +47,27 @@ const StoreOrderItemDetails = ({ itemId, handleStatusSelect, viewerType = 'buyer
   return (
     <div className="order-item-details">
       <div className="flex row align-top">
-        <Image radius={8} src={imageUrl} alt={product.name} style={{ width: "150px"}} fit="contain" className="double-margin-bottom" />
+        <Image radius={8} src={imageUrl} alt={product.name} style={{ width: "150px"}} fit="contain" />
 
         <div className="margin-left">
           <Title order={4}>{product.name}</Title>
           <Text size="sm" color="dimmed" className="italic margin-bottom">{product.productable_type}</Text>
-          <Text size="sm" className="bold">{moneyDisplay(price)}</Text>
+          <Text size="sm" className="bold">{moneyDisplay(item.total_price_in_cents)}</Text>
           <Text size="sm" color="dimmed" className="margin-bottom">Quantity: {item.quantity}</Text>
           <Badge style={{ textTransform: 'none' }} color={statusColor} variant="light">{orderStatusDisplayNames[item.status]}</Badge>
-          {/*<Text color={orderStatusColors[item.status]} size="sm" className="bold">{orderStatusDisplayNames[item.status]}</Text>*/}
+
+          <div className="flex row align-center margin-top">
+            <Text size="sm">Sold by </Text>
+            <Anchor
+              href={`/stores/${item.store.id}`}
+              className="bold margin-4-l"
+              style={{ verticalAlign: 'middle', color: 'black' }}
+              color="black"
+              component="a"
+            >
+              {item.store.name}
+            </Anchor>
+          </div>
         </div>
       </div>
 

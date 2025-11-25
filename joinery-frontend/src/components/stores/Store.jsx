@@ -12,6 +12,8 @@ import AddLogoDrawer from "./AddLogoDrawer.jsx";
 import { getImageUrl } from "../../utils/imageConfigs.js";
 import EditStoreInfo from "./EditStoreInfo.jsx";
 import JoineryPagination from "../ui/JoineryPagination.jsx";
+import StarRatingDisplay from "../ui/StarRatingDisplay.jsx";
+import StoreReviews from "../reviews/StoreReviews.jsx"
 
 const Store = () => {
   const { id } = useParams();
@@ -53,8 +55,17 @@ const Store = () => {
           <div className="double-margin-left">
               <Title order={2}>{store.name}</Title>
 
-            <Text color="dimmed" size="sm">{store.description}</Text>
+            <Text color="dimmed" className="margin-bottom" size="sm">{store.description}</Text>
             {/*<Text size="sm" color="dimmed">{store.location}</Text>*/}
+
+            {/*StarRatingDisplay({ rating, review_count = 0, size = 16, displayType = 'full', showCount = false })*/}
+            <StarRatingDisplay
+              rating={store.overall_average_rating}
+              review_count={store.combined_reviews_count}
+              displayType="single"
+              showCount={true}
+              size={22}
+            />
 
             {isOwner &&
               <Button variant="outline" color="blue" size="compact-xs"
@@ -65,9 +76,10 @@ const Store = () => {
         </div>
       </div>
 
-      <Tabs defaultValue="products" className="double-margin-bottom">
+      <Tabs defaultValue="products" className="double-margin-bottom" keepMounted={false}>
         <Tabs.List className="margin-bottom">
           <Tabs.Tab value="products"><Text className="bold">Products</Text></Tabs.Tab>
+          <Tabs.Tab value="reviews"><Text className="bold">Reviews</Text></Tabs.Tab>
           <Tabs.Tab value="about"><Text className="bold">About</Text></Tabs.Tab>
         </Tabs.List>
 
@@ -76,6 +88,14 @@ const Store = () => {
             <StoreProducts storeId={id} />
 
             <JoineryPagination resourceName="products" />
+          </ResourceProvider>
+        </Tabs.Panel>
+
+        <Tabs.Panel value="reviews">
+          <ResourceProvider resourceName="reviews" initial={{ scopes: [{ name: 'for_store', args: [id] }] }} >
+            <StoreReviews storeId={id} />
+
+            <JoineryPagination resourceName="reviews" />
           </ResourceProvider>
         </Tabs.Panel>
 

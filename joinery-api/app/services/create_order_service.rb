@@ -44,17 +44,16 @@ class CreateOrderService
 
   def create_order_item(cart_item)
     product = cart_item.product
-    shipping_option = cart_item.shipping_option
-    order_item_price = cart_item.quote_request.present? ? cart_item.quote_request.amount_in_cents : product.price_in_cents
+    unit_price_in_cents = cart_item.unit_price_in_cents
 
     @order.order_items.create!(
       product: product,
       store: product.store,
-      shipping_option: shipping_option,
+      shipping_option: cart_item.shipping_option,
       quantity: cart_item.quantity,
-      unit_price_in_cents: order_item_price,
+      unit_price_in_cents: unit_price_in_cents,
       shipping_cost_in_cents: calculate_shipping_cost(cart_item),
-      total_price_in_cents: (order_item_price * cart_item.quantity) + (shipping_option.price_in_cents * cart_item.quantity),
+      total_price_in_cents: (unit_price_in_cents * cart_item.quantity) + calculate_shipping_cost(cart_item),
       quote_request: cart_item.quote_request
     )
   end

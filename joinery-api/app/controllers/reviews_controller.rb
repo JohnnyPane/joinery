@@ -3,7 +3,7 @@ class ReviewsController < JoineryController
   private
 
   def included_index_resources
-    []
+    [ :user ]
   end
 
   def review_params

@@ -32,26 +32,30 @@ const QuoteDrawerDetails = ({ quote, closeDrawer }) => {
 
   return (
     <div>
-      <Title order={4}>Latest Changes</Title>
-      <div className="margin-bottom">
-        {quote.latest_quote.role === 'buyer' ? <Text>Quote request from {quote.buyer.first_name}</Text> : <Text>Response from {currentUser.current_store ? currentUser.current_store.name : 'Seller'}</Text>}
-      </div>
+      {/*<Title order={4}>Latest Changes</Title>*/}
+
+      {/*<div className="margin-bottom">*/}
+      {/*  {quote.latest_quote.role === 'buyer' ? <Text>Quote request from {quote.buyer.first_name}</Text> : <Text>Response from {currentUser.current_store ? currentUser.current_store.name : 'Seller'}</Text>}*/}
+      {/*</div>*/}
+
       <div className="flex row">
         {imageUrl && <Image src={imageUrl} alt={quote.product.name} className="drawer-product-image-wrapper margin-right" />}
 
         <div className="flex column">
-          <Text className="bold margin-bottom">{quote.product.name}</Text>
-          <Badge color={statusColors(quote.status)} variant="light">{quote.status}</Badge>
-          <div className="flex row margin-top">
-            <Text size="xs" className="bold">Updated: </Text>
-            <Text size="xs" color="dimmed" className="margin-left">{readableDate(quote.latest_quote.updated_at)}</Text>
+          <Title order={4}>{quote.product.name}</Title>
+          <div className="flex row margin-bottom">
+            <Text size="sm">Updated: </Text>
+            <Text size="sm" color="dimmed" className="margin-left">{readableDate(quote.latest_quote.updated_at)}</Text>
           </div>
+
+          <Badge color={statusColors(quote.status)} variant="light">{quote.status}</Badge>
         </div>
       </div>
 
       <div className="margin-top">
-        {quote.latest_quote.amount_in_cents > 0 && <Text><strong>Price:</strong> {moneyDisplay(quote.latest_quote.amount_in_cents)}</Text>}
-        <Text className="margin-bottom"><strong>Message:</strong> {quote.latest_quote.message}</Text>
+        <Badge className="margin-bottom" variant="light" color="violet" size="xl">{quote.quote_type} Quote</Badge>
+        <Text className="margin-bottom"><strong>Last Message:</strong> {quote.latest_quote.message}</Text>
+        {quote.latest_quote.amount_in_cents > 0 && <Text><strong>Quote Amount:</strong> {moneyDisplay(quote.latest_quote.amount_in_cents)}</Text>}
       </div>
 
       {(needsToRespond || sellerCanCancel) && <QuoteResponseDelegator quote={quote} responderType={responderType} closeDrawer={closeDrawer} cancelOnly={sellerCanCancel} />}
@@ -59,6 +63,7 @@ const QuoteDrawerDetails = ({ quote, closeDrawer }) => {
       {(isBuyer || isSeller) && quote.quotes.length > 0 && (
         <div className="double-margin-top">
           <Title order={4} className="margin-bottom">Quote Activity</Title>
+
           {quote.quotes.map((response) => (
             <div key={response.id} className="margin-bottom">
               <Text><strong>{partiesInvolved[response.role]}: </strong>{response.message}</Text>

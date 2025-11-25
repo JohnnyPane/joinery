@@ -1,14 +1,13 @@
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import { Image, Text } from "@mantine/core";
+import { Image, Text, Title } from "@mantine/core";
 
 import { moneyDisplay } from "../../utils/humanizeText.js";
 import { productTypeDisplayName } from "../../utils/productConfigs.js";
-
-const rootURL = import.meta.env.VITE_API_ROOT_URL;
+import { getImageUrl } from "../../utils/imageConfigs.js";
 
 const ProductCard = ({ cardData, clickable = true }) => {
-  const { images, name, productable_type, price_in_cents } = cardData;
+  const { images, name, productable_type, price_in_cents, store } = cardData;
   const firstImageUrl = images.length > 0 ? images[0]?.image_url : "";
   const [displayImageUrl, setDisplayImageUrl] = useState(firstImageUrl);
 
@@ -20,6 +19,8 @@ const ProductCard = ({ cardData, clickable = true }) => {
       navigate(`/products/${cardData.id}`);
     }
   }
+
+  const imageUrl = getImageUrl(firstImageUrl)
 
   // const handleCardEnter = () => {
   //   if (images.length > 1) {
@@ -39,16 +40,18 @@ const ProductCard = ({ cardData, clickable = true }) => {
     <div className="clickable product-card" onClick={handleCardClick}>
       <div className="product-card-image-container">
         <Image
-          src={rootURL + displayImageUrl}
+          src={imageUrl}
           alt={name}
           className="product-card-image margin-4-b"
         />
       </div>
 
       <div className="flex row align-bottom space-between">
-        <Text size="sm" className="text-truncate" title={name}>{name}</Text>
-        <Text color="dimmed" size="sm" className="italic">{productTypeText}</Text>
+        <Title order={6} className="text-truncate" title={name}>{name}</Title>
+        <Text size="sm" className="italic">{productTypeText}</Text>
       </div>
+
+      <Text size="xs" color="dimmed">{store.name}</Text>
 
       <Text className="bold">{priceDisplay}</Text>
     </div>

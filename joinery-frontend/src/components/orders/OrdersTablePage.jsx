@@ -7,6 +7,7 @@ import { orderStatusOptions } from "../../utils/orderUtils.js";
 const orderItemTableColumns = [
   { header: 'Order ID', accessor: 'id', type: 'text' },
   { header: 'Product', accessor: 'product.name', type: 'text' },
+  { header: 'Seller', accessor: 'store.name', type: 'text' },
   { header: 'Status', accessor: 'status', type: 'badge', textMapping: orderShippingStatuses },
   { header: 'Action Needed', accessor: 'requires_action', type: 'boolean' },
   { header: 'Shipping Method', accessor: 'shipping_option.shipping_type', type: 'text', textMapping: shippingOptionDisplayNames },

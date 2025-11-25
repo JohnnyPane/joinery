@@ -1,7 +1,6 @@
 import {Text, Drawer, Button, Stack} from "@mantine/core";
 import { useMediaQuery, useDisclosure } from "@mantine/hooks";
 import JoineryTablePage from "../ui/JoineryTablePage.jsx";
-import { normalizeModelName } from "../../utils/railsNames.js";
 import JoineryFilters from "./JoineryFilters.jsx";
 import { IconPlus } from "@tabler/icons-react";
 

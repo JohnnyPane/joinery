@@ -1,6 +1,6 @@
 class ProductSerializer < BaseSerializer
   attributes :id, :name, :description, :price_in_cents, :quantity, :productable_type, :requestable, :biddable,
-             :created_at, :updated_at
+             :reviews_count, :average_rating, :created_at, :updated_at
 
   attribute :productable do |product|
     productable_serializer = "#{product.productable_type}Serializer".constantize
@@ -17,8 +17,16 @@ class ProductSerializer < BaseSerializer
     product.image_urls(size_key: params[:image_type])
   end
 
+  attribute :store do |product|
+    StoreSerializer.shallow_serialize(product.store)
+  end
+
+  attribute :recent_reviews, if: proc { |_, params| show_page?(params) } do |product|
+    ReviewSerializer.shallow_serialize_collection(product.recent_reviews)
+  end
+
   def self.shallow_attributes_list
-    [ :id, :name, :price_in_cents, :quantity, :productable_type ]
+    [ :id, :name, :price_in_cents, :quantity, :productable_type, :reviews_count, :average_rating ]
   end
 
   def self.shallow_associations(product)

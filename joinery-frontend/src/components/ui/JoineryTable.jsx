@@ -18,7 +18,7 @@ const TransformComponent = ({ column, value }) => {
       const color = statusColors(value);
       return <Badge variant="light" color={color}>{displayValue}</Badge>;
     case 'boolean':
-      return <Badge variant="light" color={value ? 'teal' : 'gray'}>{displayValue ? 'Yes' : 'No'}</Badge>;
+      return <Badge variant="light" color={value ? 'blue' : 'gray'}>{displayValue ? 'Yes' : 'No'}</Badge>;
     case 'date':
       return readableDate(value);
     default:

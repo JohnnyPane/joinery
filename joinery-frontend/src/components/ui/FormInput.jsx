@@ -88,6 +88,7 @@ const SelectField = ({ label, onChange, ...rest }) => {
     <Select
       label={label}
       onChange={onChange}
+      searchable
       {...rest}
     />
   )

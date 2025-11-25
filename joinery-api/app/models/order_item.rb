@@ -49,4 +49,14 @@ class OrderItem < ApplicationRecord
   def awaiting_action_from_buyer?
     effective_status == :awaiting_pickup
   end
+
+  def awaiting_action_from?(user)
+    if awaiting_action_from_store?
+      user.default_store == store
+    elsif awaiting_action_from_buyer?
+      order.user == user
+    else
+      false
+    end
+  end
 end

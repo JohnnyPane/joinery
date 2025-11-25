@@ -14,6 +14,7 @@ class Product < ApplicationRecord
   has_many :quote_requests, dependent: :destroy
   has_many :bids, dependent: :destroy
   has_many :reviews, as: :reviewable
+  has_many :recent_reviews, -> { order(created_at: :desc).limit(3) }, class_name: "Review", as: :reviewable, dependent: :nullify
 
   acts_as_imageable_many :images
 
@@ -55,14 +56,18 @@ class Product < ApplicationRecord
     reviews.find_by(user: user)
   end
 
+  def cascade_review_update
+    store.recalculate_combined_score
+  end
+
+  def has_quote_shipping_option?
+    shipping_options.any? { |option| option.quote? }
+  end
+
   private
 
   def set_defaults_for_requestable
     self.quantity = 1
     self.price_in_cents = 0
-  end
-
-  def has_quote_shipping_option?
-    shipping_options.any? { |option| option.quote? }
   end
 end

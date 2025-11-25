@@ -17,14 +17,7 @@ class OrderItemSerializer < BaseSerializer
 
   attribute :requires_action do |order_item, params|
     return false unless params[:current_user]
-
-    if order_item.awaiting_action_from_buyer? && order_item.order.user == params[:current_user]
-      true
-    elsif order_item.awaiting_action_from_store?
-      true
-    else
-      false
-    end
+    order_item.awaiting_action_from?(params[:current_user])
   end
 
   attribute :shipping_address do |order_item|

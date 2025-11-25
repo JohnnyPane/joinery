@@ -1,4 +1,5 @@
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import { useEffect } from 'react';
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom'
 import './App.css'
 
 import { AuthProvider } from "./context/AuthContext.jsx";
@@ -19,11 +20,31 @@ import ProductCategories from "./components/products/ProductCategories.jsx";
 import Quotes from "./components/quotes/Quotes.jsx";
 import AboutUs from "./components/home/AboutUs.jsx";
 
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    const delayScroll = setTimeout(() => {
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'smooth'
+      });
+    }, 50);
+
+    return () => clearTimeout(delayScroll);
+
+  }, [pathname]);
+
+  return null;
+}
+
 function App() {
 
   return (
     <>
       <Router>
+        <ScrollToTop />
         <AuthProvider>
 
           <JoineryNavbar />
