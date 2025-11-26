@@ -18,6 +18,7 @@ const JoineryFormFields = ({ form, fieldConfig, nestedFieldType = null }) => {
           label={fieldConfig.label}
           placeholder={fieldConfig.placeholder || `Enter ${fieldConfig.label.toLowerCase()}`}
           leftSection={fieldConfig.icon ? <JoineryIconMap iconName={fieldConfig.icon} size={12} />: null}
+          required={fieldConfig.required}
           value={fieldConfig.value || ''}
           {...props}
           className="double-margin-bottom"
@@ -31,6 +32,7 @@ const JoineryFormFields = ({ form, fieldConfig, nestedFieldType = null }) => {
           leftSection={<JoineryIconMap iconName={fieldConfig.icon} size={14} />}
           className="double-margin-bottom"
           value={fieldConfig.value || ''}
+          required={fieldConfig.required}
           {...props}
           min={fieldConfig.min || 0}
           max={fieldConfig.max || 999999999999999 }
@@ -44,6 +46,7 @@ const JoineryFormFields = ({ form, fieldConfig, nestedFieldType = null }) => {
           value={fieldConfig.value || ''}
           {...props}
           className="double-margin-bottom"
+          required={fieldConfig.required}
         />
       );
     case 'select':
@@ -58,6 +61,7 @@ const JoineryFormFields = ({ form, fieldConfig, nestedFieldType = null }) => {
           rightSection={fieldConfig.searchable ? <IconSearch size={14} /> : null}
           {...props}
           className="double-margin-bottom"
+          required={fieldConfig.required}
         />
       );
     case 'switch':

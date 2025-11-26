@@ -55,12 +55,11 @@ export const productConfigs = {
     },
     { name: 'nominal_width_inches', label: 'Min. Usable Width (inches)', type: 'number', required: true, icon: 'rulerHorizontal', min: 1 },
     { name: 'length_in_feet', label: 'Length (feet)', type: 'number', required: true, icon: 'rulerVertical', min: 1 },
-    { name: 'moisture_content_percent', label: 'Moisture Content (%)', type: 'number', required: true, icon: 'water', min: 0, max: 999 },
+    { name: 'moisture_content_percent', label: 'Moisture Content (%)', type: 'number', icon: 'water', min: 0, max: 999 },
     {
       name: 'grade',
       label: 'Lumber Grade (FAS, Select, etc.)',
       type: 'select',
-      required: true,
       icon: 'star',
       options: [
         { value: 'fas', label: 'FAS (First and Seconds)' },
@@ -69,7 +68,7 @@ export const productConfigs = {
         { value: 'no_2_common', label: 'No. 2 Common' },
       ],
     },
-    { name: 'can_be_straight_lined', label: 'Offer Straight-Lined Edge Service', type: 'switch', required: false}
+    { name: 'can_be_straight_lined', label: 'Offer Straight-Lined Edge Service', type: 'switch', required: false }
   ],
   SurfacedLumber: [
     { name: 'species', label: 'Species', type: 'select', options: woodSpecies, searchable: true, required: true },
@@ -77,7 +76,7 @@ export const productConfigs = {
     { name: 'thickness_in_inches', label: 'Thickness (inches)', type: 'number', required: true, icon: 'rulerVertical', step: 0.01, placeholder: 'e.g., 1.5' },
     { name: 'width_in_inches', label: 'Width (inches)', type: 'number', required: true, icon: 'rulerHorizontal', step: 0.01, placeholder: 'e.g., 3.5' },
     { name: 'length_in_feet', label: 'Length (feet)', type: 'number', required: true, icon: 'rulerHorizontal', min: 1 },
-    { name: 'moisture_content_percent', label: 'Moisture Content (%)', type: 'number', required: true, icon: 'water', min: 0, max: 999 },
+    { name: 'moisture_content_percent', label: 'Moisture Content (%)', type: 'number', icon: 'water', min: 0, max: 999 },
     {
       name: 'profile',
       label: 'Edge Profile',
@@ -222,6 +221,14 @@ export const productableDetailsFilled = (formValues) => {
       return productableValues.species && productableValues.slab_type && productableValues.length && productableValues.width && productableValues.height;
     case 'Log':
       return productableValues.species && productableValues.length && productableValues.diameter && productableValues.moisture_content && productableValues.grade;
+    case 'RoughLumber':
+      return productableValues.species && productableValues.nominal_thickness_inches && productableValues.nominal_width_inches && productableValues.length_in_feet;
+    case 'SurfacedLumber':
+      return productableValues.species && productableValues.nominal_dimension && productableValues.length_in_feet
+    case 'TurningBlank':
+      return productableValues.species && productableValues.thickness_in_inches && productableValues.width_in_inches && productableValues.length_in_inches
+    case 'CarvingStock':
+      return productableValues.species && productableValues.thickness_in_inches && productableValues.width_in_inches && productableValues.length_in_feet
     default:
       return true;
   }

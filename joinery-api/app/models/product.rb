@@ -54,6 +54,16 @@ class Product < ApplicationRecord
     PRODUCTABLE_TYPES
   end
 
+  def self.permitted_attributes_for(type)
+    klass = type.safe_constantize
+
+    if klass.respond_to?(:productable_permitted_attributes)
+      klass.productable_permitted_attributes
+    else
+      raise NotImplementedError, "Model #{type} must define productable_permitted_attributes."
+    end
+  end
+
   def review_by_user(user)
     reviews.find_by(user: user)
   end

@@ -38,6 +38,8 @@ const Store = () => {
 
   const logoUrl = store.logo_url ? getImageUrl(store.logo_url.image_url) : null;
 
+  const productScopes = isOwner ? [{ name: 'by_store', args: [id] }] : [{ name: 'by_store', args: [id] }, { name: 'in_stock' }]
+
   return (
     <div className="page">
       <div className="double-padding-lr double-margin-bottom">
@@ -84,7 +86,7 @@ const Store = () => {
         </Tabs.List>
 
         <Tabs.Panel value="products">
-          <ResourceProvider resourceName="products" initial={{ searchColumn: 'name', scopes: [{ name: 'by_store', args: [id] }, { name: 'in_stock' }] }} >
+          <ResourceProvider resourceName="products" initial={{ searchColumn: 'name', scopes: productScopes }} >
             <StoreProducts storeId={id} />
 
             <JoineryPagination resourceName="products" />

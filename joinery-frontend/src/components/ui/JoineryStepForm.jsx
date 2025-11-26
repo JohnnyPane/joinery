@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Button, Stepper, Card } from '@mantine/core';
+import { notifications } from "@mantine/notifications";
 import './JoineryStepForm.scss';
 
 const JoineryStepForm = ({ steps, onComplete, nextStepFlag = false, setNextFlag }) => {
@@ -13,12 +14,24 @@ const JoineryStepForm = ({ steps, onComplete, nextStepFlag = false, setNextFlag 
     }
   }, [nextStepFlag]);
 
-  const nextStep = () => {
+  const nextStep = async () => {
     if (currentStep < steps.length - 1) {
-      currentStepConfig.onNext?.();
-      setCurrentStep(currentStep + 1);
+      try {
+        await currentStepConfig.onNext?.();
+        setCurrentStep(currentStep + 1);
+      } catch (error) {
+        notifications.show({
+          message: "Failed to complete step, please review the form",
+          position: "top-right",
+          color: "red"
+        })
+      }
     } else {
-      onComplete();
+      try {
+        await onComplete();
+      } catch (error) {
+        console.error("Final form completion failed:", error);
+      }
     }
   };
 

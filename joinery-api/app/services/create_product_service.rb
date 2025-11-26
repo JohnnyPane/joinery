@@ -37,7 +37,7 @@ class CreateProductService
   private
 
   def create_productable
-    unless Product.productable_types.include?(@productable_type)
+    unless Product::PRODUCTABLE_TYPES.include?(@productable_type)
       raise "Unknown productable type: #{@productable_type}. Stopping creation."
     end
 

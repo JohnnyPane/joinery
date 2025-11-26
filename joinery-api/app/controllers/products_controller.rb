@@ -1,5 +1,6 @@
 class ProductsController < JoineryController
   before_action :authenticate_user!, except: [:index, :show]
+  before_action :set_product, only: [:update]
 
   def create
     product = CreateProductService.create(product_params)
@@ -43,13 +44,22 @@ class ProductsController < JoineryController
   end
 
   def permitted_productable_attributes
-    productable_type = params.dig(:product, :productable_type)
-    productable_class = productable_type.safe_constantize
+    type = determine_productable_type
 
-    if productable_class.respond_to?(:productable_permitted_attributes)
-      productable_class.productable_permitted_attributes
-    else
-      []
+    unless Product::PRODUCTABLE_TYPES.include?(type)
+      raise ActionController::ParameterMissing, "Invalid or missing productable type: #{type}"
     end
+
+    Product.permitted_attributes_for(type)
+  end
+
+  def determine_productable_type
+    type = params.dig(:product, :productable_type)
+    type ||= @product.productable_type if @product.present?
+    type
+  end
+
+  def set_product
+    @product = Product.find(params[:id])
   end
 end

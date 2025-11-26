@@ -36,11 +36,10 @@ const ProductForm = () => {
   const form = useProductForm();
 
   const handleProductSubmit = async (values) => {
-
     const payload = {
       name: values.name,
       description: values.description,
-      price_in_cents: values.price_in_cents,
+      price_in_cents: Math.round(values.price_in_cents * 100),
       quantity: values.quantity,
       requestable: values.requestable,
       biddable: values.biddable,
@@ -50,13 +49,24 @@ const ProductForm = () => {
     }
 
     if (values.id) {
-      updateProduct.mutate({ id: values.id, ...payload });
+      await updateProduct.mutateAsync({ id: values.id, ...payload });
       return;
     }
 
     const newProduct = await createProduct.mutateAsync(payload);
     form.setFieldValue("id", newProduct.id);
   }
+
+  const validateAndSubmit = async () => {
+    const validationResult = form.validate();
+    console.log(validationResult)
+
+    if (validationResult.hasErrors) {
+      throw new Error("Client-side validation failed.");
+    }
+
+    await handleProductSubmit(form.values);
+  };
 
   const handleImagesUploaded = () => {
     setGoToNextStep(true);
@@ -88,7 +98,7 @@ const ProductForm = () => {
     { component: <ProductableDetailsForm form={form} />,
       title: 'Dimensions and Details',
       isNextDisabled: !productDetailsFilled,
-      onNext: form.onSubmit(handleProductSubmit)
+      onNext: validateAndSubmit
     },
     {
       component: <JoineryImageUploader resourceId={form.values.id} uploadApi={productsApi} onSuccessfulUpload={handleImagesUploaded} />,
