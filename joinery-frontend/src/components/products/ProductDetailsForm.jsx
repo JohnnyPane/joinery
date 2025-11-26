@@ -6,6 +6,19 @@ const ProductDetailsForm = ({ form, formType = 'create', product = null }) => {
   return (
     <Grid>
       <Grid.Col span={12}>
+        <Select
+          label="Product Type"
+          placeholder="Select product type"
+          value={product ? product.productable_type : ''}
+          searchable
+          disabled={formType === 'update'}
+          data={productTypeOptions}
+          {...form.getInputProps('productable_type')}
+          className="margin-bottom"
+        />
+      </Grid.Col>
+
+      <Grid.Col span={12}>
         <TextInput
           label="Product Name"
           placeholder="Enter product name"
@@ -77,18 +90,6 @@ const ProductDetailsForm = ({ form, formType = 'create', product = null }) => {
           </Grid.Col>
         </>
       )}
-
-      <Grid.Col span={12}>
-        <Select
-          label="Product Type"
-          placeholder="Select product type"
-          value={product ? product.productable_type : ''}
-          disabled={formType === 'update'}
-          data={productTypeOptions}
-          {...form.getInputProps('productable_type')}
-          className="margin-bottom"
-        />
-      </Grid.Col>
     </Grid>
   )
 }

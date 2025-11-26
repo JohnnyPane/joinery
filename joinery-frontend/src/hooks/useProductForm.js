@@ -7,7 +7,7 @@ export const useProductForm = (product = null) => {
       name: product?.name || '',
       description: product?.description || '',
       price_in_cents: product?.price_in_cents ? product.price_in_cents / 100 : 0,
-      quantity: product?.quantity || 0,
+      quantity: product?.quantity || 1,
       requestable: product?.requestable || false,
       biddable: product?.biddable || false,
       productable_type: product?.productable_type || '',

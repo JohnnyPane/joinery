@@ -38,10 +38,18 @@ class ProductsController < JoineryController
   def product_params
     params.require(:product).permit(
       :name, :description, :price_in_cents, :quantity, :productable_type, :requestable, :biddable, :store_id,
-      productable_attributes: [
-        :species, :height, :length, :width, :weight, :dried, :slab_type, :diameter, :origin, :grade,
-        :moisture_content
-      ],
+      productable_attributes: permitted_productable_attributes
     )
+  end
+
+  def permitted_productable_attributes
+    productable_type = params.dig(:product, :productable_type)
+    productable_class = productable_type.safe_constantize
+
+    if productable_class.respond_to?(:productable_permitted_attributes)
+      productable_class.productable_permitted_attributes
+    else
+      []
+    end
   end
 end

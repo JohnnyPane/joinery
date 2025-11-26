@@ -46,9 +46,9 @@ const ProductCard = ({ cardData, clickable = true }) => {
         />
       </div>
 
-      <div className="flex row align-bottom space-between">
+      <div className="flex row align-center space-between">
         <Title order={6} className="text-truncate" title={name}>{name}</Title>
-        <Text size="sm" className="italic">{productTypeText}</Text>
+        <Text size="sm" className="italic no-wrap">{productTypeText}</Text>
       </div>
 
       <Text size="xs" color="dimmed">{store.name}</Text>

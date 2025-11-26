@@ -1,4 +1,4 @@
-import { NumberInput, TextInput, Textarea, Select } from "@mantine/core";
+import { NumberInput, TextInput, Textarea, Select, Switch } from "@mantine/core";
 import { IconSearch } from "@tabler/icons-react";
 import JoineryIconMap from "./JoineryIconMap.jsx";
 import StarRatingInput from "./StarRatingInput.jsx";
@@ -20,7 +20,7 @@ const JoineryFormFields = ({ form, fieldConfig, nestedFieldType = null }) => {
           leftSection={fieldConfig.icon ? <JoineryIconMap iconName={fieldConfig.icon} size={12} />: null}
           value={fieldConfig.value || ''}
           {...props}
-          className="margin-bottom"
+          className="double-margin-bottom"
         />
       );
     case 'number':
@@ -29,6 +29,7 @@ const JoineryFormFields = ({ form, fieldConfig, nestedFieldType = null }) => {
           label={fieldConfig.label}
           placeholder={fieldConfig.placeholder || `Enter ${fieldConfig.label.toLowerCase()}`}
           leftSection={<JoineryIconMap iconName={fieldConfig.icon} size={14} />}
+          className="double-margin-bottom"
           value={fieldConfig.value || ''}
           {...props}
           min={fieldConfig.min || 0}
@@ -42,7 +43,7 @@ const JoineryFormFields = ({ form, fieldConfig, nestedFieldType = null }) => {
           placeholder={fieldConfig.placeholder || `Enter ${fieldConfig.label.toLowerCase()}`}
           value={fieldConfig.value || ''}
           {...props}
-          className="margin-bottom"
+          className="double-margin-bottom"
         />
       );
     case 'select':
@@ -56,13 +57,13 @@ const JoineryFormFields = ({ form, fieldConfig, nestedFieldType = null }) => {
           rightSectionPointerEvents="none"
           rightSection={fieldConfig.searchable ? <IconSearch size={14} /> : null}
           {...props}
-          className="margin-bottom"
+          className="double-margin-bottom"
         />
       );
+    case 'switch':
+      return <Switch label={fieldConfig.label} {...props} withThumbIndicator={false} className="double-margin-bottom" />
     case 'star_rating':
-        return (
-          <StarRatingInput {...form.getInputProps('rating')} />
-        )
+        return <StarRatingInput {...form.getInputProps('rating')} />;
     default:
       return null;
   }

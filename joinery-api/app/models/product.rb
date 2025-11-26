@@ -2,10 +2,10 @@ class Product < ApplicationRecord
   include Imageable
   include Ownable
 
-  PRODUCTABLE_TYPES = %w[Log Slab]
+  PRODUCTABLE_TYPES = %w[Log Slab RoughLumber SurfacedLumber TurningBlank CarvingStock]
 
   belongs_to :store
-  belongs_to :productable, polymorphic: true
+  belongs_to :productable, polymorphic: true, dependent: :destroy
   has_many :shipping_options, dependent: :destroy
   has_many :order_items
   has_many :cart_items
@@ -22,8 +22,9 @@ class Product < ApplicationRecord
 
   validates :name, :price_in_cents, presence: true
 
-  RAW_MATERIAL_TYPES = %w[Log].freeze
-  LUMBER_TYPES = %w[Slab].freeze
+  RAW_MATERIAL_TYPES = %w[Log Slab].freeze
+  LUMBER_TYPES = %w[RoughLumber SurfacedLumber].freeze
+  SPECIALTY_STOCK_TYPES = %w[TurningBlank CarvingStock]
   FINISHED_GOOD_TYPES = %w[FinishedGood].freeze
 
   scope :by_store, ->(store_id) { where(store_id: store_id) }
@@ -39,6 +40,7 @@ class Product < ApplicationRecord
   scope :finished_goods, -> { where(productable_type: FINISHED_GOOD_TYPES) }
   scope :raw_materials, -> { where(productable_type: RAW_MATERIAL_TYPES) }
   scope :lumber, -> { where(productable_type: LUMBER_TYPES) }
+  scope :specialty_stock, -> { where(productable_type: SPECIALTY_STOCK_TYPES) }
 
   searchable_by :name
 

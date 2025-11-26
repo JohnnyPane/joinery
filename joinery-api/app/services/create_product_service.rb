@@ -37,13 +37,11 @@ class CreateProductService
   private
 
   def create_productable
-    case productable_type
-    when 'Slab'
-      Slab.create!(productable_params)
-    when 'Log'
-      Log.create!(productable_params)
-    else
-      raise "Unknown productable_type: #{productable_type}"
+    unless Product.productable_types.include?(@productable_type)
+      raise "Unknown productable type: #{@productable_type}. Stopping creation."
     end
+
+    productable_class = @productable_type.constantize
+    productable_class.create!(@productable_params)
   end
 end

@@ -30,4 +30,4 @@ cpu_kind = "shared"
 cpus = 1
 
 [deploy]
-release_command = "/bin/sh -c 'bin/rails db:migrate
+release_command = "/bin/sh -c 'bin/rails db:migrate'"

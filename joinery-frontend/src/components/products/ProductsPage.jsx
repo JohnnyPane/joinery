@@ -8,6 +8,7 @@ import { ResourceProvider } from "../../context/ResourceContext.jsx";
 import { woodSpecies } from "../../utils/woodSpecies.js";
 import JoineryPagination from "../ui/JoineryPagination.jsx";
 import JoinerySearch from "../ui/JoinerySearch.jsx";
+import { productTypeOptions } from "../../utils/productConfigs.js";
 
 const productTypeScopes = [{
   type: 'buttons',
@@ -42,10 +43,7 @@ const filterConfigs = [
     name: 'productable_type',
     operator: 'eq',
     label: 'Product Type',
-    options: [
-      { value: 'Slab', label: 'Slabs' },
-      { value: 'Log', label: 'Logs' },
-    ]
+    options: productTypeOptions
   }
 ]
 
