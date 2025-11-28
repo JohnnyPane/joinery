@@ -35,6 +35,7 @@ class Product < ApplicationRecord
   #     .distinct
   # }
   scope :with_images, -> { includes(images_attachments: :blob) }
+  scope :by_productable_type, ->(productable_type) { where(productable_type: productable_type) }
   scope :slabs, -> { where(productable_type: 'Slab') }
   scope :logs, -> { where(productable_type: 'Log') }
   scope :finished_goods, -> { where(productable_type: FINISHED_GOOD_TYPES) }

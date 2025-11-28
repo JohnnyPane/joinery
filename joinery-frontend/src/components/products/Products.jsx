@@ -1,11 +1,43 @@
+import { useMemo, useEffect } from 'react';
 import { Text } from '@mantine/core';
 import ProductCard from "./ProductCard.jsx";
 import useResourceData from "../../hooks/useResourceData.js";
 import '../products/Product.scss';
 import ProductSkeletons from "./ProductSkeletons.jsx";
+import { useResourceContext } from "../../context/ResourceContext.jsx";
+import {productableConfig} from "../../utils/productConfigs.js";
 
-const Products = () => {
+const Products = ({ category }) => {
+  const { setScopes } = useResourceContext();
+
   const { data: products, isLoading, total, perPage } = useResourceData('products');
+
+  const categoryScope = useMemo(() => {
+    if (!category) {
+      return null;
+    }
+
+    if (productableConfig[category]) {
+      return {
+        name: 'by_productable_type',
+        args: [productableConfig[category].type]
+      };
+    } else {
+      return { name: category };
+    }
+  }, [category]);
+
+  useEffect(() => {
+    if (categoryScope) {
+      const newScopes = [
+        categoryScope,
+        { name: 'in_stock' }
+      ];
+
+      setScopes(newScopes);
+    }
+
+  }, [categoryScope, setScopes]);
 
   if (isLoading) return <ProductSkeletons count={perPage} />;
 

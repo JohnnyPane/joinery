@@ -207,6 +207,15 @@ export const productTypeDisplayName = {
   CarvingStock: 'Carving Stock'
 }
 
+export const productableConfig = {
+  slabs: { slug: 'slabs', type: 'Slab', plural: 'Slabs' },
+  logs: { slug: 'logs', type: 'Log', plural: 'Logs' },
+  rough_lumber: { slug: 'rough_lumber', type: 'RoughLumber', plural: 'Rough Lumber' },
+  surfaced_lumber: { slug: 'surfaced_lumber', type: 'SurfacedLumber', plural: 'Surfaced Lumber' },
+  turning_blanks: { slug: 'turning_blanks', type: 'TurningBlank', plural: 'Turning Blanks' },
+  carving_stock: { slug: 'carving_stock', type: 'CarvingStock', plural: 'Carving Stock' },
+}
+
 export const productTypeOptions = Object.keys(productConfigs).map(key => ({
   value: key, label: productTypeDisplayName[key] || key
 }));

@@ -51,7 +51,7 @@ const ProductsPage = () => {
   const [filtersOpened, { open, close }] = useDisclosure(false)
 
   return (
-    <ResourceProvider initial={{ searchColumn: 'name', scopes: [{ name: 'in_stock' }]}} >
+    <ResourceProvider initial={{ searchColumn: 'name' }} >
       <div className="page">
         <div>
           <Title order={1}>Shop Our Collection</Title>

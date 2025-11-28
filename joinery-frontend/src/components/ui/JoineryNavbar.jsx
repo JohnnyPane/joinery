@@ -7,6 +7,7 @@ import { IconChevronRight } from '@tabler/icons-react';
 import { useMe } from '../../hooks/useMe.js';
 import NavbarCart from '../cart/NavbarCart.jsx';
 import LoginLogoutToggle from "../auth/LoginLogoutToggle.jsx";
+import { productableConfig } from '../../utils/productConfigs.js'
 import './JoineryNavbar.scss';
 
 const JoineryNavbar = () => {
@@ -30,164 +31,177 @@ const JoineryNavbar = () => {
   const storeText = currentStore ? currentStore.name : 'Want to sell?';
 
   return (
-    <Box>
-      <header className="joinery-navbar">
-        <Group justify="space-between" h="100%" w="100%" px={20}>
+    <>
+      <Box>
+        <header className="joinery-navbar">
+          <Group justify="space-between" h="100%" w="100%" px={20}>
 
-          <Link to="/" className="navbar-logo">
-            <h2 className="margin-none">The Joinery</h2>
-          </Link>
+            <Link to="/" className="navbar-logo">
+              <h2 className="margin-none">The Joinery</h2>
+            </Link>
 
-          <Group gap={15} visibleFrom="md">
-            {user && (
-              <Indicator inline size={16} offset={10} color="teal" processing={processing}
+            <Group gap={15} visibleFrom="md">
+              {user && (
+                <Indicator inline size={16} offset={10} color="teal" processing={processing}
+                           withBorder
+                           disabled={!user || user?.quotes_awaiting_action_count === 0}
+                >
+                  <Button component={Link} to="/quotes" variant="subtle" color="gray">
+                    <Text color="black" size="sm">Quotes</Text>
+                  </Button>
+                </Indicator>
+              )}
+
+              <Button component={Link} to="/products" variant="subtle" color="gray">
+                <Text color="black" size="sm">Products</Text>
+              </Button>
+
+              <Button component={Link} to={storeLink} state={{ storeSignup: true }} variant="subtle" color="gray">
+                <Text color="black" size="sm">{storeText}</Text>
+              </Button>
+
+              {currentStore && (
+                <Indicator inline size={16} offset={10} color="teal" processing={processing}
+                           withBorder
+                           disabled={!user || !user?.has_orders_awaiting_action}
+                >
+                  <Button component={Link} to="/orders" variant="subtle" color="gray">
+                    <Text color="black" size="sm">Orders</Text>
+                  </Button>
+                </Indicator>
+              )}
+
+              <NavbarCart />
+
+              <LoginLogoutToggle />
+            </Group>
+
+            <Group hiddenFrom="md">
+              <NavbarCart />
+
+              <Indicator inline size={16} offset={4} color="teal" processing={processing}
                          withBorder
-                         disabled={!user || user?.quotes_awaiting_action_count === 0}
+                         disabled={!user || !user?.has_orders_awaiting_action || user?.quotes_awaiting_action_count === 0}
               >
-                <Button component={Link} to="/quotes" variant="subtle" color="gray">
-                  <Text color="black" size="sm">Quotes</Text>
-                </Button>
+                <Burger
+                  opened={drawerOpened}
+                  onClick={open}
+                />
               </Indicator>
+            </Group>
+
+          </Group>
+        </header>
+
+        <Drawer
+          opened={drawerOpened}
+          onClose={close}
+          padding="md"
+          size="sm"
+          title={user && <Text>Hello, {user.name}</Text>}
+          styles={{
+            body: {
+              display: "flex",
+              flexDirection: "column",
+              height: "100%",
+            }
+          }}
+        >
+          <Stack gap="md" align="flex-start">
+            {user && (
+              <Button
+                component={Link}
+                to="/quotes"
+                variant="subtle"
+                className="full-width"
+                onClick={close}
+                color="gray"
+                justify="space-between"
+                rightSection={<IconChevronRight size={20} />}
+              >
+                <Indicator
+                  size={16}
+                  offset={6}
+                  processing={processing}
+                  withBorder
+                  disabled={!user || user?.quotes_awaiting_action_count === 0}
+                >
+                  <Text style={{ paddingRight: "16px" }} color="black" size="sm">Quotes</Text>
+                </Indicator>
+              </Button>
             )}
 
-            <Button component={Link} to="/products" variant="subtle" color="gray">
+            <Button
+              component={Link}
+              to="/products"
+              variant="subtle"
+              className="full-width"
+              onClick={close}
+              color="gray"
+              justify="space-between"
+              rightSection={<IconChevronRight size={20} />}
+            >
               <Text color="black" size="sm">Products</Text>
             </Button>
 
-            <Button component={Link} to={storeLink} state={{ storeSignup: true }} variant="subtle" color="gray">
+            <Button
+              component={Link}
+              to={storeLink}
+              state={{ storeSignup: true }}
+              variant="subtle"
+              className="full-width"
+              onClick={close}
+              color="gray"
+              justify="space-between"
+              rightSection={<IconChevronRight size={20} />}
+            >
               <Text color="black" size="sm">{storeText}</Text>
             </Button>
 
             {currentStore && (
-              <Indicator inline size={16} offset={10} color="teal" processing={processing}
-                         withBorder
-                         disabled={!user || !user?.has_orders_awaiting_action}
+              <Button
+                component={Link}
+                to="/orders"
+                variant="subtle"
+                className="full-width"
+                onClick={close}
+                color="gray"
+                justify="space-between"
+                rightSection={<IconChevronRight size={20} />}
               >
-                <Button component={Link} to="/orders" variant="subtle" color="gray">
-                  <Text color="black" size="sm">Orders</Text>
-                </Button>
-              </Indicator>
+                <Indicator
+                  size={16}
+                  offset={6}
+                  processing={processing}
+                  withBorder
+                  disabled={!user || !user?.has_orders_awaiting_action}
+                >
+                  <Text style={{ paddingRight: "16px" }} color="black" size="sm">Orders</Text>
+                </Indicator>
+              </Button>
             )}
+          </Stack>
 
-            <NavbarCart />
 
-            <LoginLogoutToggle />
-          </Group>
+          <div className="margin-t-80">
+            <Divider className="double-margin-bottom" />
 
-          <Group hiddenFrom="md">
-            <NavbarCart />
+            <LoginLogoutToggle className="full-width space-between" showIcon={true} onClick={close} />
+          </div>
+        </Drawer>
+      </Box>
 
-            <Indicator inline size={16} offset={4} color="teal" processing={processing}
-                       withBorder
-                       disabled={!user || !user?.has_orders_awaiting_action || user?.quotes_awaiting_action_count === 0}
-            >
-              <Burger
-                opened={drawerOpened}
-                onClick={open}
-              />
-            </Indicator>
-          </Group>
+      <div className="flex row sub-navbar">
+        {Object.values(productableConfig).map(config => {
 
-        </Group>
-      </header>
-
-      <Drawer
-        opened={drawerOpened}
-        onClose={close}
-        padding="md"
-        size="sm"
-        title={user && <Text>Hello, {user.name}</Text>}
-        styles={{
-          body: {
-            display: "flex",
-            flexDirection: "column",
-            height: "100%",
-          }
-        }}
-      >
-        <Stack gap="md" align="flex-start">
-          {user && (
-            <Button
-              component={Link}
-              to="/quotes"
-              variant="subtle"
-              className="full-width"
-              onClick={close}
-              color="gray"
-              justify="space-between"
-              rightSection={<IconChevronRight size={20} />}
-            >
-              <Indicator
-                size={16}
-                offset={6}
-                processing={processing}
-                withBorder
-                disabled={!user || user?.quotes_awaiting_action_count === 0}
-              >
-                <Text style={{ paddingRight: "16px" }} color="black" size="sm">Quotes</Text>
-              </Indicator>
+          return (
+            <Button component={Link} to={`/products/categories/${config.slug}`} variant="transparent" color="black" className="margin-4-t" style={{ flexShrink: 0 }}>
+              <div className="animated-link"><Text size="xs">{config.plural}</Text></div>
             </Button>
-          )}
-
-          <Button
-            component={Link}
-            to="/products"
-            variant="subtle"
-            className="full-width"
-            onClick={close}
-            color="gray"
-            justify="space-between"
-            rightSection={<IconChevronRight size={20} />}
-          >
-            <Text color="black" size="sm">Products</Text>
-          </Button>
-
-          <Button
-            component={Link}
-            to={storeLink}
-            state={{ storeSignup: true }}
-            variant="subtle"
-            className="full-width"
-            onClick={close}
-            color="gray"
-            justify="space-between"
-            rightSection={<IconChevronRight size={20} />}
-          >
-            <Text color="black" size="sm">{storeText}</Text>
-          </Button>
-
-          {currentStore && (
-            <Button
-              component={Link}
-              to="/orders"
-              variant="subtle"
-              className="full-width"
-              onClick={close}
-              color="gray"
-              justify="space-between"
-              rightSection={<IconChevronRight size={20} />}
-            >
-              <Indicator
-                size={16}
-                offset={6}
-                processing={processing}
-                withBorder
-                disabled={!user || !user?.has_orders_awaiting_action}
-              >
-                <Text style={{ paddingRight: "16px" }} color="black" size="sm">Orders</Text>
-              </Indicator>
-            </Button>
-          )}
-        </Stack>
-
-
-        <div className="margin-t-80">
-          <Divider className="double-margin-bottom" />
-
-          <LoginLogoutToggle className="full-width space-between" showIcon={true} onClick={close} />
-        </div>
-      </Drawer>
-    </Box>
+          )
+        })}
+      </div>
+    </>
   );
 }
 

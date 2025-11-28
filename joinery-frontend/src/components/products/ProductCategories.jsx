@@ -10,24 +10,56 @@ import JoineryPagination from "../ui/JoineryPagination.jsx";
 import JoineryFilters from "../ui/JoineryFilters.jsx";
 import { getBucketImageUrl } from "../../utils/imageConfigs.js";
 import { woodSpecies } from "../../utils/woodSpecies.js";
+import JoinerySearch from "../ui/JoinerySearch.jsx";
 
 const productCategories = {
-  "raw_materials": {
+  raw_materials: {
     title: "Raw Materials",
     description: "High-quality raw materials for your next creation.",
     imageUrl: getBucketImageUrl("raw-materials.jpeg"),
   },
-  "lumber": {
+  lumber: {
     title: "Slabs & Lumber",
     description: "Shaped by nature, ready for the workshop.",
     imageUrl: getBucketImageUrl("slabs-lumber.jpeg"),
   },
-  "finished_goods": {
+  finished_goods: {
     title: "Finished Goods",
     description: "Handcrafted furniture and decor, ready to enhance your space.",
     imageUrl: getBucketImageUrl("finished-goods.jpeg"),
+  },
+  slabs: {
+    title: "Slabs",
+    productableType: "Slab",
+    description: "",
+  },
+  logs: {
+    title: "Logs",
+    productableType: "Log",
+    description: "",
+  },
+  rough_lumber: {
+    title: "Rough Lumber",
+    productableType: "RoughLumber",
+    description: "",
+  },
+  surfaced_lumber: {
+    title: "Surfaced Lumber",
+    productableType: "SurfacedLumber",
+    description: "High-quality raw materials for your next creation.",
+  },
+  turning_blanks: {
+    title: "Turning Blanks",
+    productableType: "TurningBlank",
+    description: "Shaped by nature, ready for the workshop.",
+  },
+  carving_stock: {
+    title: "Carving Stock",
+    productableType: "CarvingStock",
+    description: "Handcrafted furniture and decor, ready to enhance your space.",
   }
 }
+
 
 const filterConfigs = [
   {
@@ -54,20 +86,19 @@ const filterConfigs = [
 const ProductCategories = () => {
   const { categorySlug } = useParams();
   const category = useMemo(() => productCategories[categorySlug], [categorySlug]);
-  const categoryScope = { name: categorySlug };
   const [filterDrawerOpened, { open, close }] = useDisclosure(false);
 
   return (
-    <ResourceProvider initial={{ scopes: [categoryScope, { name: 'in_stock' }] }}>
-      <header className="category-header">
-        <img src={category.imageUrl} alt={category.title} className="category-hero" />
+    <ResourceProvider initial={{ searchColumn: 'name', scopes: [{ name: 'in_stock' }] }}>
+      {category.imageUrl && <header className="category-header">
+        <img src={category.imageUrl} alt={category.title} className="category-hero"/>
         <div className="category-overlay">
           <p className="header-paragraph">{category.description}</p>
         </div>
-      </header>
+      </header>}
 
       <div className="page">
-        <Title order={1} fw={400}>{category.title}</Title>
+        <Title order={1} fw={600}>{category.title}</Title>
 
         <Group hiddenFrom="sm" justify="end">
           <Button onClick={open} variant="subtle" color="black" className="margin" rightSection={<IconPlus size={16} />}>
@@ -75,11 +106,15 @@ const ProductCategories = () => {
           </Button>
         </Group>
 
+        <div className="flex to-right margin-bottom">
+          <JoinerySearch searchLabel="products" />
+        </div>
+
         <Group visibleFrom="sm" className="flex row align-bottom to-right">
           <JoineryFilters filterConfigs={filterConfigs} />
         </Group>
 
-        <Products />
+        <Products category={categorySlug} />
 
         <JoineryPagination resourceName="products" />
       </div>
