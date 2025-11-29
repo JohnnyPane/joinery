@@ -20,27 +20,30 @@ const productableAttributes = {
     { name: 'profile', label: 'Profile' },
     { name: 'treatment', label: 'Treatment' }
   ],
-  TurningBlank: [
+  WoodBlock: [
     { name: 'species', label: 'Species' },
+    { name: 'ideal_application', label: 'Ideal For' },
+    { name: 'is_carving_suitable', label: 'Carving Suitable' },
     { name: 'moisture_content_percent', label: 'Moisture Content' },
     { name: 'thickness_in_inches', label: 'Thickness (inches)' },
-    { name: 'width_in_inches ', label: 'Width (inches)' },
+    { name: 'width_in_inches', label: 'Width (inches)' },
     { name: 'length_in_inches', label: 'Length (inches)' },
     { name: 'cubic_inches', label: 'Cubic Inches' },
     { name: 'shape', label: 'Blank Shape' },
-    { name: 'figure_type', label: 'Figure Type' },
-    { name: 'wax_sealed', label: 'Wax Sealed' }
-  ],
-  CarvingStock: [
-    { name: 'species', label: 'Species' },
-    { name: 'moisture_content_percent', label: 'Moisture Content' },
-    { name: 'thickness_in_inches', label: 'Thickness (inches)' },
-    { name: 'width_in_inches ', label: 'Width (inches)' },
-    { name: 'board_feet', label: 'Board Feet' },
-    { name: 'grade', label: 'Grade' },
-    { name: 'grain_structure', label: 'Grain Structure' },
-    { name: 'weight_in_pounds', label: 'Weight (lbs.)' },
+    { name: 'figure_types', label: 'Figure Types' },
+    { name: 'grain_orientation', label: 'Grain Orientation' },
+    { name: 'wax_sealed', label: 'Wax Sealed' },
+    { name: 'is_reclaimed', label: 'Reclaimed' },
   ]
+}
+
+const convertDisplayValue = (value) => {
+  if (value === null || value === undefined) return '';
+
+  if (typeof value === 'boolean') {
+    return value ? 'Yes' : 'No';
+  }
+  return value;
 }
 
 const ProductDetails = ({ product }) => {
@@ -56,7 +59,7 @@ const ProductDetails = ({ product }) => {
           {displayAttributes.map((attr) => (
             <div key={attr.name} style={{ marginBottom: '8px' }} className="flex row">
               <Text className="bold margin-right">{attr.label}:</Text>
-              <Text color="dimmed">{productable[attr.name] || ''}</Text>
+              <Text color="dimmed">{convertDisplayValue(productable[attr.name])}</Text>
             </div>
           ))}
         </Accordion.Panel>

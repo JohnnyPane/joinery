@@ -1,4 +1,6 @@
 class RoughLumber < ApplicationRecord
+  include ProductableDataHandler
+
   has_one :product, as: :productable, dependent: :destroy
 
   before_validation :calculate_board_feet

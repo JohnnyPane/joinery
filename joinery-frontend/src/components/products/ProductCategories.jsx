@@ -48,16 +48,11 @@ const productCategories = {
     productableType: "SurfacedLumber",
     description: "High-quality raw materials for your next creation.",
   },
-  turning_blanks: {
-    title: "Turning Blanks",
-    productableType: "TurningBlank",
+  wood_blocks: {
+    title: "Wood Blocks",
+    productableType: "WoodBlock",
     description: "Shaped by nature, ready for the workshop.",
   },
-  carving_stock: {
-    title: "Carving Stock",
-    productableType: "CarvingStock",
-    description: "Handcrafted furniture and decor, ready to enhance your space.",
-  }
 }
 
 

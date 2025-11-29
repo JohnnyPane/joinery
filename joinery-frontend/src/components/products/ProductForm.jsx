@@ -12,16 +12,9 @@ import ProductableDetailsForm from "./ProductableDetailsForm.jsx";
 import JoineryImageUploader from "../ui/JoineryImageUploader.jsx";
 import ProductShippingOptionsForm from "./ProductShippingOptionsForm.jsx";
 import { productableDetailsFilled } from "../../utils/productConfigs.js";
-import { useProductForm } from "../../hooks/useProductForm.js";
+import { submittableShippingOptions, useProductForm } from "../../hooks/useProductForm.js";
 
 const productsApi = createApi('products');
-
-const shippingOptions = [
-  { value: 'flat_rate', label: 'Flat Rate', type: 'flat_rate', hasPrice: true },
-  { value: 'pickup', label: 'Free Pickup', type: 'pickup', hasPrice: false },
-  { value: 'quote', label: 'Request a Quote', type: 'quote' },
-];
-
 
 const ProductForm = () => {
   const [goToNextStep, setGoToNextStep] = useState(false);
@@ -29,7 +22,6 @@ const ProductForm = () => {
   const { data: user } = useMe();
   const createProduct = useCreateResource('products');
   const updateProduct = useUpdateResource('products');
-  const createShippingOption = useCreateResource('shipping_options');
 
   const navigate = useNavigate();
 
@@ -59,7 +51,6 @@ const ProductForm = () => {
 
   const validateAndSubmit = async () => {
     const validationResult = form.validate();
-    console.log(validationResult)
 
     if (validationResult.hasErrors) {
       throw new Error("Client-side validation failed.");
@@ -72,21 +63,20 @@ const ProductForm = () => {
     setGoToNextStep(true);
   }
 
-  const handleShippingOptionsSubmit = (values) => {
-    shippingOptions.forEach(shippingOption => {
-      const optionValues = values[shippingOption.type];
-      if (optionValues.enabled) {
-        const payload = {
-          product_id: values.id,
-          shipping_type: shippingOption.type,
-          price_in_cents: optionValues.price_in_cents ? optionValues.price_in_cents : 0,
-        }
-        createShippingOption.mutate(payload);
-      }
-    })
+  const handleShippingOptionsSubmit = async () => {
+    // Call form.values instead of passing from form to allow async behavior - need to validate form
+    const shipping_options_attributes = submittableShippingOptions(form.values);
 
-    notifications.show({ message: `${form.values.name} created`, color: 'green', position: 'top-right' });
-    navigate(`/products/${values.id}`);
+    try {
+      await updateProduct.mutateAsync({
+        id: form.values.id,
+        shipping_options_attributes: shipping_options_attributes,
+      })
+      notifications.show({ message: `${form.values.name} created`, color: 'green', position: 'top-right' });
+      navigate(`/products/${form.values.id}`);
+    } catch (error) {
+      notifications.show({ message: `Error updating shipping options: ${error.message}`, color: 'red', position: 'top-right' });
+    }
   }
 
   const productTypeSelected = form.values.productable_type;
@@ -106,7 +96,7 @@ const ProductForm = () => {
       hideNext: true
     },
     {
-      component: <ProductShippingOptionsForm shippingOptions={shippingOptions} form={form} />,
+      component: <ProductShippingOptionsForm form={form} />,
       title: 'Shipping Options',
       isNextDisabled: !shippingOptionSelected
     },
@@ -114,7 +104,7 @@ const ProductForm = () => {
 
   return (
     <form className="double-margin-bottom">
-      <JoineryStepForm steps={formSteps} onComplete={form.onSubmit(handleShippingOptionsSubmit)} nextStepFlag={goToNextStep} setNextFlag={setGoToNextStep} />
+      <JoineryStepForm steps={formSteps} onComplete={handleShippingOptionsSubmit} nextStepFlag={goToNextStep} setNextFlag={setGoToNextStep} />
     </form>
   );
 }

@@ -114,7 +114,7 @@ export const productConfigs = {
       ],
     },
   ],
-  TurningBlank: [
+  WoodBlock: [
     { name: 'species', label: 'Species', type: 'select', options: woodSpecies, searchable: true, required: true },
     { name: 'thickness_in_inches', label: 'Thickness (inches)', type: 'number', required: true, icon: 'rulerVertical', step: 0.01, placeholder: 'e.g., 1.5' },
     { name: 'width_in_inches', label: 'Width (inches)', type: 'number', required: true, icon: 'rulerHorizontal', step: 0.01, placeholder: 'e.g., 3.5' },
@@ -129,16 +129,13 @@ export const productConfigs = {
         { value: 'square_block', label: 'Square Block' },
         { value: 'round_dowel', label: 'Round Dowel' },
         { value: 'bowl_blank', label: 'Round Bowl Blank' },
-        { value: 'pen_blank', label: 'Pen/Small Project Blank' },
-        { value: 'corkscrew_blank', label: 'Corkscrew/Handle Blank' },
-        { value: 'segmented_ring', label: 'Segmented Ring' },
         { value: 'other_irregular', label: 'Other/Irregular Shape' }
       ]
     },
     {
-      name: 'figure_type',
-      label: 'Figure Type',
-      type: 'select',
+      name: 'figure_types',
+      label: 'Figure Types',
+      type: 'multi_select',
       placeholder: 'Select a figure type',
       searchable: true,
       options: [
@@ -150,51 +147,30 @@ export const productConfigs = {
         { value: 'crotch_figure', label: 'Crotch Figure (V-shaped, chaotic grain where branches meet)' },
         { value: 'iridescent_shimmer', label: 'Iridescent Shimmer (Grain shifts hue with angle)' },
         { value: 'ambrosia', label: 'Ambrosia (Small beetle track marks and streaking)' },
+        { value: 'mineral_streaks', label: 'Mineral Streaks (Dark streaks from mineral absorption)' },
         { value: 'straight_grain', label: 'Straight Grain (Uniform, clear, standard)' },
-        { value: 'quartered_rift', label: 'Quarter-Sawn/Rift-Sawn (Straight lines, highly stable)' },
+      ]
+    },
+    {
+      name: 'grain_orientation',
+      label: 'Grain Orientation',
+      type: 'select',
+      placeholder: 'Select grain orientation',
+      searchable: true,
+      options: [
+        { value: 'plain_sawn', label: 'Plain Sawn (Flat Sawn)' },
+        { value: 'quarter_sawn', label: 'Quarter Sawn' },
+        { value: 'rift_sawn', label: 'Rift Sawn' },
+        { value: 'end_grain', label: 'End Grain' },
+        { value: 'radial_cut', label: 'Radial Cut' },
+        { value: 'chaotic', label: 'Chaotic (Irregular Grain)' },
       ]
     },
     { name: 'moisture_content_percent', label: 'Moisture Content (%)', type: 'number', required: true, icon: 'water', min: 0, max: 999 },
+    { name: 'ideal_application', label: 'Ideal For', type: 'text', required: false },
+    { name: 'is_reclaimed', label: 'Blank is reclaimed wood', type: 'switch', required: false },
+    { name: 'is_carving_suitable', label: 'Blank is suitable for carving', type: 'switch', required: false },
     { name: 'wax_sealed', label: 'Blank is wax sealed', type: 'switch', required: false },
-  ],
-  CarvingStock: [
-    { name: 'species', label: 'Species', type: 'select', options: woodSpecies, searchable: true, required: true },
-    { name: 'thickness_in_inches', label: 'Thickness (inches)', type: 'number', required: true, icon: 'rulerVertical', step: 0.01, placeholder: 'e.g., 1.5' },
-    { name: 'width_in_inches', label: 'Width (inches)', type: 'number', required: true, icon: 'rulerHorizontal', step: 0.01, placeholder: 'e.g., 3.5' },
-    { name: 'length_in_feet', label: 'Length (inches)', type: 'number', required: true, icon: 'rulerVertical', step: 0.01, placeholder: 'e.g., 3.5' },
-    {
-      name: 'grade',
-      label: 'Grade',
-      type: 'select',
-      searchable: true,
-      options: [
-        {value: 'museum_grade', label: 'Museum Grade (100% Clear, Highest Figure)'},
-        {value: 'veneer_grade', label: 'Veneer Grade (Exception Clear, Few Defects)'},
-        {value: 'fas_clear', label: 'FAS Clear (Premium Grade, No Visible Defects)'},
-        {value: 'select_clear', label: 'Select & Clear (Very High Quality, Minimal Defects)'},
-      ]
-    },
-    {
-      name: 'grain_structure',
-      label: 'Grain Structure',
-      type: 'select',
-      searchable: true,
-      options: [
-        { value: 'straight_and_even', label: 'Straight and Even (Best for Detailed Sculpting)' },
-        { value: 'tight_closed', label: 'Tight and Closed (Ideal for Miniature and Fine Detail)' },
-        { value: 'interlocked_figure', label: 'Interlocked (Figured Grain, Highly Decorative but Difficult)' },
-        { value: 'medium_open', label: 'Medium/Open Grain (Suitable for Roughing and Larger Pieces)' },
-      ]
-    },
-    {
-      name: 'density_lb_per_cu_ft',
-      label: 'Density (lbs/ft³) - At Listed MC',
-      type: 'number',
-      required: true,
-      step: 0.1,
-      placeholder: 'e.g., 40.5',
-      icon: 'weight',
-    }
   ]
 }
 
@@ -203,8 +179,7 @@ export const productTypeDisplayName = {
   Log: 'Log',
   RoughLumber: 'Rough Lumber',
   SurfacedLumber: 'Surfaced Lumber',
-  TurningBlank: 'Turning Blank',
-  CarvingStock: 'Carving Stock'
+  WoodBlock: 'Wood Block',
 }
 
 export const productableConfig = {
@@ -212,8 +187,7 @@ export const productableConfig = {
   logs: { slug: 'logs', type: 'Log', plural: 'Logs' },
   rough_lumber: { slug: 'rough_lumber', type: 'RoughLumber', plural: 'Rough Lumber' },
   surfaced_lumber: { slug: 'surfaced_lumber', type: 'SurfacedLumber', plural: 'Surfaced Lumber' },
-  turning_blanks: { slug: 'turning_blanks', type: 'TurningBlank', plural: 'Turning Blanks' },
-  carving_stock: { slug: 'carving_stock', type: 'CarvingStock', plural: 'Carving Stock' },
+  wood_blocks: { slug: 'wood_blocks', type: 'WoodBlock', plural: 'Wood Blocks' },
 }
 
 export const productTypeOptions = Object.keys(productConfigs).map(key => ({
@@ -234,10 +208,8 @@ export const productableDetailsFilled = (formValues) => {
       return productableValues.species && productableValues.nominal_thickness_inches && productableValues.nominal_width_inches && productableValues.length_in_feet;
     case 'SurfacedLumber':
       return productableValues.species && productableValues.nominal_dimension && productableValues.length_in_feet
-    case 'TurningBlank':
+    case 'WoodBlock':
       return productableValues.species && productableValues.thickness_in_inches && productableValues.width_in_inches && productableValues.length_in_inches
-    case 'CarvingStock':
-      return productableValues.species && productableValues.thickness_in_inches && productableValues.width_in_inches && productableValues.length_in_feet
     default:
       return true;
   }

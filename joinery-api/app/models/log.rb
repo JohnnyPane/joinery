@@ -1,4 +1,6 @@
 class Log < ApplicationRecord
+  include ProductableDataHandler
+
   has_one :product, as: :productable, dependent: :destroy
 
   validates :species, :length, :diameter, presence: true

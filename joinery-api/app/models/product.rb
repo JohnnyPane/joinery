@@ -2,7 +2,7 @@ class Product < ApplicationRecord
   include Imageable
   include Ownable
 
-  PRODUCTABLE_TYPES = %w[Log Slab RoughLumber SurfacedLumber TurningBlank CarvingStock]
+  PRODUCTABLE_TYPES = %w[Log Slab RoughLumber SurfacedLumber WoodBlock]
 
   belongs_to :store
   belongs_to :productable, polymorphic: true, dependent: :destroy
@@ -16,6 +16,8 @@ class Product < ApplicationRecord
   has_many :reviews, as: :reviewable
   has_many :recent_reviews, -> { order(created_at: :desc).limit(3) }, class_name: "Review", as: :reviewable, dependent: :nullify
 
+  accepts_nested_attributes_for :shipping_options, allow_destroy: true
+
   acts_as_imageable_many :images
 
   owned_by :store
@@ -24,7 +26,7 @@ class Product < ApplicationRecord
 
   RAW_MATERIAL_TYPES = %w[Log Slab].freeze
   LUMBER_TYPES = %w[RoughLumber SurfacedLumber].freeze
-  SPECIALTY_STOCK_TYPES = %w[TurningBlank CarvingStock]
+  SPECIALTY_STOCK_TYPES = %w[WoodBlock]
   FINISHED_GOOD_TYPES = %w[FinishedGood].freeze
 
   scope :by_store, ->(store_id) { where(store_id: store_id) }

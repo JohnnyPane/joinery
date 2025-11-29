@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_26_135856) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_28_161609) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -100,27 +100,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_26_135856) do
     t.index ["user_id"], name: "index_carts_on_user_id"
   end
 
-  create_table "carving_stocks", force: :cascade do |t|
-    t.string "species", null: false
-    t.decimal "thickness_in_inches", precision: 6, scale: 2
-    t.decimal "width_in_inches", precision: 6, scale: 2
-    t.integer "length_in_feet", null: false
-    t.decimal "board_feet", precision: 8, scale: 2
-    t.integer "grade", default: 0
-    t.decimal "density_lb_per_cu_ft", precision: 4, scale: 2
-    t.integer "grain_structure", default: 0
-    t.decimal "weight_in_pounds", precision: 8, scale: 2
-    t.decimal "moisture_content_percent", precision: 5, scale: 2
+  create_table "figure_types", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "label", null: false
+    t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["board_feet"], name: "index_carving_stocks_on_board_feet"
-    t.index ["grade"], name: "index_carving_stocks_on_grade"
-    t.index ["grain_structure"], name: "index_carving_stocks_on_grain_structure"
-    t.index ["length_in_feet"], name: "index_carving_stocks_on_length_in_feet"
-    t.index ["moisture_content_percent"], name: "index_carving_stocks_on_moisture_content_percent"
-    t.index ["species"], name: "index_carving_stocks_on_species"
-    t.index ["thickness_in_inches"], name: "index_carving_stocks_on_thickness_in_inches"
-    t.index ["width_in_inches"], name: "index_carving_stocks_on_width_in_inches"
+    t.index ["name"], name: "index_figure_types_on_name", unique: true
   end
 
   create_table "jwt_denylists", force: :cascade do |t|
@@ -282,6 +268,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_26_135856) do
     t.bigint "product_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "enabled", default: true, null: false
     t.index ["product_id"], name: "index_shipping_options_on_product_id"
   end
 
@@ -345,29 +332,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_26_135856) do
     t.index ["width_in_inches"], name: "index_surfaced_lumbers_on_width_in_inches"
   end
 
-  create_table "turning_blanks", force: :cascade do |t|
-    t.string "species", null: false
-    t.decimal "thickness_in_inches", precision: 6, scale: 2
-    t.decimal "width_in_inches", precision: 6, scale: 2
-    t.decimal "length_in_inches", precision: 6, scale: 2
-    t.decimal "cubic_inches", precision: 8, scale: 2
-    t.integer "shape", default: 0
-    t.string "figure_type"
-    t.boolean "wax_sealed", default: false
-    t.decimal "moisture_content_percent", precision: 5, scale: 2
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["cubic_inches"], name: "index_turning_blanks_on_cubic_inches"
-    t.index ["figure_type"], name: "index_turning_blanks_on_figure_type"
-    t.index ["length_in_inches"], name: "index_turning_blanks_on_length_in_inches"
-    t.index ["moisture_content_percent"], name: "index_turning_blanks_on_moisture_content_percent"
-    t.index ["shape"], name: "index_turning_blanks_on_shape"
-    t.index ["species"], name: "index_turning_blanks_on_species"
-    t.index ["thickness_in_inches"], name: "index_turning_blanks_on_thickness_in_inches"
-    t.index ["wax_sealed"], name: "index_turning_blanks_on_wax_sealed"
-    t.index ["width_in_inches"], name: "index_turning_blanks_on_width_in_inches"
-  end
-
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -381,6 +345,45 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_26_135856) do
     t.integer "quotes_awaiting_action_count", default: 0, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  end
+
+  create_table "wood_block_figures", force: :cascade do |t|
+    t.bigint "wood_block_id", null: false
+    t.bigint "figure_type_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["figure_type_id"], name: "index_wood_block_figures_on_figure_type_id"
+    t.index ["wood_block_id", "figure_type_id"], name: "index_wood_block_figures_on_wood_block_id_and_figure_type_id", unique: true
+    t.index ["wood_block_id"], name: "index_wood_block_figures_on_wood_block_id"
+  end
+
+  create_table "wood_blocks", force: :cascade do |t|
+    t.string "species", null: false
+    t.decimal "thickness_in_inches", precision: 6, scale: 2
+    t.decimal "width_in_inches", precision: 6, scale: 2
+    t.decimal "length_in_inches", precision: 6, scale: 2
+    t.decimal "cubic_inches", precision: 8, scale: 2
+    t.integer "shape", default: 0
+    t.boolean "wax_sealed", default: false
+    t.decimal "moisture_content_percent", precision: 5, scale: 2
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "is_reclaimed", default: false, null: false
+    t.boolean "is_carving_suitable", default: false, null: false
+    t.integer "grain_orientation"
+    t.string "ideal_application"
+    t.decimal "board_feet", precision: 8, scale: 2
+    t.index ["cubic_inches"], name: "index_wood_blocks_on_cubic_inches"
+    t.index ["grain_orientation"], name: "index_wood_blocks_on_grain_orientation"
+    t.index ["is_carving_suitable"], name: "index_wood_blocks_on_is_carving_suitable"
+    t.index ["is_reclaimed"], name: "index_wood_blocks_on_is_reclaimed"
+    t.index ["length_in_inches"], name: "index_wood_blocks_on_length_in_inches"
+    t.index ["moisture_content_percent"], name: "index_wood_blocks_on_moisture_content_percent"
+    t.index ["shape"], name: "index_wood_blocks_on_shape"
+    t.index ["species"], name: "index_wood_blocks_on_species"
+    t.index ["thickness_in_inches"], name: "index_wood_blocks_on_thickness_in_inches"
+    t.index ["wax_sealed"], name: "index_wood_blocks_on_wax_sealed"
+    t.index ["width_in_inches"], name: "index_wood_blocks_on_width_in_inches"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
@@ -411,4 +414,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_26_135856) do
   add_foreign_key "store_users", "stores"
   add_foreign_key "store_users", "users"
   add_foreign_key "stores", "users", column: "owner_id"
+  add_foreign_key "wood_block_figures", "figure_types"
+  add_foreign_key "wood_block_figures", "wood_blocks"
 end

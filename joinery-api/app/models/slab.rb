@@ -1,4 +1,6 @@
 class Slab < ApplicationRecord
+  include ProductableDataHandler
+
   has_one :product, as: :productable, dependent: :destroy
 
   enum :slab_type, { live_edge: 0, bookmatched: 1, square_edge: 2, edge_glued: 3 }

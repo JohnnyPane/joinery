@@ -9,8 +9,6 @@ const ProductReviewPreviews = ({ reviews }) => {
     return <Text className="margin-t-40 center-text">Item has not been reviewed.</Text>
   }
 
-  console.log(reviews, "REVIEWS")
-
   return (
     <div>
       {reviews.map(review => {

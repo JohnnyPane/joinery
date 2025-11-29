@@ -1,4 +1,6 @@
 class SurfacedLumber < ApplicationRecord
+  include ProductableDataHandler
+
   has_one :product, as: :productable, dependent: :destroy
 
   def self.productable_permitted_attributes

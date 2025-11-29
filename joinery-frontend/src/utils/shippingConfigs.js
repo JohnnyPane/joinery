@@ -1,5 +1,11 @@
 import { moneyDisplay } from "./humanizeText.js";
 
+export const shippingOptions = [
+  { value: 'flat_rate', label: 'Flat Rate', type: 'flat_rate', hasPrice: true },
+  { value: 'pickup', label: 'Free Pickup', type: 'pickup', hasPrice: false },
+  { value: 'quote', label: 'Request a Quote', type: 'quote' },
+];
+
 export const shippingOptionDisplayNames = {
   flat_rate: 'Flat Rate',
   pickup: 'Free Pickup',

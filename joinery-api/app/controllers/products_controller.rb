@@ -31,7 +31,7 @@ class ProductsController < JoineryController
   end
 
   def preloaded_index_resources
-    [ :productable ]
+    [ productable: :figure_types ]
   end
 
   private
@@ -39,7 +39,8 @@ class ProductsController < JoineryController
   def product_params
     params.require(:product).permit(
       :name, :description, :price_in_cents, :quantity, :productable_type, :requestable, :biddable, :store_id,
-      productable_attributes: permitted_productable_attributes
+      productable_attributes: permitted_productable_attributes,
+      shipping_options_attributes: [ :id, :name, :price_in_cents, :enabled, :shipping_type ]
     )
   end
 

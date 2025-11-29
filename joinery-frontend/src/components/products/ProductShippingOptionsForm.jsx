@@ -1,5 +1,6 @@
-import { Switch, NumberInput, Group, Text, Grid } from "@mantine/core";
+import { Switch, NumberInput, Text, Grid } from "@mantine/core";
 import { IconCurrencyDollar } from "@tabler/icons-react";
+import { shippingOptions } from "../../utils/shippingConfigs.js";
 
 const optionsSubtexts = {
   flat_rate: "Shipping cost is the same regardless of destination, can be set to $0.",
@@ -8,7 +9,7 @@ const optionsSubtexts = {
 }
 
 
-const ProductShippingOptionsForm = ({ shippingOptions, form }) => {
+const ProductShippingOptionsForm = ({ form }) => {
 
   return (
     <>
