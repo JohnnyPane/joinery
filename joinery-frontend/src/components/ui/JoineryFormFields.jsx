@@ -28,7 +28,7 @@ const JoineryFormFields = ({ form, fieldConfig, nestedFieldType = null }) => {
         <NumberInput
           label={fieldConfig.label}
           placeholder={fieldConfig.placeholder || `Enter ${fieldConfig.label.toLowerCase()}`}
-          leftSection={<JoineryIconMap iconName={fieldConfig.icon} size={14} />}
+          leftSection={<JoineryIconMap iconName={fieldConfig.icon} size={16} />}
           className="double-margin-bottom"
           required={fieldConfig.required}
           {...props}

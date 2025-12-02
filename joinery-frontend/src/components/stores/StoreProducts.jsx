@@ -75,8 +75,8 @@ const StoreProducts = ({ storeId }) => {
         {isOwner && <Button
           component={Link}
           to="/products/new"
-          variant="outline"
-          color="teal"
+          variant="light"
+          color="blue"
           disabled={!isOwner}
           rightSection={<IconPlus size={16} />}
         >

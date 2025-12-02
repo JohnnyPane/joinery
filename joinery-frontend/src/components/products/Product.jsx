@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useParams, useNavigate } from 'react-router-dom';
-import { Accordion, Text, ThemeIcon, Title, Anchor, Divider } from '@mantine/core';
+import { Accordion, Text, ThemeIcon, Title, Anchor, Divider, Skeleton, Grid } from '@mantine/core';
 import { notifications } from "@mantine/notifications";
 import { IconWood } from "@tabler/icons-react";
 
@@ -42,7 +42,21 @@ const Product = () => {
   const navigate = useNavigate();
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <Grid className="page">
+        <Grid.Col span={6}>
+          <Skeleton height={400} radius="md" />
+        </Grid.Col>
+        <Grid.Col span={6}>
+          <Skeleton height={120} radius="md" mb={20} />
+
+          <Skeleton height={20} width="50%" radius="md" mb={10} />
+          <Skeleton height={20} width="60%" radius="md" mb={10} />
+          <Skeleton height={40} width="80%" radius="md" mb={10} />
+          <Skeleton height={40} width="80%" radius="md" mb={10} />
+        </Grid.Col>
+      </Grid>
+    );
   }
 
   if (isError) {

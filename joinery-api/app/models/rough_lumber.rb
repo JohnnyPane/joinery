@@ -1,7 +1,11 @@
 class RoughLumber < ApplicationRecord
   include ProductableDataHandler
+  include ProductableSyncHelpers
 
   has_one :product, as: :productable, dependent: :destroy
+
+  sync_species_from :species
+  sync_materials_from :species
 
   before_validation :calculate_board_feet
 

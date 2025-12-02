@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_28_161609) do
+ActiveRecord::Schema[8.0].define(version: 2025_12_02_160525) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -188,13 +188,19 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_28_161609) do
     t.virtual "name_vector", type: :tsvector, as: "to_tsvector('simple'::regconfig, (COALESCE(name, ''::character varying))::text)", stored: true
     t.integer "reviews_count", default: 0, null: false
     t.decimal "average_rating", precision: 4, scale: 2, default: "0.0", null: false
+    t.string "primary_material"
+    t.string "species_tags", default: [], array: true
+    t.string "material_tags", default: [], array: true
     t.index ["average_rating"], name: "index_products_on_average_rating"
     t.index ["is_active"], name: "index_products_on_is_active"
+    t.index ["material_tags"], name: "index_products_on_material_tags", using: :gin
     t.index ["name_vector"], name: "index_products_on_name_vector", using: :gin
     t.index ["price_in_cents"], name: "index_products_on_price_in_cents"
+    t.index ["primary_material"], name: "index_products_on_primary_material"
     t.index ["productable_type", "productable_id"], name: "index_products_on_productable"
     t.index ["quantity"], name: "index_products_on_quantity"
     t.index ["requestable"], name: "index_products_on_requestable"
+    t.index ["species_tags"], name: "index_products_on_species_tags", using: :gin
     t.index ["store_id"], name: "index_products_on_store_id"
   end
 
@@ -259,6 +265,34 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_28_161609) do
     t.index ["nominal_thickness_inches"], name: "index_rough_lumbers_on_nominal_thickness_inches"
     t.index ["nominal_width_inches"], name: "index_rough_lumbers_on_nominal_width_inches"
     t.index ["species"], name: "index_rough_lumbers_on_species"
+  end
+
+  create_table "sheet_goods", force: :cascade do |t|
+    t.integer "material_type", default: 0, null: false
+    t.string "face_species"
+    t.string "back_species"
+    t.string "grade_face"
+    t.string "grade_back"
+    t.integer "core_type", default: 0, null: false
+    t.integer "cut_style"
+    t.integer "ply_count"
+    t.integer "glue_type"
+    t.string "thickness_nominal"
+    t.decimal "thickness_actual", precision: 5, scale: 3
+    t.integer "width_in_feet"
+    t.integer "length_in_feet"
+    t.boolean "is_prefinished", default: false
+    t.boolean "is_shop_grade", default: false
+    t.string "matching"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["back_species"], name: "index_sheet_goods_on_back_species"
+    t.index ["core_type"], name: "index_sheet_goods_on_core_type"
+    t.index ["face_species"], name: "index_sheet_goods_on_face_species"
+    t.index ["length_in_feet"], name: "index_sheet_goods_on_length_in_feet"
+    t.index ["material_type"], name: "index_sheet_goods_on_material_type"
+    t.index ["thickness_nominal"], name: "index_sheet_goods_on_thickness_nominal"
+    t.index ["width_in_feet"], name: "index_sheet_goods_on_width_in_feet"
   end
 
   create_table "shipping_options", force: :cascade do |t|

@@ -20,6 +20,7 @@ class CreateProductService
     ActiveRecord::Base.transaction do
       productable = create_productable
       product = Product.create!(product_params.merge(productable: productable))
+      ProductableSynchronizer.new(productable).sync!
       product
     end
   end
@@ -31,6 +32,7 @@ class CreateProductService
       productable.update!(productable.class.base_attributes(productable_params)) if productable
       update_productable_associations(productable) if productable && productable.class.respond_to?(:association_attributes)
       product.update!(product_params.except(:id))
+      ProductableSynchronizer.new(productable).sync!
       product
     end
   end

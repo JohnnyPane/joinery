@@ -34,7 +34,25 @@ const productableAttributes = {
     { name: 'grain_orientation', label: 'Grain Orientation' },
     { name: 'wax_sealed', label: 'Wax Sealed' },
     { name: 'is_reclaimed', label: 'Reclaimed' },
-  ]
+  ],
+  SheetGood: [
+    { name: 'material_type', label: 'Material Type' },
+    { name: 'face_species', label: 'Face Species' },
+    { name: 'back_species', label: 'Back Species' },
+    { name: 'grade_face', label: 'Grade Face' },
+    { name: 'grade_back', label: 'Grade Back' },
+    { name: 'core_type', label: 'Core Type' },
+    { name: 'cut_style', label: 'Cut Style' },
+    { name: 'ply_count', label: 'Ply Count' },
+    { name: 'glue_type', label: 'Glue Type' },
+    { name: 'thickness_nominal', label: 'Thickness Nominal' },
+    { name: 'thickness_actual', label: 'Thickness Actual' },
+    { name: 'width_in_feet', label: 'Width (feet)' },
+    { name: 'length_in_feet', label: 'Length (feet)' },
+    { name: 'is_prefinished', label: 'Prefinished' },
+    { name: 'is_shop_grade', label: 'Shop Grade' },
+    { name: 'matching', label: 'Matching' },
+  ],
 }
 
 const convertDisplayValue = (value) => {

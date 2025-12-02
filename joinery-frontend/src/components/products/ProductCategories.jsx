@@ -53,6 +53,11 @@ const productCategories = {
     productableType: "WoodBlock",
     description: "Shaped by nature, ready for the workshop.",
   },
+  sheet_goods: {
+    title: "Sheet Goods",
+    productableType: "SheetGood",
+    description: "Handcrafted furniture and decor, ready to enhance your space.",
+  },
 }
 
 
@@ -70,9 +75,9 @@ const filterConfigs = [
     ]
   },
   {
-    name: 'productable.species',
+    name: 'primary_material',
     operator: 'eq',
-    label: 'Species',
+    label: 'Primary Material',
     searchable: true,
     options: woodSpecies
   },

@@ -2,7 +2,7 @@ class Product < ApplicationRecord
   include Imageable
   include Ownable
 
-  PRODUCTABLE_TYPES = %w[Log Slab RoughLumber SurfacedLumber WoodBlock]
+  PRODUCTABLE_TYPES = %w[Log Slab RoughLumber SurfacedLumber WoodBlock SheetGood].freeze
 
   belongs_to :store
   belongs_to :productable, polymorphic: true, dependent: :destroy
@@ -26,7 +26,7 @@ class Product < ApplicationRecord
 
   RAW_MATERIAL_TYPES = %w[Log Slab].freeze
   LUMBER_TYPES = %w[RoughLumber SurfacedLumber].freeze
-  SPECIALTY_STOCK_TYPES = %w[WoodBlock]
+  SPECIALTY_STOCK_TYPES = %w[WoodBlock].freeze
   FINISHED_GOOD_TYPES = %w[FinishedGood].freeze
 
   scope :by_store, ->(store_id) { where(store_id: store_id) }

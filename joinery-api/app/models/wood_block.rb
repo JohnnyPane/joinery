@@ -1,6 +1,7 @@
 class WoodBlock < ApplicationRecord
   include Dimensional
   include ProductableDataHandler
+  include ProductableSyncHelpers
 
   has_many :wood_block_figures, dependent: :destroy
   has_many :figure_types, through: :wood_block_figures
@@ -8,6 +9,9 @@ class WoodBlock < ApplicationRecord
 
   enum :shape, { square_block: 0, round_dowel: 1, bowl_blank: 2, other_irregular: 6 }
   enum :grain_orientation, { plain_sawn: 0, quarter_sawn: 1, rift_sawn: 2, end_grain: 3, radial_cut: 4, chaotic: 5 }
+
+  sync_species_from :species
+  sync_materials_from :species
 
   before_validation :set_dimensions
 

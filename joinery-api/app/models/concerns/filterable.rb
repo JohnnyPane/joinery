@@ -59,6 +59,8 @@ module Filterable
         scope.where("#{field} >= ?", value)
       when "lte"
         scope.where("#{field} <= ?", value)
+      when "contains"
+        scope.where("#{field} && ARRAY[?]::varchar[]", value)
       else
         scope
       end

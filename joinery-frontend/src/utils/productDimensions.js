@@ -30,3 +30,11 @@ export const SURFACED_NOMINAL_DIMENSIONS = [
   { value: '6x6', label: '6x6 (Timber)' },
   { value: '8x8', label: '8x8 (Timber)' },
 ];
+
+export const SHEET_MATERIAL_DIMENSIONS = [
+  { value: '2.5mm', label: '2.5 mm (Thin)' }, { value: '3mm', label: '3 mm (Approx. 1/8")' }, { value: '1/8', label: '1/8 inch' },
+  { value: '3/16', label: '3/16 inch' }, { value: '4mm', label: '4 mm' }, { value: '1/4', label: '1/4 inch (6mm)' }, { value: '6mm', label: '6 mm' },
+  { value: '3/8', label: '3/8 inch (9mm)' }, { value: '9mm', label: '9 mm' }, { value: '1/2', label: '1/2 inch (12mm)' },
+  { value: '12mm', label: '12 mm' }, { value: '5/8', label: '5/8 inch (15mm)' }, { value: '15mm', label: '15 mm' }, { value: '3/4', label: '3/4 inch (18mm)' },
+  { value: '18mm', label: '18 mm' }, { value: '7/8', label: '7/8 inch' }, { value: '1', label: '1 inch (25mm)' }, { value: '25mm', label: '25 mm' },
+];

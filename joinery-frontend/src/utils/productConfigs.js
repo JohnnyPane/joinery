@@ -1,5 +1,5 @@
 import { woodSpecies } from "./woodSpecies.js";
-import { SURFACED_NOMINAL_DIMENSIONS}  from "./productDimensions.js";
+import { SURFACED_NOMINAL_DIMENSIONS, SHEET_MATERIAL_DIMENSIONS }  from "./productDimensions.js";
 
 export const productConfigs = {
   Slab: [
@@ -171,7 +171,46 @@ export const productConfigs = {
     { name: 'is_reclaimed', label: 'Blank is reclaimed wood', type: 'switch', required: false },
     { name: 'is_carving_suitable', label: 'Blank is suitable for carving', type: 'switch', required: false },
     { name: 'wax_sealed', label: 'Blank is wax sealed', type: 'switch', required: false },
-  ]
+  ],
+  SheetGood: [
+    { name: 'material_type', label: 'Material Type', type: 'select', required: true,
+      options: [
+        { value: 'plywood', label: 'Plywood (Veneer Core)' },
+        { value: 'mdf', label: 'MDF (Medium Density Fiberboard)' },
+        { value: 'particle_board', label: 'Particle Board' },
+        { value: 'melamine', label: 'Melamine (TFL)' },
+        { value: 'osb', label: 'OSB (Oriented Strand Board)' },
+        { value: 'hardboard', label: 'Hardboard / Pegboard' }
+      ]
+    },
+    { name: 'face_species', label: 'Front Face Species/Type', type: 'select', required: true, options: woodSpecies, searchable: true },
+    { name: 'back_species', label: 'Back Face Species/Type', type: 'select', required: false, options: woodSpecies, searchable: true },
+    { name: 'grade_face', label: 'Front Face Grade', type: 'select', required: false,
+      options: [{ value: 'a', label: 'A (Best Quality - Paint/Clear Finish)' }, { value: 'b', label: 'B (Minor Defects - Sound)' }, { value: 'c', label: 'C (Tight Knots/Plugs Allowed)' }, { value: 'd', label: 'D (Large Defects/Patches Allowed)' }, { value: 'n', label: 'N (Natural/Clear - No Defects)' }]
+    },
+    { name: 'grade_back', label: 'Back Face Grade', type: 'select', required: false,
+      options: [ { value: '1', label: '1 (Sound - Good for Painting)' }, { value: '2', label: '2 (Patch/Repaired - Standard)' }, { value: '3', label: '3 (Rough - Utility Grade)' }, { value: '4', label: '4 (Structural Only)' } ]
+    },
+    { name: 'core_type', label: 'Core Type', type: 'select', required: false,
+     options: [{ value: 'veneer_core', label: 'Veneer Core' }, { value: 'mdf_core', label: 'MDF Core (Uniform, heavy)' }, { value: 'lumber_core', label: 'Lumber Core (Light, strong)' }, { value: 'combi_core', label: 'Combi-Core (MDF/Veneer Mix)' }, { value: 'particle_board_core', label: 'Particle Board Core' } ]
+    },
+    { name: 'cut_style', label: 'Cut Style', type: 'select', required: false,
+      options: [ { value: 'rotary', label: 'Rotary Cut (Wild, Random Grain)' }, { value: 'plain_sliced', label: 'Plain Sliced / Flat Cut' }, { value: 'quarter_sliced', label: 'Quarter Sliced (Straight Grain)' }, { value: 'rift_cut', label: 'Rift Cut (Very Straight, No Fleck)' } ]
+    },
+    { name: 'matching', label: 'Matching Style', type: 'select', required: false,
+      options: [ { value: 'book_match', label: 'Book Match (Mirror Image)' }, { value: 'slip_match', label: 'Slip Match (Repeating Pattern)' }, { value: 'random_match', label: 'Random Match' }, { value: 'plank_match', label: 'Plank Match (Simulates Solid Wood)' }, { value: 'whole_piece', label: 'Whole Piece (No Seams)' } ]
+    },
+    { name: 'ply_count', label: 'Number of Plies', type: 'number', icon: 'number', required: false, min: 1 },
+    { name: 'glue_type', label: 'Glue Type', type: 'select', required: false,
+      options: [ { value: 'interior', label: 'Interior Grade (Standard)' }, { value: 'exterior', label: 'Exterior Grade (Water Resistant)' }, { value: 'marine', label: 'Marine Grade (Waterproof)' }, { value: 'naf', label: 'NAF (No Added Formaldehyde)' }, { value: 'uf', label: 'UF (Urea Formaldehyde)' } ]
+    },
+    { name: 'thickness_nominal', label: 'Nominal Thickness', type: 'select', searchable: true, required: true, options: SHEET_MATERIAL_DIMENSIONS },
+    { name: 'thickness_actual', label: 'Actual Thickness (inches)', type: 'number', required: false, step: 0.001, icon: 'rulerVertical' },
+    { name: 'width_in_feet', label: 'Width (feet)', type: 'number', required: true, min: 1, icon: 'rulerHorizontal' },
+    { name: 'length_in_feet', label: 'Length (feet)', type: 'number', required: true, min: 1, icon: 'rulerVertical' },
+    { name: 'is_prefinished', label: 'Prefinished Surface', type: 'switch', required: false },
+    { name: 'is_shop_grade', label: 'Shop Grade Quality', type: 'switch', required: false },
+  ],
 }
 
 export const productTypeDisplayName = {
@@ -180,6 +219,7 @@ export const productTypeDisplayName = {
   RoughLumber: 'Rough Lumber',
   SurfacedLumber: 'Surfaced Lumber',
   WoodBlock: 'Wood Block',
+  SheetGood: 'Sheet Good',
 }
 
 export const productableConfig = {
@@ -188,6 +228,7 @@ export const productableConfig = {
   rough_lumber: { slug: 'rough_lumber', type: 'RoughLumber', plural: 'Rough Lumber' },
   surfaced_lumber: { slug: 'surfaced_lumber', type: 'SurfacedLumber', plural: 'Surfaced Lumber' },
   wood_blocks: { slug: 'wood_blocks', type: 'WoodBlock', plural: 'Wood Blocks' },
+  sheet_goods: { slug: 'sheet_goods', type: 'SheetGood', plural: 'Sheet Goods' },
 }
 
 export const productTypeOptions = Object.keys(productConfigs).map(key => ({

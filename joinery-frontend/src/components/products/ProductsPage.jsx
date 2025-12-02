@@ -10,14 +10,14 @@ import JoineryPagination from "../ui/JoineryPagination.jsx";
 import JoinerySearch from "../ui/JoinerySearch.jsx";
 import { productTypeOptions } from "../../utils/productConfigs.js";
 
-const productTypeScopes = [{
-  type: 'buttons',
-  options: [
-    { label: 'All Products', value: 'all' },
-    { label: 'Slabs', value: 'slabs' },
-    { label: 'Logs', value: 'logs' },
-  ]
-}];
+// const productTypeScopes = [{
+//   type: 'buttons',
+//   options: [
+//     { label: 'All Products', value: 'all' },
+//     { label: 'Slabs', value: 'slabs' },
+//     { label: 'Logs', value: 'logs' },
+//   ]
+// }];
 
 const filterConfigs = [
   {
@@ -33,9 +33,9 @@ const filterConfigs = [
     ]
   },
   {
-    name: 'productable.species',
+    name: 'primary_material',
     operator: 'eq',
-    label: 'Species',
+    label: 'Primary Material',
     searchable: true,
     options: woodSpecies
   },
@@ -44,6 +44,20 @@ const filterConfigs = [
     operator: 'eq',
     label: 'Product Type',
     options: productTypeOptions
+  },
+  {
+    name: 'material_tags',
+    operator: 'contains',
+    label: 'Materials',
+    searchable: true,
+    options: [
+      { value: 'plywood', label: 'Plywood' },
+      { value: 'mdf', label: 'MDF' },
+      { value: 'particle_board', label: 'Particle Board' },
+      { value: 'melamine', label: 'Melamine' },
+      { value: 'osb', label: 'OSB' },
+      { value: 'hardboard', label: 'Hardboard' },
+    ]
   }
 ]
 
@@ -74,7 +88,7 @@ const ProductsPage = () => {
         </Group>
 
         <Group visibleFrom="sm" className="flex row align-bottom to-right">
-          <JoineryScopes scopeConfigs={productTypeScopes} />
+          {/*<JoineryScopes scopeConfigs={productTypeScopes} />*/}
           <JoineryFilters filterConfigs={filterConfigs} />
         </Group>
 
