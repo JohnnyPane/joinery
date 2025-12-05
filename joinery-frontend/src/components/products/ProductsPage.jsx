@@ -21,7 +21,7 @@ import { productTypeOptions } from "../../utils/productConfigs.js";
 
 const filterConfigs = [
   {
-    name: 'price_in_cents',
+    name: 'price_per_unit_in_cents',
     operator: 'between',
     label: 'Price',
     options: [

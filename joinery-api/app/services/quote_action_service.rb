@@ -1,17 +1,21 @@
 class QuoteActionService
+  include QuoteCacheManagement
   class UnauthorizedError < StandardError; end
 
-  attr_reader :quote_request, :current_user, :actor, :action, :message, :amount_in_cents, :product, :quote_type
+  attr_reader :quote_request, :current_user, :actor, :action, :message, :amount_in_cents
 
-  def initialize(quote_request: nil, current_user:, action:, message: "", quote_type: 'product', amount_in_cents: 0, product_id: nil)
-    @quote_request = quote_request
+  def initialize(current_user:, quote_request_params: {})
+    @quote_request_params = quote_request_params
+    @quote_attributes = quote_request_params[:quote_attributes] || {}
+
+    @quote_request = QuoteRequest.find_by(id: quote_request_params[:id])
+    @message = @quote_attributes[:message]
+    @action = @quote_attributes[:action]
+    @amount_in_cents = @quote_attributes[:amount_in_cents]
+
     @current_user = current_user
-    @action = action
-    @message = message
-    @amount_in_cents = amount_in_cents
-    @product = Product.find(product_id) if product_id.present?
-    @quote_type = quote_type
-    set_actor
+
+    @actor = get_actor
   end
 
   def self.perform(**args)
@@ -21,7 +25,6 @@ class QuoteActionService
   def perform
     @quote_request =
       case action
-      when "request" then create_request
       when "offer" then create_offer
       when "respond" then respond_to_request
       when "accept" then accept_quote
@@ -32,28 +35,16 @@ class QuoteActionService
         raise ArgumentError, "Invalid action: #{action}"
       end
 
-    update_counter_cache
+    update_counter_cache(@quote_request)
 
     @quote_request
   end
 
   private
 
-  def create_request
-    quote_request = QuoteRequest.create!(quote_type: quote_type, product: product, buyer: actor, seller: product.store, status: "requested")
-    Quote.create!(
-      quote_request: quote_request,
-      author: actor,
-      action: "requested",
-      role: "buyer",
-      message: message,
-      amount_in_cents: amount_in_cents
-    )
-    quote_request
-  end
-
   def create_offer
     authorize_seller!
+
     Quote.create!(
       quote_request: quote_request,
       author: actor,
@@ -62,12 +53,14 @@ class QuoteActionService
       message: message,
       amount_in_cents: amount_in_cents
     )
+
     quote_request.update!(status: "offered")
     quote_request
   end
 
   def respond_to_request
     authorize_actor!
+
     Quote.create!(
       quote_request: quote_request,
       author: actor,
@@ -76,12 +69,14 @@ class QuoteActionService
       message: message,
       amount_in_cents: amount_in_cents || quote_request.latest_quote.amount_in_cents
     )
+
     quote_request.update!(status: "responded")
     quote_request
   end
 
   def accept_quote
     authorize_buyer!
+
     Quote.create!(
       quote_request: quote_request,
       author: actor,
@@ -90,6 +85,7 @@ class QuoteActionService
       message: message,
       amount_in_cents: quote_request.latest_quote.amount_in_cents
     )
+
     quote_request.update!(status: "accepted")
 
     CreateCartFromQuoteService.create(quote_request: quote_request, requester: actor)
@@ -98,6 +94,7 @@ class QuoteActionService
 
   def accept_with_shipping_quote
     authorize_buyer!
+
     Quote.create!(
       quote_request: quote_request,
       author: actor,
@@ -109,9 +106,8 @@ class QuoteActionService
 
     quote_request.update!(status: "accepted")
 
-    shipping_request = QuoteRequest.create!(buyer: quote_request.buyer, seller: quote_request.seller, product: quote_request.product, quote_type: "shipping", status: "requested", parent_quote_request: quote_request)
     Quote.create!(
-      quote_request: shipping_request,
+      quote_request: create_shipping_quote_request,
       author: actor,
       action: "requested",
       role: "buyer",
@@ -124,6 +120,7 @@ class QuoteActionService
 
   def decline_quote
     authorize_actor!
+
     Quote.create!(
       quote_request: quote_request,
       author: actor,
@@ -143,6 +140,7 @@ class QuoteActionService
 
   def cancel_quote
     authorize_actor!
+
     Quote.create!(
       quote_request: quote_request,
       author: actor,
@@ -151,16 +149,20 @@ class QuoteActionService
       message: "#{message} (Cancelled by #{actor_role})",
       amount_in_cents: quote_request.latest_quote.amount_in_cents
     )
+
     quote_request.update!(status: "cancelled")
     quote_request
   end
 
-  def update_counter_cache
-    buyer = @quote_request.buyer
-    buyer.update_column(:quotes_awaiting_action_count, QuoteRequest.needing_response_from(user: buyer).count)
-
-    seller_user = @quote_request.seller.owner
-    seller_user.update_column(:quotes_awaiting_action_count, QuoteRequest.needing_response_from(user: seller_user, store: @quote_request.seller).count)
+  def create_shipping_quote_request
+    QuoteRequest.create!(
+      buyer: quote_request.buyer,
+      seller: quote_request.seller,
+      product: quote_request.product,
+      quote_type: "shipping",
+      status: "requested",
+      parent_quote_request: quote_request
+    )
   end
 
   def actor_role
@@ -188,13 +190,11 @@ class QuoteActionService
     end
   end
 
-  def set_actor
-    return @actor = current_user if action == "request"
-
+  def get_actor
     if quote_request.buyer == current_user
-      @actor = current_user
+      current_user
     elsif quote_request.seller == current_user.default_store
-      @actor = current_user.default_store
+      current_user.default_store
     else
       raise "Unauthorized action: #{current_user.id} cannot perform #{action} on this quote request"
     end

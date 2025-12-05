@@ -31,8 +31,10 @@ const ProductForm = () => {
     const payload = {
       name: values.name,
       description: values.description,
-      price_in_cents: Math.round(values.price_in_cents * 100),
-      quantity: values.quantity,
+      price_per_unit_in_cents: Math.round(values.price_per_unit_in_cents * 100),
+      available_volume: values.available_volume,
+      pricing_unit: values.pricing_unit,
+      min_order_unit: values.min_order_unit,
       requestable: values.requestable,
       biddable: values.biddable,
       store_id: user?.current_store?.id,

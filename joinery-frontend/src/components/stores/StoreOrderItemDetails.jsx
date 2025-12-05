@@ -53,7 +53,7 @@ const StoreOrderItemDetails = ({ itemId, handleStatusSelect, viewerType = 'buyer
           <Title order={4}>{product.name}</Title>
           <Text size="sm" color="dimmed" className="italic margin-bottom">{product.productable_type}</Text>
           <Text size="sm" className="bold">{moneyDisplay(item.total_price_in_cents)}</Text>
-          <Text size="sm" color="dimmed" className="margin-bottom">Quantity: {item.quantity}</Text>
+          <Text size="sm" color="dimmed" className="margin-bottom">Quantity: {item.ordered_volume}</Text>
           <Badge style={{ textTransform: 'none' }} color={statusColor} variant="light">{orderStatusDisplayNames[item.status]}</Badge>
 
           <div className="flex row align-center margin-top">

@@ -1,4 +1,6 @@
-import { IconRulerMeasure, IconRulerMeasure2, IconWeight, IconMapPin, IconStar, IconDroplet, IconNumber } from '@tabler/icons-react'
+import {
+  IconRulerMeasure, IconRulerMeasure2, IconWeight, IconMapPin, IconStar, IconDroplet, IconNumber,
+} from '@tabler/icons-react'
 
 const JoineryIconMap = ({ iconName, size = 16 }) => {
   const icons = {
@@ -8,7 +10,7 @@ const JoineryIconMap = ({ iconName, size = 16 }) => {
     rulerHorizontal: IconRulerMeasure,
     star: IconStar,
     water: IconDroplet,
-    weight: IconWeight,
+    weight: IconWeight
   };
 
   const IconComponent = icons[iconName];

@@ -63,7 +63,7 @@ const productCategories = {
 
 const filterConfigs = [
   {
-    name: 'price_in_cents',
+    name: 'price_per_unit_in_cents',
     operator: 'between',
     label: 'Price',
     options: [

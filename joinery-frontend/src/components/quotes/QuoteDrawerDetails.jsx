@@ -38,6 +38,8 @@ const QuoteDrawerDetails = ({ quote, closeDrawer }) => {
       {/*  {quote.latest_quote.role === 'buyer' ? <Text>Quote request from {quote.buyer.first_name}</Text> : <Text>Response from {currentUser.current_store ? currentUser.current_store.name : 'Seller'}</Text>}*/}
       {/*</div>*/}
 
+      <Badge className="margin-bottom" variant="default" color="violet" size="xl">{quote.quote_type} Quote</Badge>
+
       <div className="flex row">
         {imageUrl && <Image src={imageUrl} alt={quote.product.name} className="drawer-product-image-wrapper margin-right" />}
 
@@ -49,11 +51,11 @@ const QuoteDrawerDetails = ({ quote, closeDrawer }) => {
           </div>
 
           <Badge color={statusColors(quote.status)} variant="light">{quote.status}</Badge>
+
         </div>
       </div>
 
       <div className="margin-top">
-        <Badge className="margin-bottom" variant="light" color="violet" size="xl">{quote.quote_type} Quote</Badge>
         <Text className="margin-bottom"><strong>Last Message:</strong> {quote.latest_quote.message}</Text>
         {quote.latest_quote.amount_in_cents > 0 && <Text><strong>Quote Amount:</strong> {moneyDisplay(quote.latest_quote.amount_in_cents)}</Text>}
       </div>

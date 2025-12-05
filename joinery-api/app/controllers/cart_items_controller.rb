@@ -3,13 +3,15 @@ class CartItemsController < JoineryController
   before_action :set_cart, only: %i[create update destroy]
 
   def create
-    product = Product.find(params[:product_id])
+    product = Product.find(cart_item_params[:product_id])
     store = product.store
 
     cart_item = @cart.cart_items.find_or_initialize_by(product_id: product.id)
 
-    cart_item.quantity += params[:quantity] || 1
-    cart_item.unit_price_in_cents = product.price_in_cents
+    cart_item.increment!(:ordered_volume, cart_item_params[:ordered_volume] || 1)
+    cart_item.unit_price_per_volume_in_cents = product.price_per_unit_in_cents
+    cart_item.pricing_unit = product.pricing_unit
+    cart_item.shipping_option_id = cart_item_params[:shipping_option_id] if cart_item_params[:shipping_option_id]
     cart_item.store_id = store.id
 
     if cart_item.save
@@ -52,7 +54,7 @@ class CartItemsController < JoineryController
   end
 
   def cart_item_params
-    params.require(:cart_item).permit(:product_id, :quantity, :shipping_option_id)
+    params.require(:cart_item).permit(:product_id, :ordered_volume, :shipping_option_id)
   end
 
   def bulk_update_params

@@ -7,7 +7,7 @@ import { productTypeDisplayName } from "../../utils/productConfigs.js";
 import { getImageUrl } from "../../utils/imageConfigs.js";
 
 const ProductCard = ({ cardData, clickable = true }) => {
-  const { images, name, productable_type, price_in_cents, store } = cardData;
+  const { images, name, productable_type, price_per_unit_in_cents, store } = cardData;
   const firstImageUrl = images.length > 0 ? images[0]?.image_url : "";
   const [displayImageUrl, setDisplayImageUrl] = useState(firstImageUrl);
 
@@ -34,7 +34,7 @@ const ProductCard = ({ cardData, clickable = true }) => {
   //   }
   // }
 
-  const priceDisplay = cardData.requestable ? "Request a Quote" : moneyDisplay(price_in_cents);
+  const priceDisplay = cardData.requestable ? "Request a Quote" : moneyDisplay(price_per_unit_in_cents);
 
   return (
     <div className="clickable product-card" onClick={handleCardClick}>

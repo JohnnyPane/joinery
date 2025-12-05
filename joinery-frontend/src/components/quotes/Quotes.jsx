@@ -11,8 +11,11 @@ const Quotes = () => {
     return <div>Loading...</div>;
   }
 
+  const initialScopeName = currentStore ? "for_seller" : "for_buyer";
+  const initialScopeArgs = currentStore ? [currentStore.id] : [currentUser.id];
+
   return (
-    <ResourceProvider initial={{ scopes: [{ name: "for_buyer", args: [currentUser.id] }]} }>
+    <ResourceProvider initial={{ scopes: [{ name: initialScopeName, args: initialScopeArgs }]} }>
       <MyQuotes store={currentStore} user={currentUser} />
     </ResourceProvider >
   );

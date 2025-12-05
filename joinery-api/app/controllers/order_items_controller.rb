@@ -28,7 +28,7 @@ class OrderItemsController < JoineryController
 
   def order_item_params
     params.require(:order_item).permit(
-      :order_id, :product_id, :quantity, :unit_price_in_cents, :total_price_in_cents, :store_id, :shipping_option_id, :status
+      :order_id, :product_id, :ordered_volume, :unit_price_in_cents, :total_price_in_cents, :store_id, :shipping_option_id, :status
     )
   end
 end

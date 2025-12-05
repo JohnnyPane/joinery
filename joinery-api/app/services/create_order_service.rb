@@ -44,20 +44,22 @@ class CreateOrderService
 
   def create_order_item(cart_item)
     product = cart_item.product
-    unit_price_in_cents = cart_item.unit_price_in_cents
+    unit_price_per_volume_in_cents = cart_item.unit_price_per_volume_in_cents
 
     @order.order_items.create!(
       product: product,
       store: product.store,
       shipping_option: cart_item.shipping_option,
-      quantity: cart_item.quantity,
-      unit_price_in_cents: unit_price_in_cents,
+      ordered_volume: cart_item.ordered_volume,
+      unit_price_per_volume_in_cents: unit_price_per_volume_in_cents,
+      pricing_unit: cart_item.pricing_unit,
       shipping_cost_in_cents: calculate_shipping_cost(cart_item),
-      total_price_in_cents: (unit_price_in_cents * cart_item.quantity) + calculate_shipping_cost(cart_item),
+      total_price_in_cents: (unit_price_per_volume_in_cents * cart_item.ordered_volume) + calculate_shipping_cost(cart_item),
       quote_request: cart_item.quote_request
     )
   end
 
+  # MAJOR TODO: Refactor shipping cost calculation - need to figure out how to handle different pricing units and shipping options
   def calculate_shipping_cost(cart_item)
     shipping_option = cart_item.shipping_option
     quote_request = cart_item.quote_request
@@ -66,8 +68,10 @@ class CreateOrderService
 
     if quote_request&.shipping_quote?
       quote_request.latest_quote.amount_in_cents
+    elsif cart_item.pricing_unit_each?
+      shipping_option.price_in_cents * cart_item.ordered_volume
     else
-      shipping_option.price_in_cents * cart_item.quantity
+      shipping_option.price_in_cents
     end
 
   end
@@ -103,8 +107,8 @@ class CreateOrderService
 
       product = item.product
       product.with_lock do
-        raise StandardError, "Insufficient inventory for #{product.name}" if product.quantity < item.quantity
-        product.decrement!(:quantity, item.quantity)
+        raise StandardError, "Insufficient inventory for #{product.name}" if product.available_volume < item.ordered_volume
+        product.decrement!(:available_volume, item.ordered_volume)
       end
     end
   end

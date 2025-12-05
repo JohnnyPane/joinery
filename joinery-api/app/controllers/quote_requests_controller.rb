@@ -2,33 +2,18 @@ class QuoteRequestsController < JoineryController
   before_action :authenticate_user!
 
   def create
-    quote_attributes = quote_request_params[:quote_attributes]
-
-    quote_request = QuoteActionService.perform(
-      action: "request",
-      current_user: current_user,
-      product_id: quote_request_params[:product_id],
-      quote_type: quote_request_params[:quote_type],
-      message: quote_attributes[:message],
-    )
-
+    quote_request = CreateQuoteRequestService.perform(current_user: current_user, quote_request_params: quote_request_params)
     render_resource(quote_request, QuoteRequestSerializer)
   rescue ActiveRecord::RecordInvalid => e
     render json: { errors: e.record.errors.full_messages }, status: :unprocessable_content
-  rescue QuoteActionService::UnauthorizedError => e
+  rescue CreateQuoteRequestService::UnauthorizedError => e
     render json: { errors: e.message }, status: :forbidden
   end
 
   def update
-    quote_request = QuoteRequest.find(params[:id])
-    quote_attributes = quote_request_params[:quote_attributes] || {}
-
     quote_request = QuoteActionService.perform(
-      quote_request: quote_request,
-      action: quote_attributes[:action],
       current_user: current_user,
-      message: quote_attributes[:message],
-      amount_in_cents: quote_attributes[:amount_in_cents],
+      quote_request_params: quote_request_params.merge(id: params[:id])
     )
 
     render_resource(quote_request, QuoteRequestSerializer)
@@ -56,7 +41,7 @@ class QuoteRequestsController < JoineryController
 
   def quote_request_params
     params.require(:quote_request).permit(
-      :product_id, :status, :quote_type,
+      :product_id, :status, :quote_type, :requested_volume,
       quote_attributes: [ :id, :amount_in_cents, :message, :action ]
     )
   end

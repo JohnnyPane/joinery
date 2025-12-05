@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
 import { Image, Text, Button } from "@mantine/core";
-import { IconTrash } from "@tabler/icons-react";
 
 import { useDeleteMemberResource } from "../../hooks/useResourceMutations.js";
 import { useCart } from "../../hooks/useCart.js";
 import { moneyDisplay } from "../../utils/humanizeText.js";
 import './CartItem.scss'
+import { productUnitDisplays } from "../../utils/productDimensions.js";
 
 const rootURL = import.meta.env.VITE_API_ROOT_URL;
 
@@ -34,7 +34,7 @@ const CartItem = ({ cartItem, onItemClick }) => {
           </div>
 
           <div>
-            <Text color="dimmed" size="sm">Qty. {cartItem.quantity}</Text>
+            <Text color="dimmed" size="sm">Qty. {cartItem.ordered_volume} {productUnitDisplays[cartItem.pricing_unit]}</Text>
           </div>
         </div>
       </Link>
@@ -42,7 +42,7 @@ const CartItem = ({ cartItem, onItemClick }) => {
 
       <div className="flex column cart-item-section space-between align-right">
         <div className="flex column align-right">
-          <span className="bold label">{moneyDisplay(cartItem.unit_price_in_cents)}</span>
+          <span className="bold label">{moneyDisplay(cartItem.unit_price_per_volume_in_cents)}</span>
           {cartItem.shipping_cost_in_cents > 0 && <Text color="dimmed" className="label">Shipping: {moneyDisplay(cartItem.shipping_cost_in_cents)}</Text>}
         </div>
 

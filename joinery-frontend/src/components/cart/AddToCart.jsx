@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { Button, NumberInput, Text, Textarea, Modal, Drawer, Radio, CheckIcon } from '@mantine/core';
+import { Button, NumberInput, Text, Textarea, Modal, Radio, CheckIcon, Tooltip } from '@mantine/core';
 import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 
 import useResource from '../../hooks/useResource.js';
+import { useMe } from '../../hooks/useMe.js';
 import { useCart } from '../../hooks/useCart.js';
 import { optionDisplayText } from "../../utils/shippingConfigs.js";
 
@@ -11,10 +12,19 @@ const hasQuoteShipping = (product) => {
   return product?.shipping_options?.some(option => option.shipping_type === 'quote');
 }
 
+const unitIcons = {
+  cubic_foot: 'cu ft.',
+  board_foot: 'bf.',
+  linear_foot: 'lin. ft.',
+  square_foot: 'sq. ft.',
+  each: '',
+};
+
 const AddToCart = ({ productId, message, setMessage, quoteRequestSubmit }) => {
+  const { data: user } = useMe();
   const [quantity, setQuantity] = useState(1);
   const { cart, addItem } = useCart();
-  const { data: product, isLoading, isError, error } = useResource('products', productId);
+  const { data: product, isLoading, isError } = useResource('products', productId);
   const [selectedShippingOption, setSelectedShippingOption] = useState(null);
   const [quoteModalOpened, { open: openQuoteModal, close: closeQuoteModal }] = useDisclosure(false);
 
@@ -29,8 +39,8 @@ const AddToCart = ({ productId, message, setMessage, quoteRequestSubmit }) => {
     try {
       await addItem.mutateAsync({
         product_id: productId,
-        quantity: quantity,
-        shipping_option_id: selectedShippingOption?.id
+        ordered_volume: quantity,
+        shipping_option_id: selectedShippingOption
       });
 
       notifications.show({
@@ -57,7 +67,7 @@ const AddToCart = ({ productId, message, setMessage, quoteRequestSubmit }) => {
     }
   }
 
-  const quoteShippingClick = async () => {
+  const submitShippingOption = async () => {
     if (!selectedShippingOption) {
       notifications.show({
         title: 'Error',
@@ -69,7 +79,7 @@ const AddToCart = ({ productId, message, setMessage, quoteRequestSubmit }) => {
     }
 
     if (quoteShippingSelected) {
-      await quoteRequestSubmit('shipping');
+      await quoteRequestSubmit('shipping', quantity);
       setMessage('');
       setSelectedShippingOption(null);
       closeQuoteModal();
@@ -79,12 +89,12 @@ const AddToCart = ({ productId, message, setMessage, quoteRequestSubmit }) => {
     }
   }
 
-  const quoteButtonDisabled = (quoteShippingSelected && !message) || !selectedShippingOption;
+  const quoteButtonDisabled = (quoteShippingSelected && !message || !user) || !selectedShippingOption
 
   const cartItemAlreadyInCart = cart?.cart_items?.find(item => item.product_id === productId);
-  const availableQuantity = product ? product.quantity - (cartItemAlreadyInCart ? cartItemAlreadyInCart.quantity : 0) : product.quantity;
+  const availableQuantity = product ? product.available_volume - (cartItemAlreadyInCart ? cartItemAlreadyInCart.ordered_volume : 0) : product.available_volume;
   const isOutOfStock = availableQuantity <= 0;
-  const addedMaxQuantity = product.quantity === (cartItemAlreadyInCart ? cartItemAlreadyInCart.quantity : 0);
+  const addedMaxQuantity = product.available_volume === (cartItemAlreadyInCart ? cartItemAlreadyInCart.ordered_volume : 0);
 
   return (
     <div className="flex column">
@@ -92,6 +102,7 @@ const AddToCart = ({ productId, message, setMessage, quoteRequestSubmit }) => {
         <NumberInput
           className="product-detail-stock"
           value={quantity}
+          suffix={` ${unitIcons[product.pricing_unit]}`}
           onChange={(val) => setQuantity(val)}
           min={1}
           max={availableQuantity || 1}
@@ -117,14 +128,26 @@ const AddToCart = ({ productId, message, setMessage, quoteRequestSubmit }) => {
             onChange={setSelectedShippingOption}
           >
             {product.shipping_options.map(option => (
-              <Radio
+              <Tooltip
+                refProp="rootRef"
+                label="You must be logged in to request a shipping quote."
+                disabled={ user || option.shipping_type !== 'quote' }
                 key={option.id}
-                value={String(option.id)}
-                label={optionDisplayText(option.price_in_cents, option.shipping_type)}
-                icon={CheckIcon}
-                className="margin-bottom clickable"
-                color="teal"
-              />
+                withArrow
+                arrowSize={5}
+                arrowOffset={40}
+                position="top-start"
+              >
+                <Radio
+                  key={option.id}
+                  value={String(option.id)}
+                  label={optionDisplayText(option.price_in_cents, option.shipping_type)}
+                  icon={CheckIcon}
+                  className="margin-bottom clickable"
+                  color="teal"
+                  disabled={option.shipping_type === 'quote' && !user}
+                />
+              </Tooltip>
             ))}
           </Radio.Group>
 
@@ -145,7 +168,7 @@ const AddToCart = ({ productId, message, setMessage, quoteRequestSubmit }) => {
             Cancel
           </Button>
 
-          <Button onClick={quoteShippingClick} variant="subtle" color={quoteShippingSelected ? "indigo" : "teal"} disabled={quoteButtonDisabled} >
+          <Button onClick={submitShippingOption} variant="subtle" color={quoteShippingSelected ? "indigo" : "teal"} disabled={quoteButtonDisabled} >
             {quoteShippingSelected ? 'Request Quote' : 'Add to Cart'}
           </Button>
         </div>

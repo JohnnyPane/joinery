@@ -30,7 +30,7 @@ class ShippingCalculator
   end
 
   def calculate_item_shipping(item)
-    item.quantity * item_shipping_rate(item)
+    item.ordered_volume * item_shipping_rate(item)
   end
 
   def item_shipping_rate(item)

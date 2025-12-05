@@ -204,7 +204,7 @@ export const productConfigs = {
     { name: 'glue_type', label: 'Glue Type', type: 'select', required: false,
       options: [ { value: 'interior', label: 'Interior Grade (Standard)' }, { value: 'exterior', label: 'Exterior Grade (Water Resistant)' }, { value: 'marine', label: 'Marine Grade (Waterproof)' }, { value: 'naf', label: 'NAF (No Added Formaldehyde)' }, { value: 'uf', label: 'UF (Urea Formaldehyde)' } ]
     },
-    { name: 'thickness_nominal', label: 'Nominal Thickness', type: 'select', searchable: true, required: true, options: SHEET_MATERIAL_DIMENSIONS },
+    { name: 'thickness_nominal', label: 'Nominal Thickness', type: 'select', searchable: true, options: SHEET_MATERIAL_DIMENSIONS },
     { name: 'thickness_actual', label: 'Actual Thickness (inches)', type: 'number', required: false, step: 0.001, icon: 'rulerVertical' },
     { name: 'width_in_feet', label: 'Width (feet)', type: 'number', required: true, min: 1, icon: 'rulerHorizontal' },
     { name: 'length_in_feet', label: 'Length (feet)', type: 'number', required: true, min: 1, icon: 'rulerVertical' },
@@ -246,7 +246,7 @@ export const productableDetailsFilled = (formValues) => {
     case 'Log':
       return productableValues.species && productableValues.length && productableValues.diameter && productableValues.moisture_content && productableValues.grade;
     case 'RoughLumber':
-      return productableValues.species && productableValues.nominal_thickness_inches && productableValues.nominal_width_inches && productableValues.length_in_feet;
+      return productableValues.species
     case 'SurfacedLumber':
       return productableValues.species && productableValues.nominal_dimension && productableValues.length_in_feet
     case 'WoodBlock':

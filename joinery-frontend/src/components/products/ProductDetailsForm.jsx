@@ -64,11 +64,10 @@ const ProductDetailsForm = ({ form, formType = 'create', product = null }) => {
         <>
           <Grid.Col span={6}>
             <NumberInput
-              label="Price"
-              placeholder="Enter product price"
-              value={product ? product.price_in_cents / 100 : ''}
+              label="Price Per Unit"
+              placeholder="Enter product price per unit"
               leftSection={<IconCurrencyDollar size={16} />}
-              {...form.getInputProps('price_in_cents')}
+              {...form.getInputProps('price_per_unit_in_cents')}
               className="margin-bottom"
               decimalScale={2}
               fixedDecimalScale
@@ -77,12 +76,40 @@ const ProductDetailsForm = ({ form, formType = 'create', product = null }) => {
           </Grid.Col>
 
           <Grid.Col span={6}>
-            <NumberInput
-              label="Quantity"
-              placeholder="Enter stock quantity"
-              value={product ? product.quantity : ''}
+            <Select
+              label="Pricing Unit"
+              placeholder="Enter pricing unit"
+              data={[
+                { value: 'each', label: 'Each' },
+                { value: 'square_foot', label: 'Per Square Foot' },
+                { value: 'linear_foot', label: 'Per Linear Foot' },
+                { value: 'cubic_foot', label: 'Per Cubic Foot' },
+                { value: 'board_foot', label: 'Per Board Foot' },
+              ]}
               leftSection={<IconNumber size={18} />}
-              {...form.getInputProps('quantity')}
+              {...form.getInputProps('pricing_unit')}
+              className="margin-bottom"
+            />
+          </Grid.Col>
+
+          <Grid.Col span={6}>
+            <NumberInput
+              label="Quantity/Volume in Stock"
+              placeholder="Enter quantity or volume available"
+              leftSection={<IconNumber size={18} />}
+              {...form.getInputProps('available_volume')}
+              className="margin-bottom"
+              min={0}
+              step={1}
+            />
+          </Grid.Col>
+
+          <Grid.Col span={6}>
+            <NumberInput
+              label="Minimum Order Quantity/Volume"
+              placeholder="Enter quantity or volume"
+              leftSection={<IconNumber size={18} />}
+              {...form.getInputProps('min_order_unit')}
               className="margin-bottom"
               min={0}
               step={1}

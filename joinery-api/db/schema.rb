@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_12_02_160525) do
+ActiveRecord::Schema[8.0].define(version: 2025_12_05_103119) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -78,14 +78,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_02_160525) do
     t.bigint "cart_id", null: false
     t.bigint "product_id", null: false
     t.bigint "store_id", null: false
-    t.integer "quantity", default: 0, null: false
-    t.integer "unit_price_in_cents", null: false
+    t.decimal "ordered_volume", precision: 10, scale: 3, default: "0.0", null: false
+    t.integer "unit_price_per_volume_in_cents", null: false
     t.integer "total_price_in_cents", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "shipping_option_id"
     t.bigint "quote_request_id"
+    t.string "pricing_unit", default: "EACH", null: false
     t.index ["cart_id"], name: "index_cart_items_on_cart_id"
+    t.index ["pricing_unit"], name: "index_cart_items_on_pricing_unit"
     t.index ["product_id"], name: "index_cart_items_on_product_id"
     t.index ["quote_request_id"], name: "index_cart_items_on_quote_request_id"
     t.index ["shipping_option_id"], name: "index_cart_items_on_shipping_option_id"
@@ -134,17 +136,19 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_02_160525) do
     t.bigint "product_id", null: false
     t.bigint "store_id", null: false
     t.bigint "shipping_option_id", null: false
-    t.integer "quantity", default: 1, null: false
+    t.decimal "ordered_volume", precision: 10, scale: 3, default: "0.0", null: false
     t.integer "shipping_cost_in_cents", default: 0, null: false
-    t.integer "unit_price_in_cents", null: false
+    t.integer "unit_price_per_volume_in_cents", null: false
     t.integer "total_price_in_cents", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "stripe_transfer_id"
     t.integer "status", default: 0, null: false
     t.bigint "quote_request_id"
+    t.string "pricing_unit", default: "EACH", null: false
     t.index ["order_id", "product_id"], name: "index_order_items_on_order_id_and_product_id", unique: true
     t.index ["order_id"], name: "index_order_items_on_order_id"
+    t.index ["pricing_unit"], name: "index_order_items_on_pricing_unit"
     t.index ["product_id"], name: "index_order_items_on_product_id"
     t.index ["quote_request_id"], name: "index_order_items_on_quote_request_id"
     t.index ["shipping_option_id"], name: "index_order_items_on_shipping_option_id"
@@ -174,8 +178,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_02_160525) do
   create_table "products", force: :cascade do |t|
     t.string "name", null: false
     t.text "description"
-    t.integer "price_in_cents", null: false
-    t.integer "quantity", default: 0, null: false
+    t.integer "price_per_unit_in_cents", null: false
+    t.decimal "available_volume", precision: 10, scale: 3, default: "0.0", null: false
     t.bigint "store_id", null: false
     t.boolean "is_active", default: true, null: false
     t.string "productable_type", null: false
@@ -191,14 +195,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_02_160525) do
     t.string "primary_material"
     t.string "species_tags", default: [], array: true
     t.string "material_tags", default: [], array: true
+    t.string "pricing_unit", default: "EACH", null: false
+    t.decimal "min_order_unit", precision: 10, scale: 3, default: "1.0", null: false
+    t.index ["available_volume"], name: "index_products_on_available_volume"
     t.index ["average_rating"], name: "index_products_on_average_rating"
     t.index ["is_active"], name: "index_products_on_is_active"
     t.index ["material_tags"], name: "index_products_on_material_tags", using: :gin
     t.index ["name_vector"], name: "index_products_on_name_vector", using: :gin
-    t.index ["price_in_cents"], name: "index_products_on_price_in_cents"
+    t.index ["price_per_unit_in_cents"], name: "index_products_on_price_per_unit_in_cents"
+    t.index ["pricing_unit"], name: "index_products_on_pricing_unit"
     t.index ["primary_material"], name: "index_products_on_primary_material"
     t.index ["productable_type", "productable_id"], name: "index_products_on_productable"
-    t.index ["quantity"], name: "index_products_on_quantity"
     t.index ["requestable"], name: "index_products_on_requestable"
     t.index ["species_tags"], name: "index_products_on_species_tags", using: :gin
     t.index ["store_id"], name: "index_products_on_store_id"
@@ -213,8 +220,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_02_160525) do
     t.datetime "updated_at", null: false
     t.integer "quote_type", default: 0, null: false
     t.bigint "parent_quote_request_id"
+    t.decimal "requested_volume", precision: 10, scale: 3, default: "0.0", null: false
+    t.string "pricing_unit", default: "EACH", null: false
     t.index ["buyer_id"], name: "index_quote_requests_on_buyer_id"
     t.index ["parent_quote_request_id"], name: "index_quote_requests_on_parent_quote_request_id"
+    t.index ["pricing_unit"], name: "index_quote_requests_on_pricing_unit"
     t.index ["product_id"], name: "index_quote_requests_on_product_id"
     t.index ["seller_id"], name: "index_quote_requests_on_seller_id"
   end

@@ -1,11 +1,8 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Button, Modal, Title, Text, Textarea } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { notifications } from "@mantine/notifications";
 
 import { useMe } from "../../hooks/useMe.js";
-import { useCreateResource } from "../../hooks/useResourceMutations.js";
 
 const RequestAQuoteDetails = ({ details, setDetails, handleRequestSubmit }) => {
   return (

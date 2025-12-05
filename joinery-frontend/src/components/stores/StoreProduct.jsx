@@ -15,8 +15,9 @@ const StoreProduct = ({ close, product }) => {
       id: values.id,
       name: values.name,
       description: values.description,
-      price_in_cents: values.price_in_cents,
-      quantity: values.quantity,
+      price_per_unit_in_cents: values.price_per_unit_in_cents,
+      available_volume: values.available_volume,
+      pricing_unit: values.pricing_unit,
       productable_attributes: values.productable,
     }
 

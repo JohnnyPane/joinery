@@ -28,22 +28,19 @@ const MyQuotes = ({ user, store }) => {
     closeDrawer();
   }
 
+  const defaultTab = store ? "store-quotes" : "my-quotes";
+
   return (
     <div className="page">
       <Title className="center-text" order={2}>My Quotes</Title>
-      <Tabs onChange={handleTabChange} defaultValue={"my-quotes"} className="margin-top">
+      <Tabs onChange={handleTabChange} defaultValue={defaultTab} className="margin-top">
+
         <Tabs.List className="margin-bottom">
-          <Tabs.Tab value="my-quotes"><Text className="bold" size="md">My Requests</Text></Tabs.Tab>
           {store && <Tabs.Tab value="store-quotes"><Text className="bold" size="md">Store Requests</Text></Tabs.Tab>}
+          <Tabs.Tab value="my-quotes"><Text className="bold" size="md">My Requests</Text></Tabs.Tab>
         </Tabs.List>
-        <Tabs.Panel value="my-quotes" pt="xs">
-          <QuotesTablePage onQuoteClick={handleQuoteClick} />
-        </Tabs.Panel>
-        {store && (
-          <Tabs.Panel value="store-quotes" pt="xs">
-            <QuotesTablePage onQuoteClick={handleQuoteClick} />
-          </Tabs.Panel>
-        )}
+
+        <QuotesTablePage onQuoteClick={handleQuoteClick} />
       </Tabs>
 
       <Drawer

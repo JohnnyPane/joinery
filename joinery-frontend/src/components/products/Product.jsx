@@ -17,14 +17,25 @@ import AddToCart from "../cart/AddToCart.jsx";
 import QuoteRequest from "../quotes/QuoteRequest.jsx";
 import StarRatingDisplay from "../ui/StarRatingDisplay.jsx";
 import ProductReviewPreviews from "../reviews/ProductReviewPreviews.jsx";
+import { productUnitDisplays } from "../../utils/productDimensions.js";
 
+const PricingText = ({ priceInCents, quantity, unit }) => {
+  const unitDisplay = productUnitDisplays[unit] || '';
+  const quantityDisplay = unit === 'each' ? Math.floor(quantity) : quantity;
+  const quantityText = unitDisplay ? `${quantityDisplay} ${unitDisplay}` : quantityDisplay;
+  const titleText = unitDisplay ? `/${unitDisplay}` : '';
 
-const PricingText = ({ priceInCents, quantity }) => (
-  <div className="product-detail-price flex row align-bottom space-between padding">
-    <Title order={2} className="padding-left">{moneyDisplay(priceInCents)}</Title>
-    <Text size="sm" color="dimmed">Qty. {quantity}</Text>
-  </div>
-);
+  return (
+    <div className="product-detail-price flex row align-bottom space-between padding">
+      <div className="flex row align-center">
+        <Title order={2} className="padding-left">{moneyDisplay(priceInCents)}</Title>
+
+        <Text size="lg">{titleText}</Text>
+      </div>
+      {<Text size="sm" color="dimmed">Qty. {quantityText} </Text>}
+    </div>
+  );
+}
 
 const QuoteRequestText = () => (
   <div className="product-detail-price flex row space-between padding">
@@ -63,11 +74,12 @@ const Product = () => {
     return <div>Error: {error.message}</div>;
   }
 
-  const quoteRequestSubmit = async (type = 'product') => {
+  const quoteRequestSubmit = async (type = 'product', quantity) => {
     const payload = {
       quote_attributes: { message: message },
       quote_type: type,
-      product_id: product.id
+      product_id: product.id,
+      requested_volume: quantity || 1,
     }
 
     try {
@@ -134,7 +146,7 @@ const Product = () => {
           </Anchor>
         </div>
 
-        {product.requestable ? <QuoteRequestText /> : <PricingText priceInCents={product.price_in_cents} quantity={product.quantity} />}
+        {product.requestable ? <QuoteRequestText /> : <PricingText priceInCents={product.price_per_unit_in_cents} quantity={product.available_volume} unit={product.pricing_unit} />}
 
         { product.requestable ?
           <QuoteRequest message={message} setMessage={setMessage} quoteRequestSubmit={() => quoteRequestSubmit('product')} /> :

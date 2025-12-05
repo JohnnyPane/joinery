@@ -45,7 +45,7 @@ class Users::SessionsController < Devise::SessionsController
     guest_cart.cart_items.each do |item|
       existing_item = user_cart.cart_items.find_by(product_id: item.product_id)
       if existing_item
-        existing_item.update(quantity: existing_item.quantity + item.quantity)
+        existing_item.update(ordered_volume: existing_item.ordered_volume + item.ordered_volume)
       else
         item.update(cart: user_cart)
       end

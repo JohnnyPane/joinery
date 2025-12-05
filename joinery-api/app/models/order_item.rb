@@ -5,11 +5,12 @@ class OrderItem < ApplicationRecord
   belongs_to :shipping_option
   belongs_to :quote_request, optional: true
 
-  validates :quantity, numericality: { greater_than: 0 }
-  validates :unit_price_in_cents, numericality: { greater_than_or_equal_to: 0 }
+  validates :ordered_volume, numericality: { greater_than: 0 }
+  validates :unit_price_per_volume_in_cents, numericality: { greater_than_or_equal_to: 0 }
   validates :total_price_in_cents, numericality: { greater_than_or_equal_to: 0 }
 
   enum :status, { awaiting_fulfillment: 0, shipped: 1, delivered: 2, completed: 3, cancelled: 4 }, default: :awaiting_fulfillment
+  enum :pricing_unit, { board_foot: 'BF', square_foot: 'SF', linear_foot: 'LF', cubic_foot: 'CF', each: 'EACH' }, prefix: true
 
   scope :by_store, ->(store_id) { where(store_id: store_id) }
   scope :by_user, ->(user_id) {

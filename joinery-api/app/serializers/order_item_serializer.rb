@@ -1,5 +1,5 @@
 class OrderItemSerializer < BaseSerializer
-  attributes :id, :order_id, :product_id, :quantity, :unit_price_in_cents, :total_price_in_cents, :fulfillment_method
+  attributes :id, :order_id, :product_id, :ordered_volume, :unit_price_per_volume_in_cents, :total_price_in_cents, :fulfillment_method
 
   attribute :status do |order_item|
     order_item.effective_status
@@ -45,7 +45,7 @@ class OrderItemSerializer < BaseSerializer
   end
 
   def self.shallow_attributes_list
-    [ :id, :order_id, :product_id, :quantity, :unit_price_in_cents, :total_price_in_cents ]
+    [ :id, :order_id, :product_id, :ordered_volume, :unit_price_per_volume_in_cents, :total_price_in_cents ]
   end
 
   def self.shallow_associations(order_item)

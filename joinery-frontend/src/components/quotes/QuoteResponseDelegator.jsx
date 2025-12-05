@@ -25,24 +25,24 @@ const SellerResponseActions = ({ setPrice, price, handleButtonClick, cancelOnly 
       }
 
       <div>
-        <Button
-          onClick={() => handleButtonClick(cancelOnly ? 'cancel' : 'decline')}
-          variant={cancelOnly ? "filled" : "light"}
-          color="red"
-          className="action-button"
-        >
-          {cancelOnly ? 'Cancel Quote' : 'Decline Quote'}
-        </Button>
-
         {!cancelOnly && <Button
           onClick={() => handleButtonClick('offer')}
           variant="light"
           color="blue"
-          className="action-button margin-left"
+          className="action-button"
           disabled={!price || price <= 0}
         >
           Send Quote
         </Button>}
+
+        <Button
+          onClick={() => handleButtonClick(cancelOnly ? 'cancel' : 'decline')}
+          variant={cancelOnly ? "filled" : "light"}
+          color="red"
+          className="action-button margin-left"
+        >
+          {cancelOnly ? 'Cancel Quote' : 'Decline Quote'}
+        </Button>
       </div>
     </div>
   );

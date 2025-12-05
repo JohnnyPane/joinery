@@ -38,3 +38,10 @@ export const SHEET_MATERIAL_DIMENSIONS = [
   { value: '12mm', label: '12 mm' }, { value: '5/8', label: '5/8 inch (15mm)' }, { value: '15mm', label: '15 mm' }, { value: '3/4', label: '3/4 inch (18mm)' },
   { value: '18mm', label: '18 mm' }, { value: '7/8', label: '7/8 inch' }, { value: '1', label: '1 inch (25mm)' }, { value: '25mm', label: '25 mm' },
 ];
+
+export const productUnitDisplays = {
+  cubic_foot: 'Cubic ft.',
+  board_foot: 'Board ft.',
+  linear_foot: 'Linear ft.',
+  square_foot: 'Square ft.',
+};

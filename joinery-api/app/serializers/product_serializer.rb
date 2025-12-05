@@ -1,6 +1,6 @@
 class ProductSerializer < BaseSerializer
-  attributes :id, :name, :description, :price_in_cents, :quantity, :productable_type, :requestable, :biddable,
-             :reviews_count, :average_rating, :created_at, :updated_at
+  attributes :id, :name, :description, :price_per_unit_in_cents, :available_volume, :pricing_unit, :min_order_unit,
+             :productable_type, :requestable, :biddable, :reviews_count, :average_rating, :created_at, :updated_at
 
   attribute :productable do |product|
     productable_serializer = "#{product.productable_type}Serializer".constantize
@@ -26,7 +26,7 @@ class ProductSerializer < BaseSerializer
   end
 
   def self.shallow_attributes_list
-    [ :id, :name, :price_in_cents, :quantity, :productable_type, :reviews_count, :average_rating ]
+    [ :id, :name, :price_per_unit_in_cents, :available_volume, :pricing_unit, :min_order_unit, :productable_type, :reviews_count, :average_rating ]
   end
 
   def self.shallow_associations(product)

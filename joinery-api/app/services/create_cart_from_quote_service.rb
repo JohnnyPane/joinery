@@ -19,8 +19,9 @@ class CreateCartFromQuoteService
     cart.cart_items.create!(
       product: product,
       store: product.store,
-      quantity: 1,
-      unit_price_in_cents: cart_item_price,
+      ordered_volume: quote_request.requested_volume || 1,
+      unit_price_per_volume_in_cents: cart_item_price,
+      pricing_unit: product.pricing_unit,
       quote_request: quote_request,
       shipping_option: get_shipping_option
     )
@@ -60,7 +61,7 @@ class CreateCartFromQuoteService
     if quote_request.parent_quote_request.present?
       quote_request.parent_quote_request.latest_quote.amount_in_cents
     elsif quote_request.shipping_quote?
-      product.price_in_cents
+      product.price_per_unit_in_cents
     else
       quote.amount_in_cents
     end

@@ -18,11 +18,13 @@ class Product < ApplicationRecord
 
   accepts_nested_attributes_for :shipping_options, allow_destroy: true
 
+  enum :pricing_unit, { board_foot: 'BF', square_foot: 'SF', linear_foot: 'LF', cubic_foot: 'CF', each: 'EACH' }, prefix: true
+
   acts_as_imageable_many :images
 
   owned_by :store
 
-  validates :name, :price_in_cents, presence: true
+  validates :name, :price_per_unit_in_cents, presence: true
 
   RAW_MATERIAL_TYPES = %w[Log Slab].freeze
   LUMBER_TYPES = %w[RoughLumber SurfacedLumber].freeze
@@ -30,10 +32,10 @@ class Product < ApplicationRecord
   FINISHED_GOOD_TYPES = %w[FinishedGood].freeze
 
   scope :by_store, ->(store_id) { where(store_id: store_id) }
-  scope :in_stock, -> { where('quantity > 0') }
+  scope :in_stock, -> { where('available_volume > 0') }
   # scope :available_to_shop, -> {
   #   joins(:shipping_options)
-  #     .where(quantity: 1.., is_active: true)
+  #     .where(available_volume: 1.., is_active: true)
   #     .distinct
   # }
   scope :with_images, -> { includes(images_attachments: :blob) }
@@ -50,7 +52,7 @@ class Product < ApplicationRecord
   before_validation :set_defaults_for_requestable, if: :requestable?
 
   def has_enough_stock?(requested_quantity)
-    quantity >= requested_quantity
+    available_volume >= requested_quantity
   end
 
   def self.productable_types
@@ -82,7 +84,7 @@ class Product < ApplicationRecord
   private
 
   def set_defaults_for_requestable
-    self.quantity = 1
-    self.price_in_cents = 0
+    self.available_volume = 1
+    self.price_per_unit_in_cents = 0
   end
 end
