@@ -70,6 +70,10 @@ export const authService = {
     return localStorage.getItem('authToken');
   },
 
+  getGuestToken() {
+    return localStorage.getItem('guestToken');
+  },
+
   getCurrentUser() {
     const user = localStorage.getItem('currentUser');
     return user ? JSON.parse(user) : null;
@@ -99,4 +103,5 @@ const clearAuthTokenAndUser = () => {
 const storeAuthTokenAndUser = (token, user) => {
   storeAuthToken(token);
   storeUser(user);
+  localStorage.removeItem('guestToken');
 }

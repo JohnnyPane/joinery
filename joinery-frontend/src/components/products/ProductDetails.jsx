@@ -34,6 +34,7 @@ const productableAttributes = {
     { name: 'grain_orientation', label: 'Grain Orientation' },
     { name: 'wax_sealed', label: 'Wax Sealed' },
     { name: 'is_reclaimed', label: 'Reclaimed' },
+    { name: 'is_carving_suitable', label: 'Blank is suitable for carving', type: 'switch', required: false },
   ],
   SheetGood: [
     { name: 'material_type', label: 'Material Type' },

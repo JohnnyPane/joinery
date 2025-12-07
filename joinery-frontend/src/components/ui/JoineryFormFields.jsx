@@ -11,6 +11,10 @@ const JoineryFormFields = ({ form, fieldConfig, nestedFieldType = null }) => {
     props = form.getInputProps(fieldConfig.name);
   }
 
+  if (fieldConfig.type === 'switch') {
+    console.log('Switch props:', props);
+  }
+
   switch (fieldConfig.type) {
     case 'text':
       return (
@@ -75,7 +79,7 @@ const JoineryFormFields = ({ form, fieldConfig, nestedFieldType = null }) => {
         />
       );
     case 'switch':
-      return <Switch label={fieldConfig.label} {...props} withThumbIndicator={false} className="double-margin-bottom" />
+      return <Switch defaultChecked={props.value} label={fieldConfig.label} {...props} withThumbIndicator={false} className="double-margin-bottom" />
     case 'star_rating':
         return <StarRatingInput {...form.getInputProps('rating')} />;
     default:

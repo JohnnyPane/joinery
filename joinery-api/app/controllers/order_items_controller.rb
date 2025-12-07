@@ -1,4 +1,5 @@
 class OrderItemsController < JoineryController
+  load_and_authorize_resource
 
   protected
 

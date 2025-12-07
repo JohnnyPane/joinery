@@ -4,10 +4,11 @@ class CreateQuoteRequestService
 
   def initialize(current_user:, quote_request_params: {})
     @quote_request_params = quote_request_params
+    @quote_params = quote_request_params[:quotes_attributes].first || {}
 
     @quote_type = quote_request_params[:quote_type] || "product"
     @requested_volume = quote_request_params[:requested_volume] || 1
-    @message = quote_request_params.dig(:quote_attributes, :message) || ""
+    @message = @quote_params[:message] || ""
 
     @current_user = current_user
     @product = Product.find(quote_request_params[:product_id])

@@ -6,12 +6,12 @@ class QuoteActionService
 
   def initialize(current_user:, quote_request_params: {})
     @quote_request_params = quote_request_params
-    @quote_attributes = quote_request_params[:quote_attributes] || {}
+    @quotes_attributes = quote_request_params[:quotes_attributes].first || {}
 
     @quote_request = QuoteRequest.find_by(id: quote_request_params[:id])
-    @message = @quote_attributes[:message]
-    @action = @quote_attributes[:action]
-    @amount_in_cents = @quote_attributes[:amount_in_cents]
+    @message = @quotes_attributes[:message]
+    @action = @quotes_attributes[:action]
+    @amount_in_cents = @quotes_attributes[:amount_in_cents]
 
     @current_user = current_user
 

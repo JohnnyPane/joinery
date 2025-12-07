@@ -89,7 +89,7 @@ const AddToCart = ({ productId, message, setMessage, quoteRequestSubmit }) => {
     }
   }
 
-  const quoteButtonDisabled = (quoteShippingSelected && !message || !user) || !selectedShippingOption
+  const quoteButtonDisabled = (quoteShippingSelected && !message) || !selectedShippingOption
 
   const cartItemAlreadyInCart = cart?.cart_items?.find(item => item.product_id === productId);
   const availableQuantity = product ? product.available_volume - (cartItemAlreadyInCart ? cartItemAlreadyInCart.ordered_volume : 0) : product.available_volume;

@@ -9,15 +9,16 @@ class OrderItemSerializer < BaseSerializer
     OrderSerializer.shallow_serialize(order_item.order)
   end
 
-  attribute :current_user_review, if: proc { |_, params| show_page?(params) } do |order_item, params|
-    review = order_item.product.review_by_user(params[:current_user])
-    ReviewSerializer.shallow_serialize(order_item.product.review_by_user(params[:current_user])) if review.present?
+  attribute :current_user_review, if: proc { |_, params| show_page?(params) } do |order_item|
+    review = order_item.product.review_by_user(Current.user)
+    ReviewSerializer.shallow_serialize(order_item.product.review_by_user(Current.user)) if review.present?
   end
 
 
-  attribute :requires_action do |order_item, params|
-    return false unless params[:current_user]
-    order_item.awaiting_action_from?(params[:current_user])
+  attribute :requires_action do |order_item|
+    return false unless Current.user
+
+    order_item.awaiting_action_from?(Current.user)
   end
 
   attribute :shipping_address do |order_item|

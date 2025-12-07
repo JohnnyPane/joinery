@@ -21,8 +21,8 @@ class QuoteRequestSerializer < BaseSerializer
     StoreSerializer.shallow_serialize(quote_request.seller)
   end
 
-  attribute :requires_action do |quote_request, params|
-    current_user = params[:current_user]
+  attribute :requires_action do |quote_request|
+    current_user = Current.user
 
     if current_user == quote_request.buyer
       quote_request.needs_buyer_response?

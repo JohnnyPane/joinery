@@ -1,4 +1,5 @@
 class CartsController < JoineryController
+  load_and_authorize_resource
   before_action :set_cart, only: %i[show update destroy]
   before_action :authenticate_user!, except: %i[create show]
 
@@ -6,7 +7,7 @@ class CartsController < JoineryController
     @cart = if current_user
               Cart.find_or_create_by(user: current_user, guest: false)
             else
-              Cart.create!(guest: true)
+              Cart.create!(guest: true, guest_token: SecureRandom.uuid)
             end
 
     render_resource(@cart, CartSerializer, status: :created)

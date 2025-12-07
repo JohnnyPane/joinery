@@ -94,11 +94,11 @@ const QuoteResponseModal = ({ onClose, quote, action, price }) => {
     const finalAction = quoteShippingSelected ? 'accept_with_shipping_quote' : action;
     const payload = {
       id: quote.id,
-      quote_attributes: {
+      quotes_attributes: [{
         message,
         action: finalAction,
         amount_in_cents: price ? parseInt(price * 100) : quote.latest_quote.amount_in_cents
-      }
+      }],
     }
     try {
       await updateQuoteRequest(payload);

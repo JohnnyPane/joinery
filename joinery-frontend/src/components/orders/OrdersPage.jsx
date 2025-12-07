@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Drawer, Tabs, Text, Modal, Button } from '@mantine/core';
 import { useDisclosure } from "@mantine/hooks";
+import { notifications } from "@mantine/notifications";
 
 import { useUpdateResource } from "../../hooks/useResourceMutations.js";
 import { useResourceContext } from "../../context/ResourceContext.jsx";
@@ -40,6 +41,11 @@ const OrdersPage = ({ currentUser, store }) => {
       const updatedItem = { ...item, status: newStatus };
       setItem(updatedItem);
       closeConfirm();
+      notifications.show({
+        title: 'Success',
+        message: `Order Item ${item.id} status updated to "${orderStatusOptions.find(option => option.value === newStatus)?.label}".`,
+        color: 'green',
+      });
     } catch (error) {
       console.error("Failed to update status:", error);
     }

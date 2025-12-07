@@ -1,6 +1,7 @@
 class CartItemsController < JoineryController
   skip_before_action :authenticate_user!, only: %i[create update destroy update_many]
   before_action :set_cart, only: %i[create update destroy]
+  load_and_authorize_resource :cart_item, through: :cart, shallow: true
 
   def create
     product = Product.find(cart_item_params[:product_id])

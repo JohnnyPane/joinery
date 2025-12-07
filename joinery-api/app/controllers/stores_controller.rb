@@ -1,4 +1,5 @@
 class StoresController < JoineryController
+  load_and_authorize_resource
   before_action :authenticate_user!, except: [ :index, :show ]
 
   protected

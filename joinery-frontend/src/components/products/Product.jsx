@@ -76,7 +76,7 @@ const Product = () => {
 
   const quoteRequestSubmit = async (type = 'product', quantity) => {
     const payload = {
-      quote_attributes: { message: message },
+      quotes_attributes: [{ message: message }],
       quote_type: type,
       product_id: product.id,
       requested_volume: quantity || 1,

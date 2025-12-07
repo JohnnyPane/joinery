@@ -6,7 +6,7 @@ const cartApi = createApi('cart');
 export const useCart = (cartId) => {
   const queryClient = useQueryClient();
 
-  const { data: cart, isLoading, isError, error } = useQuery({
+  const { data: cart } = useQuery({
     queryKey: ['cart', cartId],
     queryFn: async () => {
       let id = cartId || localStorage.getItem('cartId');
@@ -32,6 +32,7 @@ export const useCart = (cartId) => {
     },
     onSuccess: (data) => {
       localStorage.setItem('cartId', data.id);
+      localStorage.setItem('guestToken', data.guest_token);
       queryClient.setQueryData(['cart'], data);
     }
   });
@@ -53,6 +54,7 @@ export const useCart = (cartId) => {
       if (!cart) {
         await createCart.mutateAsync();
       }
+
       const id = cart ? cart.id : localStorage.getItem('cartId');
       return await cartApi.postMemberRoute(id, 'cart_items', { cart_id: id, ...item });
     },

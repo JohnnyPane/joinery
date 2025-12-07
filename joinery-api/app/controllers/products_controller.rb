@@ -3,6 +3,8 @@ class ProductsController < JoineryController
   before_action :set_product, only: [:update]
 
   def create
+    authorize! :create, Product
+
     product = CreateProductService.create(product_params)
     if product.persisted?
       render_resource(product, resource_serializer, status: :created)
@@ -12,6 +14,8 @@ class ProductsController < JoineryController
   end
 
   def update
+    authorize! :update, Product
+
     product = CreateProductService.update(product_params.merge(id: params[:id]))
     if product.errors.empty?
       render_resource(product, resource_serializer)

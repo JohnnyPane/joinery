@@ -1,5 +1,5 @@
 class CartSerializer < BaseSerializer
-  attributes :id, :user_id, :guest
+  attributes :id, :user_id, :guest, :guest_token
 
   attribute :cart_items do |cart|
     CartItemSerializer.shallow_serialize_collection(cart.cart_items)
@@ -10,6 +10,6 @@ class CartSerializer < BaseSerializer
   end
 
   def self.shallow_attributes_list
-    [ :id, :user_id, :guest ]
+    [ :id, :user_id, :guest, :guest_token ]
   end
 end

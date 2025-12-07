@@ -23,7 +23,7 @@ const formInputs = [
   { name: 'shipping_address.address_2', label: 'Address Line 2', type: 'text', required: false, gridSize: 6 },
   { name: 'shipping_address.city', label: 'City', type: 'text', required: true, gridSize: 6  },
   { name: 'shipping_address.state', label: 'State', type: 'select', data: usStates, required: true, gridSize: 6  },
-  { name: 'shipping_address.zip', label: 'Zip Code', type: 'text', required: true, gridSize: 6  },
+  { name: 'shipping_address.zip', label: 'Zip Code', type: 'text', required: true, gridSize: 6 },
   { name: 'billing_same_as_shipping', label: 'Billing same as shipping', type: 'checkbox', required: false, checked: true },
   // { name: 'shipping_address.country', label: 'Country', type: 'text', required: true },
   { name: 'billing_address.address_1', label: 'Billing Address', type: 'text', required: false, isBilling: true },

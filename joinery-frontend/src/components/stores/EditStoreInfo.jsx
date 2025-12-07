@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useForm } from '@mantine/form';
 import { Button, Grid, Drawer, Fieldset} from '@mantine/core';
 import { notifications } from "@mantine/notifications";
@@ -22,34 +23,35 @@ const addressInputs = [
 ];
 
 const EditStoreInfo = ({ storeId, open, onClose }) => {
-  const { data: store, isLoading } = useResource('store', storeId);
+  const { data: store } = useResource('store', storeId);
   const updateStore = useUpdateResource('stores');
 
-  const form = useForm({
-    initialValues: {
-      name: store ? store.name : '',
-      description: store ? store.description : '',
-      location: store ? store.location : '',
-      address_attributes: store && store.address ? {
-        id: store.address.id,
-        address_1: store.address.address_1 || '',
-        address_2: store.address.address_2 || '',
-        city: store.address.city || '',
-        state: store.address.state || '',
-        zip: store.address.zip || '',
-      } : {
-        address_1: '',
-        address_2: '',
-        city: '',
-        state: '',
-        zip: '',
-      },
-    },
+  const form = useForm({})
 
-    validate: {
-      name: (value) => (value.length > 0 ? null : 'Store name is required'),
-    },
-  });
+  useEffect(() => {
+    if (store) {
+      form.setValues({
+        name: store.name || '',
+        description: store.description || '',
+        location: store.location || '',
+        address_attributes: store.address ? {
+          id: store.address.id,
+          address_1: store.address.address_1 || '',
+          address_2: store.address.address_2 || '',
+          city: store.address.city || '',
+          state: store.address.state || '',
+          zip: store.address.zip || '',
+        } : {
+          id: undefined,
+          address_1: '',
+          address_2: '',
+          city: '',
+          state: '',
+          zip: '',
+        },
+      });
+    }
+  }, [store]);
 
   const handleSubmit = async (values) => {
     try {
@@ -70,10 +72,6 @@ const EditStoreInfo = ({ storeId, open, onClose }) => {
       });
     }
   };
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <Drawer opened={open} onClose={onClose} title="Edit Store Information" position="bottom">
