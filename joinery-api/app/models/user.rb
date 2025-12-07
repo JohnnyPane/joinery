@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  include AvatarAttributes
+
   devise :database_authenticatable, :registerable,
          :recoverable, :jwt_authenticatable, jwt_revocation_strategy: JwtDenylist
 
@@ -17,7 +19,7 @@ class User < ApplicationRecord
 
   has_many :stores, foreign_key: "owner_id", dependent: :destroy
 
-  def name
+  def full_name
     "#{first_name} #{last_name}"
   end
 

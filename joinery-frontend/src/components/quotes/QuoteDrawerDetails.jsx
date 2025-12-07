@@ -1,14 +1,18 @@
-import { Image, Title, Text, Badge } from "@mantine/core";
+import { Image, Title, Text, Badge, Avatar, Tooltip, Divider } from "@mantine/core";
 import { useMe } from "../../hooks/useMe.js";
 import { getImageUrl } from "../../utils/imageConfigs.js";
-import {moneyDisplay, readableDate} from "../../utils/humanizeText.js";
+import { moneyDisplay, readableDate, readableDateTime } from "../../utils/humanizeText.js";
 import QuoteResponseDelegator from "./QuoteResponseDelegator.jsx";
 import { statusColors } from "../../utils/colorConfigs.js";
+import { productUnitDisplays } from "../../utils/productDimensions.js";
+import JoineryAvatar from "../ui/JoineryAvatar.jsx";
 
 const QuoteDrawerDetails = ({ quote, closeDrawer }) => {
   if (!quote) return null;
   const { data: currentUser } = useMe();
   if (!currentUser) return null;
+
+  const { buyer, seller, latest_quote } = quote;
 
   const imageUrl = getImageUrl(quote.product.images[0].image_url);
 
@@ -16,8 +20,8 @@ const QuoteDrawerDetails = ({ quote, closeDrawer }) => {
   const isSeller = currentUser.current_store && (currentUser.current_store.id === quote.seller_id);
   const responderType = isBuyer ? 'buyer' : isSeller ? 'seller' : null;
 
-  const needsToRespondAsSeller = isSeller && quote.latest_quote.role === 'buyer' && ['requested', 'responded'].includes(quote.status);
-  const needsToRespondAsBuyer = isBuyer && quote.latest_quote.role === 'seller' && ['offered', 'responded'].includes(quote.status);
+  const needsToRespondAsSeller = isSeller && latest_quote.role === 'buyer' && ['requested', 'responded'].includes(quote.status);
+  const needsToRespondAsBuyer = isBuyer && latest_quote.role === 'seller' && ['offered', 'responded'].includes(quote.status);
   const needsToRespond = needsToRespondAsSeller || needsToRespondAsBuyer;
   const sellerCanCancel = isSeller && ['requested', 'responded', 'offered'].includes(quote.status) && !needsToRespondAsSeller;
 
@@ -25,10 +29,7 @@ const QuoteDrawerDetails = ({ quote, closeDrawer }) => {
     return <div>You do not have permission to view this quote.</div>;
   }
 
-  const partiesInvolved = {
-    buyer: quote.buyer.first_name,
-    seller: quote.seller.name
-  }
+  const volumeUnitDisplay = quote.pricing_unit === 'each' ? quote.requested_volume == 1.0 ? 'unit' : 'units' : productUnitDisplays[quote.pricing_unit]
 
   return (
     <div>
@@ -38,7 +39,30 @@ const QuoteDrawerDetails = ({ quote, closeDrawer }) => {
       {/*  {quote.latest_quote.role === 'buyer' ? <Text>Quote request from {quote.buyer.first_name}</Text> : <Text>Response from {currentUser.current_store ? currentUser.current_store.name : 'Seller'}</Text>}*/}
       {/*</div>*/}
 
-      <Badge className="margin-bottom" variant="default" color="violet" size="xl">{quote.quote_type} Quote</Badge>
+      <div className="flex row align-center">
+        <Title order={2}>Current offer: {moneyDisplay(latest_quote.amount_in_cents)}</Title>
+
+        <Badge className="margin-left" variant="default" color="violet" size="xl">{quote.quote_type} Quote</Badge>
+      </div>
+
+      <Text size="lg"><strong>Requested Volume: </strong>{quote.requested_volume} {volumeUnitDisplay}</Text>
+
+      <div className="flex row align-center margin-top double-margin-bottom">
+        <JoineryAvatar user={latest_quote.role === 'buyer' ? buyer : seller} />
+
+        <div className="flex column margin-left">
+          <Text size="xs" color="dimmed">{readableDateTime(latest_quote.created_at)}</Text>
+          <Text>{latest_quote.message}</Text>
+        </div>
+      </div>
+
+      {(needsToRespond || sellerCanCancel) &&
+        <QuoteResponseDelegator quote={quote} responderType={responderType} closeDrawer={closeDrawer} cancelOnly={sellerCanCancel} />
+      }
+
+      <Divider className="margin-bottom double-margin-top" />
+
+      <Title order={3} className="margin-bottom">Product & Quote Details</Title>
 
       <div className="flex row">
         {imageUrl && <Image src={imageUrl} alt={quote.product.name} className="drawer-product-image-wrapper margin-right" />}
@@ -55,23 +79,28 @@ const QuoteDrawerDetails = ({ quote, closeDrawer }) => {
         </div>
       </div>
 
-      <div className="margin-top">
-        <Text className="margin-bottom"><strong>Last Message:</strong> {quote.latest_quote.message}</Text>
-        {quote.latest_quote.amount_in_cents > 0 && <Text><strong>Quote Amount:</strong> {moneyDisplay(quote.latest_quote.amount_in_cents)}</Text>}
-      </div>
+      <Text className="margin-top"><strong>Requested Volume: </strong>{quote.requested_volume} {volumeUnitDisplay}</Text>
 
-      {(needsToRespond || sellerCanCancel) && <QuoteResponseDelegator quote={quote} responderType={responderType} closeDrawer={closeDrawer} cancelOnly={sellerCanCancel} />}
+      <Divider className="double-margin-top margin-bottom" />
 
       {(isBuyer || isSeller) && quote.quotes.length > 0 && (
-        <div className="double-margin-top">
-          <Title order={4} className="margin-bottom">Quote Activity</Title>
+        <div>
+          <Title order={3} className="margin-bottom">Quote History</Title>
 
-          {quote.quotes.map((response) => (
-            <div key={response.id} className="margin-bottom">
-              <Text><strong>{partiesInvolved[response.role]}: </strong>{response.message}</Text>
-              <Text size="xs" color="dimmed">Sent on: {readableDate(response.created_at)}</Text>
-            </div>
-          ))}
+          {quote.quotes.map((response) => {
+            return (
+              <div key={response.id} className="double-margin-bottom flex row align-start">
+                <JoineryAvatar user={response.role === 'buyer' ? buyer : seller} size={40} />
+
+                <div className="flex column margin-left">
+                  <Text size="xs" color="dimmed">{readableDateTime(response.created_at)}</Text>
+                  <Text size="sm">{response.message}</Text>
+                  {response.amount_in_cents > 0 && <Text size="sm"><strong>{moneyDisplay(response.amount_in_cents)}</strong></Text>}
+                </div>
+              </div>
+            );
+          }
+        )}
         </div>
       )}
     </div>

@@ -13,4 +13,11 @@ class StoreSerializer < BaseSerializer
   def self.shallow_attributes_list
     [ :id, :name, :location ]
   end
+
+  def self.shallow_associations(store)
+    {
+      initials: store.initials,
+      icon_color: store.icon_color
+    }
+  end
 end

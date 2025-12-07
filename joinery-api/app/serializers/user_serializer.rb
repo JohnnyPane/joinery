@@ -1,5 +1,5 @@
 class UserSerializer < BaseSerializer
-  attributes :id, :email, :name, :created_at, :admin, :quotes_awaiting_action_count
+  attributes :id, :email, :full_name, :created_at, :admin, :quotes_awaiting_action_count
 
   attribute :current_store do |_user, params|
     params[:current_store] ? StoreSerializer.shallow_serialize(params[:current_store]) : nil
@@ -15,12 +15,14 @@ class UserSerializer < BaseSerializer
   end
 
   def self.shallow_attributes_list
-    [ :id, :email, :first_name, :last_name, :name ]
+    [ :id, :email, :first_name, :last_name, :full_name, :created_at ]
   end
 
   def self.shallow_associations(user)
     {
-      name: user.name
+      name: user.full_name,
+      initials: user.initials,
+      icon_color: user.icon_color
     }
   end
 end

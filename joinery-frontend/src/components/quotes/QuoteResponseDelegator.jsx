@@ -8,7 +8,7 @@ import QuoteResponseModal from "./QuoteResponseModal.jsx";
 const SellerResponseActions = ({ setPrice, price, handleButtonClick, cancelOnly }) => {
   return (
     <div>
-      <Title order={4} className="margin-bottom">Your Response</Title>
+      {/*<Title order={4} className="margin-bottom">Your Response</Title>*/}
       {!cancelOnly &&
         <NumberInput
           label="Your Price Offer"
