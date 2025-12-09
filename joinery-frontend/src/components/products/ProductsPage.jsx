@@ -45,18 +45,30 @@ const filterConfigs = [
     label: 'Product Type',
     options: productTypeOptions
   },
+  // {
+  //   name: 'material_tags',
+  //   operator: 'contains',
+  //   label: 'Materials',
+  //   searchable: true,
+  //   options: [
+  //     { value: 'plywood', label: 'Plywood' },
+  //     { value: 'mdf', label: 'MDF' },
+  //     { value: 'particle_board', label: 'Particle Board' },
+  //     { value: 'melamine', label: 'Melamine' },
+  //     { value: 'osb', label: 'OSB' },
+  //     { value: 'hardboard', label: 'Hardboard' },
+  //   ]
+  // },
   {
-    name: 'material_tags',
-    operator: 'contains',
-    label: 'Materials',
-    searchable: true,
+    name: 'average_rating',
+    operator: 'gte',
+    label: 'Average Rating',
     options: [
-      { value: 'plywood', label: 'Plywood' },
-      { value: 'mdf', label: 'MDF' },
-      { value: 'particle_board', label: 'Particle Board' },
-      { value: 'melamine', label: 'Melamine' },
-      { value: 'osb', label: 'OSB' },
-      { value: 'hardboard', label: 'Hardboard' },
+      { value: '1', label: '1 Star & Up' },
+      { value: '2', label: '2 Stars & Up' },
+      { value: '3', label: '3 Stars & Up' },
+      { value: '4', label: '4 Stars & Up' },
+      { value: '5', label: '5 Stars' },
     ]
   }
 ]

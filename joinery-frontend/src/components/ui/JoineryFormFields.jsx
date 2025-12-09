@@ -11,10 +11,6 @@ const JoineryFormFields = ({ form, fieldConfig, nestedFieldType = null }) => {
     props = form.getInputProps(fieldConfig.name);
   }
 
-  if (fieldConfig.type === 'switch') {
-    console.log('Switch props:', props);
-  }
-
   switch (fieldConfig.type) {
     case 'text':
       return (

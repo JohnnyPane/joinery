@@ -1,10 +1,14 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from '@mantine/form';
 import { TextInput, PasswordInput, Button, Card, Text } from '@mantine/core';
 
+import RequestPasswordReset from "./RequestPasswordReset.jsx";
 import { useAuth } from "../../context/AuthContext.jsx";
 
 const LoginForm = () => {
+  const [forgotPassword, setForgetPassword] = useState(false);
+
   const { login } = useAuth();
   const navigate = useNavigate();
 
@@ -28,6 +32,16 @@ const LoginForm = () => {
       console.error('Login failed:', error);
     }
   };
+
+  const toggleForgotPassword = () => {
+    setForgetPassword(!forgotPassword);
+  }
+
+  if (forgotPassword) {
+    return (
+      <RequestPasswordReset toggleForm={toggleForgotPassword} />
+    );
+  }
 
   return (
     <div className="login-form-container">
@@ -54,6 +68,10 @@ const LoginForm = () => {
           <div className="flex to-right full-width">
             <Button type="submit" color="teal" className="full-width double-margin-top">Log In</Button>
           </div>
+
+          <Button variant="subtle" color="gray" onClick={toggleForgotPassword} className="full-width margin-top">
+            Forgot Your Password?
+          </Button>
         </form>
       </Card>
     </div>

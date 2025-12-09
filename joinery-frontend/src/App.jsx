@@ -19,6 +19,7 @@ import ProductsPage from "./components/products/ProductsPage.jsx";
 import ProductCategories from "./components/products/ProductCategories.jsx";
 import Quotes from "./components/quotes/Quotes.jsx";
 import AboutUs from "./components/home/AboutUs.jsx";
+import ResetPasswordForm from "./components/auth/ResetPasswordForm.jsx";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -62,6 +63,7 @@ function App() {
             <Route path="/checkout/shipping_options" element={<ShippingOptionsForm />} />
             <Route path="/login" element={<LoginSignupToggle />} />
             <Route path="/orders" element={<OrdersRoute />}/>
+            <Route path="/reset-password" element={<ResetPasswordForm />} />
             <Route path="/products" element={<ProductsPage />} />
             <Route path="/products/new" element={<ProductForm />} />
             <Route path="/products/:id" element={<Product />} />

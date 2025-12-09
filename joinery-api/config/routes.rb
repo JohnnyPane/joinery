@@ -37,6 +37,9 @@ Rails.application.routes.draw do
     delete "products/:id/images/:image_id", to: "products#destroy_image"
     post "stores/:id/upload_images", to: "stores#upload_images"
 
+    post 'password/reset', to: 'users/password_resets#create'
+    put 'password/reset', to: 'users/password_resets#update'
+
     post "/stripe/webhooks", to: "stripe_webhooks#create"
     post "/stripe/create_account_link", to: "stripe#create_account_link"
   end

@@ -66,6 +66,30 @@ export const authService = {
     }
   },
 
+  async requestPasswordReset(email) {
+    try {
+      await joineryClient.post('/password/reset', {
+        email
+      });
+    } catch (error) {
+      throw new Error('Password reset request failed');
+    }
+  },
+
+  async resetPassword(token, password, password_confirmation) {
+    try {
+      const response = await joineryClient.put('/password/reset', {
+        reset_password_token: token,
+        password,
+        password_confirmation
+      });
+
+      await this.login(response.data.email, password);
+    } catch (error) {
+      throw new Error('Password reset failed');
+    }
+  },
+
   getAuthToken() {
     return localStorage.getItem('authToken');
   },
