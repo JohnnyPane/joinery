@@ -3,20 +3,16 @@ import { Text, Accordion } from "@mantine/core";
 const productableAttributes = {
   Slab: [{ name: 'species', label: 'Species' }, { name: 'length', label: 'Length (inches)' }, { name: 'width', label: 'Width (inches)' }, { name: 'height', label: 'Height (inches)' }],
   Log: [{ name: 'species', label: 'Species' }, { name: 'length', label: 'Length (inches)' }, { name: 'diameter', label: 'Diameter (inches)' }, { name: 'grade', label: 'Grade' }, { name: 'moisture_content', label: 'Moisture Content' }],
-  RoughLumber: [
+  Lumber: [
     { name: 'species', label: 'Species' },
-    { name: 'moisture_content_percent', label: 'Moisture Content' },
-    { name: 'grade', label: 'grade' },
+    { name: 'finish_type', label: 'Finish Type' },
+    { name: 'nominal_dimension', label: 'Nominal Dimensions' },
+    { name: 'thickness_in_inches', label: 'Thickness (inches)' },
+    { name: 'width_in_inches', label: 'Width (inches)' },
+    { name: 'length_in_feet', label: 'Length (feet)' },
     { name: 'board_feet', label: 'Board feet' },
-    { name: 'length_in_feet', label: 'length_in_feet' },
-    { name: 'nominal_thickness_inches', label: 'Thickness (inches)' },
-    { name: 'nominal_width_inches ', label: 'Width (inches)' }
-  ],
-  SurfacedLumber: [
-    { name: 'species', label: 'Species' },
     { name: 'moisture_content_percent', label: 'Moisture Content' },
-    { name: 'nominal_dimension', label: 'Dimensions' },
-    { name: 'length_in_feet', label: 'length_in_feet' },
+    { name: 'grade', label: 'Grade' },
     { name: 'profile', label: 'Profile' },
     { name: 'treatment', label: 'Treatment' }
   ],
@@ -53,6 +49,18 @@ const productableAttributes = {
     { name: 'is_prefinished', label: 'Prefinished' },
     { name: 'is_shop_grade', label: 'Shop Grade' },
     { name: 'matching', label: 'Matching' },
+  ],
+  Timber: [
+    { name: 'species', label: 'Species' },
+    { name: 'nominal_dimension', label: 'Nominal Dimensions' },
+    { name: 'length_in_feet', label: 'Length (feet)' },
+    { name: 'board_feet', label: 'Board feet' },
+    { name: 'grading_standard', label: 'Grading Standard' },
+    { name: 'heart_content_type', label: 'Heart Content' },
+    { name: 'surface_finish_type', label: 'Surface Finish' },
+    { name: 'moisture_condition', label: 'Moisture Condition' },
+    { name: 'preservative_treatment', label: 'Preservative Treatment' },
+    { name: 'end_cut_style', label: 'End Cut Style' },
   ],
 }
 

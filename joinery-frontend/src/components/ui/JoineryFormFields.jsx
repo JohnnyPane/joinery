@@ -4,6 +4,13 @@ import JoineryIconMap from "./JoineryIconMap.jsx";
 import StarRatingInput from "./StarRatingInput.jsx";
 
 const JoineryFormFields = ({ form, fieldConfig, nestedFieldType = null }) => {
+  const dependencyValue = nestedFieldType ? form.values[nestedFieldType][fieldConfig?.show?.field] : form.values[fieldConfig?.show?.field];
+  const shouldShow = fieldConfig.show?.values?.includes(dependencyValue);
+
+  if (!shouldShow && fieldConfig.show) {
+    return null;
+  }
+
   let props = {};
   if (nestedFieldType) {
     props = form.getInputProps(`${nestedFieldType}.${fieldConfig.name}`);

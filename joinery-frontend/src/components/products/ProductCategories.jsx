@@ -18,11 +18,11 @@ const productCategories = {
     description: "High-quality raw materials for your next creation.",
     imageUrl: getBucketImageUrl("raw-materials.jpeg"),
   },
-  lumber: {
-    title: "Slabs & Lumber",
-    description: "Shaped by nature, ready for the workshop.",
-    imageUrl: getBucketImageUrl("slabs-lumber.jpeg"),
-  },
+  // lumber: {
+  //   title: "Slabs & Lumber",
+  //   description: "Shaped by nature, ready for the workshop.",
+  //   imageUrl: getBucketImageUrl("slabs-lumber.jpeg"),
+  // },
   finished_goods: {
     title: "Finished Goods",
     description: "Handcrafted furniture and decor, ready to enhance your space.",
@@ -38,15 +38,10 @@ const productCategories = {
     productableType: "Log",
     description: "",
   },
-  rough_lumber: {
-    title: "Rough Lumber",
-    productableType: "RoughLumber",
+  lumber: {
+    title: "Lumber",
+    productableType: "Lumber",
     description: "",
-  },
-  surfaced_lumber: {
-    title: "Surfaced Lumber",
-    productableType: "SurfacedLumber",
-    description: "High-quality raw materials for your next creation.",
   },
   wood_blocks: {
     title: "Wood Blocks",
@@ -58,6 +53,11 @@ const productCategories = {
     productableType: "SheetGood",
     description: "Handcrafted furniture and decor, ready to enhance your space.",
   },
+  timber: {
+    title: "Timber",
+    productableType: "Timber",
+    description: "",
+  }
 }
 
 

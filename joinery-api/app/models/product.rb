@@ -2,10 +2,10 @@ class Product < ApplicationRecord
   include Imageable
   include Ownable
 
-  PRODUCTABLE_TYPES = %w[Log Slab RoughLumber SurfacedLumber WoodBlock SheetGood].freeze
+  PRODUCTABLE_TYPES = %w[Log Slab Lumber Timber WoodBlock SheetGood].freeze
 
   belongs_to :store
-  belongs_to :productable, polymorphic: true, dependent: :destroy
+  belongs_to :productable, polymorphic: true
   has_many :shipping_options, dependent: :destroy
   has_many :order_items
   has_many :cart_items
@@ -27,7 +27,7 @@ class Product < ApplicationRecord
   validates :name, :price_per_unit_in_cents, presence: true
 
   RAW_MATERIAL_TYPES = %w[Log Slab].freeze
-  LUMBER_TYPES = %w[RoughLumber SurfacedLumber].freeze
+  LUMBER_TYPES = %w[Lumber Timber].freeze
   SPECIALTY_STOCK_TYPES = %w[WoodBlock].freeze
   FINISHED_GOOD_TYPES = %w[FinishedGood].freeze
 

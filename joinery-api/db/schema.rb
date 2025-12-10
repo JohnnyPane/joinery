@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_12_07_123632) do
+ActiveRecord::Schema[8.0].define(version: 2025_12_09_172452) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -131,6 +131,31 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_07_123632) do
     t.integer "grade"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "lumbers", force: :cascade do |t|
+    t.string "species", null: false
+    t.integer "finish_type", default: 0, null: false
+    t.decimal "thickness_in_inches", precision: 6, scale: 2
+    t.decimal "width_in_inches", precision: 6, scale: 2
+    t.integer "length_in_feet"
+    t.string "nominal_dimension"
+    t.decimal "moisture_content_percent", precision: 5, scale: 2
+    t.decimal "board_feet", precision: 8, scale: 2
+    t.string "grade"
+    t.string "profile"
+    t.string "treatment"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["board_feet"], name: "index_lumbers_on_board_feet"
+    t.index ["finish_type"], name: "index_lumbers_on_finish_type"
+    t.index ["grade"], name: "index_lumbers_on_grade"
+    t.index ["nominal_dimension"], name: "index_lumbers_on_nominal_dimension"
+    t.index ["profile"], name: "index_lumbers_on_profile"
+    t.index ["species"], name: "index_lumbers_on_species"
+    t.index ["thickness_in_inches"], name: "index_lumbers_on_thickness_in_inches"
+    t.index ["treatment"], name: "index_lumbers_on_treatment"
+    t.index ["width_in_inches"], name: "index_lumbers_on_width_in_inches"
   end
 
   create_table "order_items", force: :cascade do |t|
@@ -258,27 +283,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_07_123632) do
     t.index ["user_id"], name: "index_reviews_on_user_id"
   end
 
-  create_table "rough_lumbers", force: :cascade do |t|
-    t.string "species", null: false
-    t.decimal "moisture_content_percent", precision: 5, scale: 2
-    t.decimal "nominal_thickness_inches", precision: 6, scale: 2
-    t.decimal "nominal_width_inches", precision: 6, scale: 2
-    t.integer "length_in_feet"
-    t.decimal "board_feet", precision: 8, scale: 2
-    t.string "grade"
-    t.boolean "can_be_straight_lined"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["board_feet"], name: "index_rough_lumbers_on_board_feet"
-    t.index ["can_be_straight_lined"], name: "index_rough_lumbers_on_can_be_straight_lined"
-    t.index ["grade"], name: "index_rough_lumbers_on_grade"
-    t.index ["length_in_feet"], name: "index_rough_lumbers_on_length_in_feet"
-    t.index ["moisture_content_percent"], name: "index_rough_lumbers_on_moisture_content_percent"
-    t.index ["nominal_thickness_inches"], name: "index_rough_lumbers_on_nominal_thickness_inches"
-    t.index ["nominal_width_inches"], name: "index_rough_lumbers_on_nominal_width_inches"
-    t.index ["species"], name: "index_rough_lumbers_on_species"
-  end
-
   create_table "sheet_goods", force: :cascade do |t|
     t.integer "material_type", default: 0, null: false
     t.string "face_species"
@@ -357,25 +361,30 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_07_123632) do
     t.index ["stripe_account_id"], name: "index_stores_on_stripe_account_id", unique: true
   end
 
-  create_table "surfaced_lumbers", force: :cascade do |t|
+  create_table "timbers", force: :cascade do |t|
     t.string "species", null: false
-    t.decimal "moisture_content_percent", precision: 5, scale: 2
-    t.string "nominal_dimension"
-    t.decimal "thickness_in_inches", precision: 6, scale: 2
-    t.decimal "width_in_inches", precision: 6, scale: 2
-    t.integer "length_in_feet"
-    t.string "profile"
-    t.string "treatment"
+    t.decimal "thickness_in_inches", precision: 6, scale: 2, null: false
+    t.decimal "width_in_inches", precision: 6, scale: 2, null: false
+    t.integer "length_in_feet", null: false
+    t.string "nominal_dimension", null: false
+    t.decimal "board_feet", precision: 8, scale: 2
+    t.string "grading_standard"
+    t.integer "heart_content_type", default: 0, null: false
+    t.integer "surface_finish_type", default: 0, null: false
+    t.integer "moisture_condition", default: 0, null: false
+    t.string "preservative_treatment"
+    t.string "end_cut_style"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["length_in_feet"], name: "index_surfaced_lumbers_on_length_in_feet"
-    t.index ["moisture_content_percent"], name: "index_surfaced_lumbers_on_moisture_content_percent"
-    t.index ["nominal_dimension"], name: "index_surfaced_lumbers_on_nominal_dimension"
-    t.index ["profile"], name: "index_surfaced_lumbers_on_profile"
-    t.index ["species"], name: "index_surfaced_lumbers_on_species"
-    t.index ["thickness_in_inches"], name: "index_surfaced_lumbers_on_thickness_in_inches"
-    t.index ["treatment"], name: "index_surfaced_lumbers_on_treatment"
-    t.index ["width_in_inches"], name: "index_surfaced_lumbers_on_width_in_inches"
+    t.index ["board_feet"], name: "index_timbers_on_board_feet"
+    t.index ["end_cut_style"], name: "index_timbers_on_end_cut_style"
+    t.index ["heart_content_type"], name: "index_timbers_on_heart_content_type"
+    t.index ["length_in_feet"], name: "index_timbers_on_length_in_feet"
+    t.index ["moisture_condition"], name: "index_timbers_on_moisture_condition"
+    t.index ["nominal_dimension"], name: "index_timbers_on_nominal_dimension"
+    t.index ["preservative_treatment"], name: "index_timbers_on_preservative_treatment"
+    t.index ["species"], name: "index_timbers_on_species"
+    t.index ["surface_finish_type"], name: "index_timbers_on_surface_finish_type"
   end
 
   create_table "users", force: :cascade do |t|

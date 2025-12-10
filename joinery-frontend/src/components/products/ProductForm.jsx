@@ -16,6 +16,22 @@ import { submittableShippingOptions, useProductForm } from "../../hooks/useProdu
 
 const productsApi = createApi('products');
 
+const transformProductableAttributes = async (productableType, values) => {
+  let productableAttributes = values || {};
+
+  if (productableType === 'Lumber') {
+    if (productableAttributes.finish_type === 'rough' || productableAttributes.finish_type === 'resawn') {
+      const thickness = productableAttributes.rough_thickness;
+      const width = productableAttributes.rough_width;
+      productableAttributes.nominal_dimension = `${thickness} x ${width}`;
+
+      productableAttributes = (({ rough_thickness, rough_width, ...rest }) => rest)(productableAttributes);
+    }
+  }
+
+  return productableAttributes;
+}
+
 const ProductForm = () => {
   const [goToNextStep, setGoToNextStep] = useState(false);
 
@@ -28,6 +44,8 @@ const ProductForm = () => {
   const form = useProductForm();
 
   const handleProductSubmit = async (values) => {
+    const productableAttributes = await transformProductableAttributes(values.productable_type, values.productable);
+
     const payload = {
       name: values.name,
       description: values.description,
@@ -39,7 +57,7 @@ const ProductForm = () => {
       biddable: values.biddable,
       store_id: user?.current_store?.id,
       productable_type: values.productable_type,
-      productable_attributes: values.productable,
+      productable_attributes: productableAttributes,
     }
 
     if (values.id) {

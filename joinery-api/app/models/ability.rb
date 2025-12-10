@@ -7,7 +7,7 @@ class Ability
     user ||= User.new # guest user (not logged in)
     user_store_ids = user.store_users.pluck(:store_id)
 
-    can :read, [ Product, Store, Slab, Log, RoughLumber, SurfacedLumber, WoodBlock, SheetGood, ShippingOption, Review ]
+    can :read, [ Product, Store, Slab, Log, Lumber, WoodBlock, SheetGood, ShippingOption, Review ]
     can :create, Cart
 
     if Current.guest_token.present?
