@@ -89,7 +89,7 @@ module Imageable
     attached_images.map do |image|
       size = IMAGE_SIZES[size_key] || IMAGE_SIZES[:default]
 
-      image.variant(send(resource_config[:processing_method], size)).processed
+      image.variant(send(resource_config[:processing_method], size))
     end
   end
 

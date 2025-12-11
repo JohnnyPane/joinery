@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useParams, useNavigate } from 'react-router-dom';
-import { Accordion, Text, ThemeIcon, Title, Anchor, Divider, Skeleton, Grid } from '@mantine/core';
+import {Accordion, Text, ThemeIcon, Title, Anchor, Divider, Skeleton, Grid, Image} from '@mantine/core';
 import { notifications } from "@mantine/notifications";
 import { IconWood } from "@tabler/icons-react";
 
@@ -106,7 +106,7 @@ const Product = () => {
   return (
     <div className="product-detail-container">
       <div className="product-image-carousel">
-        <JoineryImageCarousel images={product.images} objectFit='contain' />
+        <JoineryImageCarousel images={product.images} objectFit='contain' name={product.name} />
       </div>
 
       <div className="product-info">

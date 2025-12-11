@@ -50,6 +50,7 @@ class Product < ApplicationRecord
   searchable_by :name
 
   before_validation :set_defaults_for_requestable, if: :requestable?
+  after_commit :process_image_variants, on: [:create, :update], if: -> { images.attached? }
 
   def has_enough_stock?(requested_quantity)
     available_volume >= requested_quantity
@@ -86,5 +87,9 @@ class Product < ApplicationRecord
   def set_defaults_for_requestable
     self.available_volume = 1
     self.price_per_unit_in_cents = 0
+  end
+
+  def process_image_variants
+    ImageVariantProcessingJob.perform_later(images.map(&:id))
   end
 end

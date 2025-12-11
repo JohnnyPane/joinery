@@ -14,7 +14,7 @@ class ProductSerializer < BaseSerializer
   end
 
   attribute :images do |product, params|
-    product.image_urls(size_key: params[:image_type])
+    product.image_urls(size_key: params[:image_size])
   end
 
   attribute :store do |product|

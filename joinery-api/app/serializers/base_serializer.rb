@@ -38,8 +38,4 @@ class BaseSerializer
   def self.show_page?(params)
     params.dig(:show_page) == true
   end
-
-  def current_user
-    @current_user ||= params.dig(:current_user)
-  end
 end

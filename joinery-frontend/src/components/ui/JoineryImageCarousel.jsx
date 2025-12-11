@@ -3,7 +3,7 @@ import { Image } from "@mantine/core";
 
 const rootURL = import.meta.env.VITE_API_ROOT_URL;
 
-const JoineryImageCarousel = ({ images, height = 300, objectFit = 'cover' }) => {
+const JoineryImageCarousel = ({ images, height = 300, objectFit = 'cover', name = '' }) => {
 
   const slides  = images.map((image, index) => (
     <Carousel.Slide key={index}>
@@ -16,6 +16,7 @@ const JoineryImageCarousel = ({ images, height = 300, objectFit = 'cover' }) => 
           objectFit: objectFit,
           borderRadius: 8,
         }}
+        fallbackSrc={`https://placehold.co/600?text=${name}&font=Lora`}
       />
     </Carousel.Slide>
   ));
@@ -38,7 +39,7 @@ const JoineryImageCarousel = ({ images, height = 300, objectFit = 'cover' }) => 
         },
       }}
     >
-      {slides}
+      {images.length > 0 ? slides : <Image src={`https://placehold.co/600?text=(image not available)&font=Lora`} alt="No image available" />}
     </Carousel>
   );
 }

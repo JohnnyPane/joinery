@@ -14,11 +14,11 @@ class JoineryController < ApplicationController
     paginated_resources = paginated_resources.preload(*preloaded_index_resources) if preloaded_index_resources.present?
     paginated_resources =  paginated_resources.includes(images_attachments: { blob: :variant_records }) if resource_class.reflect_on_association(:images)
 
-    render_resource_collection(paginated_resources, resource_serializer, params: { image_type: image_size })
+    render_resource_collection(paginated_resources, resource_serializer, params: { image_size: image_size_for(:list) })
   end
 
   def show
-    render_resource(resource, resource_serializer, params: { image_type: :main_image, show_page: true })
+    render_resource(resource, resource_serializer, params: { image_size: image_size_for(:show), show_page: true })
   end
 
   def new
@@ -149,8 +149,13 @@ class JoineryController < ApplicationController
     []
   end
 
-  def image_size
-    params[:image_size] || :default
+  def image_size_for(action)
+    defaults = {
+      list: :default,
+      show: :main_image
+    }
+
+    params[:image_size] || defaults[action]
   end
 
   def render_errors(errors, status: :unprocessable_content)

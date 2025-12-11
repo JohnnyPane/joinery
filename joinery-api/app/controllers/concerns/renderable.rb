@@ -5,7 +5,7 @@ module Renderable
     render json: serializer.new(
       resource,
       {
-        params: { current_user: current_user }.merge(options[:params] || {})
+        params: options[:params] || {}
       }.merge(options.except(:params))
       ).serializable_hash[:data][:attributes]
   end
@@ -18,7 +18,7 @@ module Renderable
     render json: serializer.new(
       collection,
       {
-        params: { current_user: current_user }.merge(options[:params] || {}),
+        params: options[:params] || {},
         is_collection: true,
         meta: {
           page: collection.current_page,

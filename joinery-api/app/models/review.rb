@@ -19,7 +19,7 @@ class Review < ApplicationRecord
   after_destroy :update_reviewable_metrics
 
   def update_reviewable_metrics
-    reviewable.update(average_rating: reviewable.reviews.average(:rating))
+    reviewable.update(average_rating: reviewable.reviews.average(:rating) || 0.0)
 
     reviewable.cascade_review_update
   end

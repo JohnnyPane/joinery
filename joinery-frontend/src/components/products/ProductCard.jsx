@@ -43,6 +43,7 @@ const ProductCard = ({ cardData, clickable = true }) => {
           src={imageUrl}
           alt={name}
           className="product-card-image margin-4-b"
+          fallbackSrc={`https://placehold.co/600?text=(image not available)&font=Lora`}
         />
       </div>
 
