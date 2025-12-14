@@ -1,8 +1,8 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Button, Group, Title, Drawer, Stack } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { IconPlus } from "@tabler/icons-react";
+import { IconPlus, IconAdjustmentsHorizontal } from "@tabler/icons-react";
 
 import { ResourceProvider } from "../../context/ResourceContext.jsx";
 import Products from "./Products.jsx";
@@ -11,6 +11,8 @@ import JoineryFilters from "../ui/JoineryFilters.jsx";
 import { getBucketImageUrl } from "../../utils/imageConfigs.js";
 import { woodSpecies } from "../../utils/woodSpecies.js";
 import JoinerySearch from "../ui/JoinerySearch.jsx";
+import { productFilterConfigs } from "../../utils/productFilterConfigs.js";
+import ActiveFilters from "../ui/ActiveFilters.jsx";
 
 const productCategories = {
   raw_materials: {
@@ -60,7 +62,6 @@ const productCategories = {
   }
 }
 
-
 const filterConfigs = [
   {
     name: 'price_per_unit_in_cents',
@@ -87,6 +88,26 @@ const ProductCategories = () => {
   const { categorySlug } = useParams();
   const category = useMemo(() => productCategories[categorySlug], [categorySlug]);
   const [filterDrawerOpened, { open, close }] = useDisclosure(false);
+  const categoryFilters = useMemo(() =>  {
+    let productableFilters = [];
+    productFilterConfigs[category?.productableType]?.forEach((filter) => {
+      let filterName = "productable." + filter.name;
+      productableFilters.push({ ...filter, name: filterName, polymorphic_types: [category.productableType] });
+    });
+
+    return productableFilters || [];
+  }, [category])
+  const [filterOptions, setFilterOptions] = useState(categoryFilters);
+
+  const onMobileClick = () => {
+    setFilterOptions([...filterConfigs, ...categoryFilters]);
+    open();
+  }
+
+  const onDesktopClick = () => {
+    setFilterOptions(categoryFilters);
+    open();
+  }
 
   return (
     <ResourceProvider initial={{ searchColumn: 'name', scopes: [{ name: 'in_stock' }] }}>
@@ -101,7 +122,7 @@ const ProductCategories = () => {
         <Title order={1} fw={600}>{category.title}</Title>
 
         <Group hiddenFrom="sm" justify="end">
-          <Button onClick={open} variant="subtle" color="black" className="margin" rightSection={<IconPlus size={16} />}>
+          <Button onClick={onMobileClick} variant="subtle" color="black" className="margin" rightSection={<IconPlus size={16} />}>
             Add Filters
           </Button>
         </Group>
@@ -111,8 +132,14 @@ const ProductCategories = () => {
         </div>
 
         <Group visibleFrom="sm" className="flex row align-bottom to-right">
+          <Button onClick={onDesktopClick} variant="subtle" color="black" leftSection={<IconAdjustmentsHorizontal size={16} />}>
+            All Filters
+          </Button>
+
           <JoineryFilters filterConfigs={filterConfigs} />
         </Group>
+
+        <ActiveFilters filterConfig={productFilterConfigs[category?.productableType]} />
 
         <Products category={categorySlug} />
 
@@ -122,7 +149,7 @@ const ProductCategories = () => {
 
       <Drawer opened={filterDrawerOpened} size="sm" onClose={close} position="right">
         <Stack>
-          <JoineryFilters filterConfigs={filterConfigs} orientation="vertical" />
+          <JoineryFilters filterConfigs={filterOptions} orientation="vertical" />
         </Stack>
       </Drawer>
     </ResourceProvider>

@@ -1,8 +1,30 @@
 import { Text, Accordion } from "@mantine/core";
 
 const productableAttributes = {
-  Slab: [{ name: 'species', label: 'Species' }, { name: 'length', label: 'Length (inches)' }, { name: 'width', label: 'Width (inches)' }, { name: 'height', label: 'Height (inches)' }],
-  Log: [{ name: 'species', label: 'Species' }, { name: 'length', label: 'Length (inches)' }, { name: 'diameter', label: 'Diameter (inches)' }, { name: 'grade', label: 'Grade' }, { name: 'moisture_content', label: 'Moisture Content' }],
+  Slab: [
+    { name: 'species', label: 'Species' },
+    { name: 'length_in_inches', label: 'Length (inches)' },
+    { name: 'width_at_narrowest_in_inches', label: 'Width at Narrowest (inches)' },
+    { name: 'width_at_widest_in_inches', label: 'Width at Widest (inches)' },
+    { name: 'thickness_in_inches', label: 'Thickness (inches)' },
+    { name: 'kiln_dried', label: 'Kiln Dried' },
+    { name: 'moisture_content_percent', label: 'Moisture Content' },
+    { name: 'drying_status', label: 'Drying Status' },
+    { name: 'weight_in_pounds', label: 'Weight (pounds)' },
+    { name: 'slab_type', label: 'Slab Type' },
+    { name: 'calculated_board_feet', label: 'Calculated Board Feet' },
+  ],
+  Log: [
+    { name: 'species', label: 'Species' },
+    { name: 'length_in_feet', label: 'Length (feet)' },
+    { name: 'diameter_at_small_end_in_inches', label: 'Diameter at Small End (inches)' },
+    { name: 'diameter_at_large_end_in_inches', label: 'Diameter at Large End (inches)' },
+    { name: 'weight_in_pounds', label: 'Weight (pounds)' },
+    { name: 'estimated_board_feet', label: 'Estimated Board Feet' },
+    { name: 'moisture_content_percent', label: 'Moisture Content' },
+    { name: 'grade', label: 'Grade' },
+    { name: 'origin', label: 'Origin' },
+  ],
   Lumber: [
     { name: 'species', label: 'Species' },
     { name: 'finish_type', label: 'Finish Type' },
@@ -70,6 +92,11 @@ const convertDisplayValue = (value) => {
   if (typeof value === 'boolean') {
     return value ? 'Yes' : 'No';
   }
+
+  if (typeof value === 'string') {
+    return value.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+  }
+
   return value;
 }
 

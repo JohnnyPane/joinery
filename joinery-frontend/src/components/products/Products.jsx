@@ -5,10 +5,10 @@ import useResourceData from "../../hooks/useResourceData.js";
 import '../products/Product.scss';
 import ProductSkeletons from "./ProductSkeletons.jsx";
 import { useResourceContext } from "../../context/ResourceContext.jsx";
-import {productableConfig} from "../../utils/productConfigs.js";
+import { productableConfig } from "../../utils/productConfigs.js";
 
 const Products = ({ category }) => {
-  const { setScopes } = useResourceContext();
+  const { setScopes, setFilters } = useResourceContext();
 
   const { data: products, isLoading, total, perPage } = useResourceData('products');
 
@@ -34,6 +34,7 @@ const Products = ({ category }) => {
         { name: 'in_stock' }
       ];
 
+      setFilters([])
       setScopes(newScopes);
     }
 

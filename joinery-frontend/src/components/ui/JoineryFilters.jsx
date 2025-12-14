@@ -1,12 +1,17 @@
-import { Select } from "@mantine/core"
+import { Select, RangeSlider, Text } from "@mantine/core"
 import { IconSearch } from "@tabler/icons-react"
 import { useResourceContext } from "../../context/ResourceContext.jsx";
 
 
-const transformValue = (value, operator) => {
+const transformValue = (value, operator, filterType) => {
+
   switch(operator) {
     case 'between':
-      return value.split('-').map(v => v.trim());
+      if (filterType !== "range") {
+        return value.split('-').map(v => v.trim());
+      } else {
+        return value
+      }
     case 'in':
       return value.split(',');
     default:
@@ -25,6 +30,59 @@ const untransformValue = (value, operator) => {
   }
 }
 
+const rangeMarks = (min = 0, max = 100) => {
+  const range = max - min;
+  const oneQuarter = min + range / 4;
+  const threeQuarter = min + (3 * range) / 4;
+  const mid = min + range / 2;
+
+  return [
+    { value: min, label: `${min}` },
+    { value: oneQuarter, label: `${Math.floor(oneQuarter)}` },
+    { value: mid, label: `${Math.floor(mid)}` },
+    { value: threeQuarter, label: `${Math.floor(threeQuarter)}` },
+    { value: max, label: `${max}` },
+  ]
+}
+
+const RangeFilter = ({ filters, filter, handleFilterChange }) => {
+  return (
+    <div>
+      <Text size="sm" className="margin-bottom">{filter.label}</Text>
+
+      <RangeSlider
+        onChangeEnd={(value) => handleFilterChange(filter, value)}
+        defaultValue={filters[filter.name]?.value}
+        min={filter.min || 0}
+        max={filter.max || 100}
+        minRange={1}
+        marks={rangeMarks(filter.min, filter.max)}
+        mb={32}
+        styles={{ markLabel: { fontSize: '12px' } }}
+      />
+    </div>
+  )
+}
+
+const SelectFilter = ({ filters, filter, handleFilterChange, filterClass, size }) => {
+  return (
+    <Select
+      key={filter.name}
+      label={filter.label}
+      placeholder={filter.placeholder || `Select ${filter.label}`}
+      value={untransformValue(filters[filter.name]?.value, filter.operator) || ''}
+      data={filter.options}
+      onChange={(value) => handleFilterChange(filter, value)}
+      searchable={filter.searchable || false}
+      rightSectionPointerEvents="none"
+      rightSection={filter.searchable ? <IconSearch size={14} /> : null}
+      clearable
+      size={size}
+      className={filterClass}
+    />
+  )
+}
+
 
 const JoineryFilters = ({ filterConfigs, orientation = 'horizontal' }) => {
   const { filters, setFilters, setPage } = useResourceContext();
@@ -34,7 +92,7 @@ const JoineryFilters = ({ filterConfigs, orientation = 'horizontal' }) => {
   const size = isHorizontalLayout ? "xs" : "sm"
 
   const handleFilterChange = (filter, value) => {
-    const { name, operator } = filter;
+    const { name, operator, polymorphic_types } = filter;
     const newFilters = { ...filters };
 
     if (!value) {
@@ -43,12 +101,12 @@ const JoineryFilters = ({ filterConfigs, orientation = 'horizontal' }) => {
       return;
     }
 
-    const filterValue = transformValue(value, operator);
+    const filterValue = transformValue(value, operator, filter.type);
 
     setFilters((prevFilters) => {
       return {
         ...prevFilters,
-        [name]: { value: filterValue, operator }
+        [name]: { value: filterValue, operator, polymorphic_types }
       };
     });
 
@@ -58,22 +116,16 @@ const JoineryFilters = ({ filterConfigs, orientation = 'horizontal' }) => {
 
   return (
     <div className={filterDirection}>
-      {filterConfigs.map((filter) => (
-        <Select
-          key={filter.name}
-          label={filter.label}
-          placeholder={filter.placeholder || `Select ${filter.label}`}
-          value={untransformValue(filters[filter.name]?.value, filter.operator) || ''}
-          data={filter.options}
-          onChange={(value) => handleFilterChange(filter, value)}
-          searchable={filter.searchable || false}
-          rightSectionPointerEvents="none"
-          rightSection={filter.searchable ? <IconSearch size={14} /> : null}
-          clearable
-          size={size}
-          className={filterClass}
-        />
-      ))}
+      {filterConfigs.map((filter) => {
+        switch (filter.type) {
+          case 'select':
+            return <SelectFilter filters={filters} filter={filter} filterClass={filterClass} handleFilterChange={handleFilterChange} size={size} />
+          case 'range':
+            return <RangeFilter filters={filters} filter={filter} handleFilterChange={handleFilterChange} />
+          default:
+            return <SelectFilter filters={filters} filter={filter} filterClass={filterClass} handleFilterChange={handleFilterChange} size={size} />
+        }
+      })}
     </div>
   );
 }

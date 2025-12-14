@@ -4,17 +4,13 @@ import { NOMINAL_DIMENSIONS, ROUGH_THICKNESS_OPTIONS, ROUGH_WIDTH_OPTIONS, SHEET
 export const productConfigs = {
   Log: [
     { name: 'species', label: 'Species', type: 'select', options: woodSpecies, searchable: true, required: true },
-    { name: 'length', label: 'Length (inches)', type: 'number', required: true, icon: 'rulerVertical' },
-    { name: 'diameter', label: 'Diameter (inches)', type: 'number', required: true, icon: 'rulerHorizontal' },
-    { name: 'weight', label: 'Weight (lbs)', type: 'number', required: false, icon: 'weight' },
+    { name: 'length_in_feet', label: 'Length (feet)', type: 'number', required: true, icon: 'rulerVertical' },
+    { name: 'diameter_at_small_end_in_inches', label: 'Diameter at small end (inches)', type: 'number', required: true, icon: 'rulerHorizontal' },
+    { name: 'diameter_at_large_end_in_inches', label: 'Diameter at large end (inches)', type: 'number', required: true, icon: 'rulerHorizontal' },
+    { name: 'log_rule', label: 'Log Rule', type: 'select', required: true, options: [{ value: 'doyle', label: 'Doyle' }, { value: 'international_1_4', label: 'International 1/4 Inch' }] },
+    { name: 'weight_in_pounds', label: 'Weight (lbs)', type: 'number', required: false, icon: 'weight' },
     { name: 'origin', label: 'Origin', type: 'text', required: false, icon: 'location' },
-    {
-      name: 'moisture_content',
-      label: 'Moisture Content',
-      type: 'select',
-      required: true,
-      options: [{ value: 'green', label: 'Green' }, { value: 'air_dried', label: 'Air-Dried' }, { value: 'kiln_dried', label: 'Kiln-Dried' }, { value: 'oven_dried', label: 'Oven-Dried' }, { value: 'equilibrium', label: 'Equilibrium' }],
-    },
+    { name: 'moisture_content_percent', label: 'Moisture Content (%)', type: 'number', icon: 'water', min: 0, max: 999 },
     { name: 'grade', label: 'Grade', type: 'select', required: true, options: [{ value: 'veneer', label: 'Veneer' }, { value: 'grade_1', label: 'Grade 1' }, { value: 'grade_2', label: 'Grade 2' }, { value: 'grade_3', label: 'Grade 3' }, { value: 'culls', label: 'Culls' }] },
   ],
   Lumber: [
@@ -132,10 +128,20 @@ export const productConfigs = {
         { value: 'edge_glued', label: 'Edge Glued' }
       ]
     },
-    { name: 'length', label: 'Length (inches)', type: 'number', required: true, icon: 'rulerVertical' },
-    { name: 'width', label: 'Width (inches)', type: 'number', required: true, icon: 'rulerHorizontal' },
-    { name: 'height', label: 'Height (inches)', type: 'number', required: true, icon: 'rulerVertical' },
-    { name: 'dried', label: 'Dried', type: 'checkbox', required: false },
+    { name: 'length_in_inches', label: 'Length (inches)', type: 'number', required: true, icon: 'rulerVertical' },
+    { name: 'width_at_narrowest_in_inches', label: 'Width at narrowest (inches)', type: 'number', required: true, icon: 'rulerHorizontal' },
+    { name: 'width_at_widest_in_inches', label: 'Width at widest (inches)', type: 'number', required: true, icon: 'rulerHorizontal' },
+    { name: 'thickness_in_inches', label: 'Thickness (inches)', type: 'number', required: true, icon: 'rulerVertical', step: 0.01 },
+    { name: 'moisture_content_percent', label: 'Moisture Content (%)', type: 'number', icon: 'water', min: 0, max: 999 },
+    { name: 'kiln_dried', label: 'Kiln Dried', type: 'switch', required: false },
+    { name: 'weight_in_pounds', label: 'Weight (lbs)', type: 'number', required: false, icon: 'weight' },
+    { name: 'drying_status', label: 'Drying Status', type: 'select', required: false, options: [
+        { value: 'green', label: 'Green (Freshly Cut)' },
+        { value: 'air_dried', label: 'Air Dried' },
+        { value: 'kiln_dried', label: 'Kiln Dried' },
+        { value: 'partially_dried', label: 'Partially Dried' },
+      ]
+    },
   ],
   Timber: [
     { name: 'species', label: 'Species', type: 'select', options: woodSpecies, searchable: true, required: true },
@@ -277,13 +283,13 @@ export const productableDetailsFilled = (formValues) => {
 
   switch (productableType) {
     case 'Log':
-      return productableValues.species && productableValues.length && productableValues.diameter && productableValues.moisture_content && productableValues.grade;
+      return productableValues.species && productableValues.length_in_feet && productableValues.diameter_at_small_end_in_inches && productableValues.diameter_at_large_end_in_inches;
     case 'Lumber':
       return productableValues.species
     case 'SheetGood':
       return productableValues.material_type && productableValues.face_species && productableValues.thickness_nominal && productableValues.width_in_feet && productableValues.length_in_feet;
     case 'Slab':
-      return productableValues.species && productableValues.slab_type && productableValues.length && productableValues.width && productableValues.height;
+      return productableValues.species && productableValues.slab_type && productableValues.length_in_inches && productableValues.width_at_narrowest_in_inches && productableValues.width_at_widest_in_inches && productableValues.thickness_in_inches;
     case 'Timber':
       return productableValues.species && productableValues.nominal_dimension && productableValues.length_in_feet;
     case 'WoodBlock':

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_12_11_095346) do
+ActiveRecord::Schema[8.0].define(version: 2025_12_14_163200) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -123,14 +123,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_11_095346) do
 
   create_table "logs", force: :cascade do |t|
     t.string "species", null: false
-    t.decimal "length", precision: 10, scale: 2, null: false
-    t.decimal "diameter", precision: 10, scale: 2, null: false
-    t.decimal "weight", precision: 10, scale: 2
+    t.decimal "length_in_feet", precision: 10, scale: 2, null: false
+    t.decimal "diameter_at_small_end_in_inches", precision: 10, scale: 2, null: false
+    t.decimal "weight_in_pounds", precision: 10, scale: 2
     t.string "origin"
-    t.integer "moisture_content"
     t.integer "grade"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "diameter_at_large_end_in_inches", precision: 10, scale: 2
+    t.decimal "estimated_board_feet", precision: 10, scale: 2, default: "0.0", null: false
+    t.integer "log_rule", default: 0
+    t.decimal "moisture_content_percent", precision: 5, scale: 2
   end
 
   create_table "lumbers", force: :cascade do |t|
@@ -325,13 +328,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_11_095346) do
   create_table "slabs", force: :cascade do |t|
     t.string "species", null: false
     t.integer "slab_type", default: 0, null: false
-    t.decimal "width", precision: 10, scale: 2, null: false
-    t.decimal "length", precision: 10, scale: 2, null: false
-    t.decimal "height", precision: 10, scale: 2, null: false
-    t.decimal "weight", precision: 10, scale: 2
-    t.boolean "dried", default: false, null: false
+    t.decimal "width_at_narrowest_in_inches", precision: 10, scale: 2, null: false
+    t.decimal "length_in_inches", precision: 10, scale: 2, null: false
+    t.decimal "thickness_in_inches", precision: 10, scale: 2, null: false
+    t.decimal "weight_in_pounds", precision: 10, scale: 2
+    t.boolean "kiln_dried", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "width_at_widest_in_inches", precision: 10, scale: 2, default: "0.0", null: false
+    t.decimal "calculated_board_feet", precision: 10, scale: 2, default: "0.0", null: false
+    t.decimal "moisture_content_percent", precision: 5, scale: 2
+    t.integer "drying_status", default: 0
   end
 
   create_table "solid_queue_blocked_executions", force: :cascade do |t|

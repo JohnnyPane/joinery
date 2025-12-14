@@ -27,8 +27,17 @@ module Filterable
           association, attribute = field.to_s.split(".")
           reflection = reflect_on_association(association.to_sym)
 
+
           if reflection&.polymorphic?
-            scope = apply_polymorphic_filter(scope, association, attribute, conditions[:operator], conditions[:value])
+            scope = apply_polymorphic_filter(
+              scope: scope,
+              association: association,
+              field: attribute,
+              operator: conditions[:operator],
+              value: conditions[:value],
+              polymorphic_types: conditions[:polymorphic_types]
+            )
+
             next
           end
         end
@@ -66,18 +75,20 @@ module Filterable
       end
     end
 
-    def apply_polymorphic_filter(scope, association, field, operator, value)
+    def apply_polymorphic_filter(scope:, association:, field:, operator:, value:, polymorphic_types: [])
       get_resource_polymorphic_types = "#{association}_types"
       return scope unless respond_to?(get_resource_polymorphic_types)
 
-      polymorphic_types = send(get_resource_polymorphic_types)
       matching_ids = []
-      polymorphic_types.each do |type|
+      types = polymorphic_types || send(get_resource_polymorphic_types)
+
+      types.each do |type|
         table_name = type.constantize.table_name
         joined_scope = scope.joins(
           "INNER JOIN #{table_name} ON #{table_name}.id = #{self.table_name}.#{association}_id AND #{self.table_name}.#{association}_type = '#{type}'"
         )
 
+        # MAJOR TODO: Figure out how to handle enums as values passed.
         filtered_scope = apply_single_filter(joined_scope, "#{table_name}.#{field}", operator, value)
         matching_ids += filtered_scope.pluck("#{self.table_name}.id")
       end

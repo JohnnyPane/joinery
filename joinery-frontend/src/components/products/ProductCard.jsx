@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import { Image, Text, Title } from "@mantine/core";
+import { Image, Text, Title, Skeleton } from "@mantine/core";
 
 import { moneyDisplay } from "../../utils/humanizeText.js";
 import { productTypeDisplayName } from "../../utils/productConfigs.js";
@@ -10,6 +10,7 @@ const ProductCard = ({ cardData, clickable = true }) => {
   const { images, name, productable_type, price_per_unit_in_cents, store } = cardData;
   const firstImageUrl = images.length > 0 ? images[0]?.image_url : "";
   const [displayImageUrl, setDisplayImageUrl] = useState(firstImageUrl);
+  const [imageLoading, setImageLoading] = useState(true);
 
   const navigate = useNavigate();
 
@@ -39,11 +40,14 @@ const ProductCard = ({ cardData, clickable = true }) => {
   return (
     <div className="clickable product-card" onClick={handleCardClick}>
       <div className="product-card-image-container">
+        <Skeleton visible={imageLoading} height={imageLoading ? 300 : 0} />
+
         <Image
           src={imageUrl}
           alt={name}
           className="product-card-image margin-4-b"
           fallbackSrc={`https://placehold.co/600?text=(image not available)&font=Lora`}
+          onLoad={() => setImageLoading(false)}
         />
       </div>
 

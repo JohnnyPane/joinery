@@ -1,7 +1,6 @@
 import { Text, Title, Group, Button, Drawer, Stack } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconPlus } from "@tabler/icons-react"
-import JoineryScopes from "../ui/JoineryScopes.jsx";
 import JoineryFilters from "../ui/JoineryFilters.jsx";
 import Products from "./Products.jsx";
 import { ResourceProvider } from "../../context/ResourceContext.jsx";
