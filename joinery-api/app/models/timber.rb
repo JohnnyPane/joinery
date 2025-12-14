@@ -28,7 +28,7 @@ class Timber < ApplicationRecord
       :moisture_condition,
       :preservative_treatment,
       :end_cut_style,
-      :board_feet,
+      :board_feet
     ]
   end
 

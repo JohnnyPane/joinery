@@ -27,7 +27,7 @@ const JoineryFormFields = ({ form, fieldConfig, nestedFieldType = null }) => {
           leftSection={fieldConfig.icon ? <JoineryIconMap iconName={fieldConfig.icon} size={12} />: null}
           required={fieldConfig.required}
           {...props}
-          className="double-margin-bottom"
+          className="margin-bottom"
         />
       );
     case 'number':
@@ -36,7 +36,7 @@ const JoineryFormFields = ({ form, fieldConfig, nestedFieldType = null }) => {
           label={fieldConfig.label}
           placeholder={fieldConfig.placeholder || `Enter ${fieldConfig.label.toLowerCase()}`}
           leftSection={<JoineryIconMap iconName={fieldConfig.icon} size={16} />}
-          className="double-margin-bottom"
+          className="margin-bottom"
           required={fieldConfig.required}
           {...props}
           min={fieldConfig.min || 0}
@@ -49,7 +49,7 @@ const JoineryFormFields = ({ form, fieldConfig, nestedFieldType = null }) => {
           label={fieldConfig.label}
           placeholder={fieldConfig.placeholder || `Enter ${fieldConfig.label.toLowerCase()}`}
           {...props}
-          className="double-margin-bottom"
+          className="margin-bottom"
           required={fieldConfig.required}
         />
       );
@@ -63,7 +63,7 @@ const JoineryFormFields = ({ form, fieldConfig, nestedFieldType = null }) => {
           rightSectionPointerEvents="none"
           rightSection={fieldConfig.searchable ? <IconSearch size={14} /> : null}
           {...props}
-          className="double-margin-bottom"
+          className="margin-bottom"
           required={fieldConfig.required}
         />
       );
@@ -77,12 +77,12 @@ const JoineryFormFields = ({ form, fieldConfig, nestedFieldType = null }) => {
           rightSectionPointerEvents="none"
           rightSection={fieldConfig.searchable ? <IconSearch size={14} /> : null}
           {...props}
-          className="double-margin-bottom"
+          className="margin-bottom"
           required={fieldConfig.required}
         />
       );
     case 'switch':
-      return <Switch defaultChecked={props.value} label={fieldConfig.label} {...props} withThumbIndicator={false} className="double-margin-bottom" />
+      return <Switch defaultChecked={props.value} label={fieldConfig.label} {...props} withThumbIndicator={false} className="margin-bottom" />
     case 'star_rating':
         return <StarRatingInput {...form.getInputProps('rating')} />;
     default:

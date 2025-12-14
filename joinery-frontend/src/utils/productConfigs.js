@@ -4,14 +4,14 @@ import { NOMINAL_DIMENSIONS, ROUGH_THICKNESS_OPTIONS, ROUGH_WIDTH_OPTIONS, SHEET
 export const productConfigs = {
   Log: [
     { name: 'species', label: 'Species', type: 'select', options: woodSpecies, searchable: true, required: true },
-    { name: 'length_in_feet', label: 'Length (feet)', type: 'number', required: true, icon: 'rulerVertical' },
-    { name: 'diameter_at_small_end_in_inches', label: 'Diameter at small end (inches)', type: 'number', required: true, icon: 'rulerHorizontal' },
-    { name: 'diameter_at_large_end_in_inches', label: 'Diameter at large end (inches)', type: 'number', required: true, icon: 'rulerHorizontal' },
-    { name: 'log_rule', label: 'Log Rule', type: 'select', required: true, options: [{ value: 'doyle', label: 'Doyle' }, { value: 'international_1_4', label: 'International 1/4 Inch' }] },
-    { name: 'weight_in_pounds', label: 'Weight (lbs)', type: 'number', required: false, icon: 'weight' },
-    { name: 'origin', label: 'Origin', type: 'text', required: false, icon: 'location' },
-    { name: 'moisture_content_percent', label: 'Moisture Content (%)', type: 'number', icon: 'water', min: 0, max: 999 },
-    { name: 'grade', label: 'Grade', type: 'select', required: true, options: [{ value: 'veneer', label: 'Veneer' }, { value: 'grade_1', label: 'Grade 1' }, { value: 'grade_2', label: 'Grade 2' }, { value: 'grade_3', label: 'Grade 3' }, { value: 'culls', label: 'Culls' }] },
+    { name: 'length_in_feet', label: 'Length (feet)', type: 'number', required: true, icon: 'rulerVertical', gridSize: 6 },
+    { name: 'weight_in_pounds', label: 'Weight (lbs)', type: 'number', required: false, icon: 'weight', gridSize: 6 },
+    { name: 'diameter_at_small_end_in_inches', label: 'Diameter at small end (inches)', type: 'number', required: true, icon: 'rulerHorizontal', gridSize: 6 },
+    { name: 'diameter_at_large_end_in_inches', label: 'Diameter at large end (inches)', type: 'number', required: true, icon: 'rulerHorizontal', gridSize: 6 },
+    { name: 'log_rule', label: 'Log Rule', type: 'select', required: true, options: [{ value: 'doyle', label: 'Doyle' }, { value: 'international_1_4', label: 'International 1/4 Inch' }], gridSize: 6 },
+    { name: 'origin', label: 'Origin', type: 'text', required: false, icon: 'location', gridSize: 6 },
+    { name: 'moisture_content_percent', label: 'Moisture Content (%)', type: 'number', icon: 'water', min: 0, max: 999, gridSize: 6 },
+    { name: 'grade', label: 'Grade', type: 'select', required: true, options: [{ value: 'veneer', label: 'Veneer' }, { value: 'grade_1', label: 'Grade 1' }, { value: 'grade_2', label: 'Grade 2' }, { value: 'grade_3', label: 'Grade 3' }, { value: 'culls', label: 'Culls' }], gridSize: 6 },
   ],
   Lumber: [
     { name: 'species', label: 'Species', type: 'select', options: woodSpecies, searchable: true, required: true },
@@ -25,10 +25,9 @@ export const productConfigs = {
       ]
     },
     { name: 'nominal_dimension', label: 'Nominal Dimensions', type: 'select', options: NOMINAL_DIMENSIONS, searchable: true, required: true, show: { field: 'finish_type', values: ['s2s', 's3s', 's4s']} },
-    { name: 'rough_thickness' , label: 'Rough Thickness Options', type: 'select', required: false, options: ROUGH_THICKNESS_OPTIONS, show: { field: 'finish_type', values: ['rough', 'resawn']} },
-    { name: 'rough_width' , label: 'Rough Width Options', type: 'select', required: false, options: ROUGH_WIDTH_OPTIONS, show: { field: 'finish_type', values: ['rough', 'resawn']} },
+    { name: 'rough_thickness' , label: 'Rough Thickness Options', type: 'select', required: false, options: ROUGH_THICKNESS_OPTIONS, show: { field: 'finish_type', values: ['rough', 'resawn']}, gridSize: 6 },
+    { name: 'rough_width' , label: 'Rough Width Options', type: 'select', required: false, options: ROUGH_WIDTH_OPTIONS, show: { field: 'finish_type', values: ['rough', 'resawn']}, gridSize: 6 },
     { name: 'length_in_feet', label: 'Length (feet)', type: 'number', required: true, icon: 'rulerVertical', min: 1 },
-    { name: 'moisture_content_percent', label: 'Moisture Content (%)', type: 'number', icon: 'water', min: 0, max: 999 },
     {
       name: 'grade',
       label: 'Lumber Grade (FAS, Select, etc.)',
@@ -40,6 +39,7 @@ export const productConfigs = {
         { value: 'no_1_common', label: 'No. 1 Common' },
         { value: 'no_2_common', label: 'No. 2 Common' },
       ],
+      gridSize: 6
     },
     {
       name: 'profile',
@@ -61,6 +61,7 @@ export const productConfigs = {
         { value: 'cove', label: 'Cove (Concave molding)' },
         { value: 'eased_edge', label: 'Eased Edge (E4E - Edges rounded slightly)' },
       ],
+      gridSize: 6
     },
     {
       name: 'treatment',
@@ -73,7 +74,9 @@ export const productConfigs = {
         { value: 'pressure_treated', label: 'Pressure Treated' },
         { value: 'fire_retardant', label: 'Fire Retardant' },
       ],
+      gridSize: 6
     },
+    { name: 'moisture_content_percent', label: 'Moisture Content (%)', type: 'number', icon: 'water', min: 0, max: 999, gridSize: 6 },
   ],
   SheetGood: [
     { name: 'material_type', label: 'Material Type', type: 'select', required: true,
@@ -86,31 +89,31 @@ export const productConfigs = {
         { value: 'hardboard', label: 'Hardboard / Pegboard' }
       ]
     },
-    { name: 'face_species', label: 'Front Face Species/Type', type: 'select', required: true, options: woodSpecies, searchable: true },
-    { name: 'back_species', label: 'Back Face Species/Type', type: 'select', required: false, options: woodSpecies, searchable: true },
-    { name: 'grade_face', label: 'Front Face Grade', type: 'select', required: false,
+    { name: 'face_species', label: 'Front Face Species/Type', type: 'select', required: true, options: woodSpecies, searchable: true, gridSize: 6 },
+    { name: 'back_species', label: 'Back Face Species/Type', type: 'select', required: false, options: woodSpecies, searchable: true, gridSize: 6 },
+    { name: 'grade_face', label: 'Front Face Grade', type: 'select', required: false, gridSize: 6,
       options: [{ value: 'a', label: 'A (Best Quality - Paint/Clear Finish)' }, { value: 'b', label: 'B (Minor Defects - Sound)' }, { value: 'c', label: 'C (Tight Knots/Plugs Allowed)' }, { value: 'd', label: 'D (Large Defects/Patches Allowed)' }, { value: 'n', label: 'N (Natural/Clear - No Defects)' }]
     },
-    { name: 'grade_back', label: 'Back Face Grade', type: 'select', required: false,
+    { name: 'grade_back', label: 'Back Face Grade', type: 'select', required: false, gridSize: 6,
       options: [ { value: '1', label: '1 (Sound - Good for Painting)' }, { value: '2', label: '2 (Patch/Repaired - Standard)' }, { value: '3', label: '3 (Rough - Utility Grade)' }, { value: '4', label: '4 (Structural Only)' } ]
     },
-    { name: 'core_type', label: 'Core Type', type: 'select', required: false,
+    { name: 'width_in_feet', label: 'Width (feet)', type: 'number', required: true, min: 1, icon: 'rulerHorizontal', gridSize: 6 },
+    { name: 'length_in_feet', label: 'Length (feet)', type: 'number', required: true, min: 1, icon: 'rulerVertical', gridSize: 6 },
+    { name: 'thickness_nominal', label: 'Nominal Thickness', type: 'select', searchable: true, options: SHEET_MATERIAL_DIMENSIONS, gridSize: 6 },
+    { name: 'thickness_actual', label: 'Actual Thickness (inches)', type: 'number', required: false, step: 0.001, icon: 'rulerVertical', gridSize: 6 },
+    { name: 'core_type', label: 'Core Type', type: 'select', required: false, gridSize: 6,
      options: [{ value: 'veneer_core', label: 'Veneer Core' }, { value: 'mdf_core', label: 'MDF Core (Uniform, heavy)' }, { value: 'lumber_core', label: 'Lumber Core (Light, strong)' }, { value: 'combi_core', label: 'Combi-Core (MDF/Veneer Mix)' }, { value: 'particle_board_core', label: 'Particle Board Core' } ]
     },
-    { name: 'cut_style', label: 'Cut Style', type: 'select', required: false,
+    { name: 'cut_style', label: 'Cut Style', type: 'select', required: false, gridSize: 6,
       options: [ { value: 'rotary', label: 'Rotary Cut (Wild, Random Grain)' }, { value: 'plain_sliced', label: 'Plain Sliced / Flat Cut' }, { value: 'quarter_sliced', label: 'Quarter Sliced (Straight Grain)' }, { value: 'rift_cut', label: 'Rift Cut (Very Straight, No Fleck)' } ]
     },
-    { name: 'matching', label: 'Matching Style', type: 'select', required: false,
+    { name: 'matching', label: 'Matching Style', type: 'select', required: false, gridSize: 6,
       options: [ { value: 'book_match', label: 'Book Match (Mirror Image)' }, { value: 'slip_match', label: 'Slip Match (Repeating Pattern)' }, { value: 'random_match', label: 'Random Match' }, { value: 'plank_match', label: 'Plank Match (Simulates Solid Wood)' }, { value: 'whole_piece', label: 'Whole Piece (No Seams)' } ]
     },
-    { name: 'ply_count', label: 'Number of Plies', type: 'number', icon: 'number', required: false, min: 1 },
-    { name: 'glue_type', label: 'Glue Type', type: 'select', required: false,
+    { name: 'ply_count', label: 'Number of Plies', type: 'number', icon: 'number', required: false, min: 1, gridSize: 6 },
+    { name: 'glue_type', label: 'Glue Type', type: 'select', required: false, gridSize: 6,
       options: [ { value: 'interior', label: 'Interior Grade (Standard)' }, { value: 'exterior', label: 'Exterior Grade (Water Resistant)' }, { value: 'marine', label: 'Marine Grade (Waterproof)' }, { value: 'naf', label: 'NAF (No Added Formaldehyde)' }, { value: 'uf', label: 'UF (Urea Formaldehyde)' } ]
     },
-    { name: 'thickness_nominal', label: 'Nominal Thickness', type: 'select', searchable: true, options: SHEET_MATERIAL_DIMENSIONS },
-    { name: 'thickness_actual', label: 'Actual Thickness (inches)', type: 'number', required: false, step: 0.001, icon: 'rulerVertical' },
-    { name: 'width_in_feet', label: 'Width (feet)', type: 'number', required: true, min: 1, icon: 'rulerHorizontal' },
-    { name: 'length_in_feet', label: 'Length (feet)', type: 'number', required: true, min: 1, icon: 'rulerVertical' },
     { name: 'is_prefinished', label: 'Prefinished Surface', type: 'switch', required: false },
     { name: 'is_shop_grade', label: 'Shop Grade Quality', type: 'switch', required: false },
   ],
@@ -126,40 +129,43 @@ export const productConfigs = {
         { value: 'bookmatched', label: 'Bookmatched'},
         { value: 'square_edge', label: 'Square Edge' },
         { value: 'edge_glued', label: 'Edge Glued' }
-      ]
+      ],
     },
-    { name: 'length_in_inches', label: 'Length (inches)', type: 'number', required: true, icon: 'rulerVertical' },
-    { name: 'width_at_narrowest_in_inches', label: 'Width at narrowest (inches)', type: 'number', required: true, icon: 'rulerHorizontal' },
-    { name: 'width_at_widest_in_inches', label: 'Width at widest (inches)', type: 'number', required: true, icon: 'rulerHorizontal' },
-    { name: 'thickness_in_inches', label: 'Thickness (inches)', type: 'number', required: true, icon: 'rulerVertical', step: 0.01 },
-    { name: 'moisture_content_percent', label: 'Moisture Content (%)', type: 'number', icon: 'water', min: 0, max: 999 },
-    { name: 'kiln_dried', label: 'Kiln Dried', type: 'switch', required: false },
-    { name: 'weight_in_pounds', label: 'Weight (lbs)', type: 'number', required: false, icon: 'weight' },
+    { name: 'length_in_inches', label: 'Length (inches)', type: 'number', required: true, icon: 'rulerVertical', gridSize: 6 },
+    { name: 'thickness_in_inches', label: 'Thickness (inches)', type: 'number', required: true, icon: 'rulerVertical', step: 0.01, gridSize: 6 },
+    { name: 'width_at_narrowest_in_inches', label: 'Width at narrowest (inches)', type: 'number', required: true, icon: 'rulerHorizontal', gridSize: 6 },
+    { name: 'width_at_widest_in_inches', label: 'Width at widest (inches)', type: 'number', required: true, icon: 'rulerHorizontal', gridSize: 6 },
+    { name: 'moisture_content_percent', label: 'Moisture Content (%)', type: 'number', icon: 'water', min: 0, max: 999, gridSize: 6 },
+    { name: 'weight_in_pounds', label: 'Weight (lbs)', type: 'number', required: false, icon: 'weight', gridSize: 6 },
     { name: 'drying_status', label: 'Drying Status', type: 'select', required: false, options: [
         { value: 'green', label: 'Green (Freshly Cut)' },
         { value: 'air_dried', label: 'Air Dried' },
         { value: 'kiln_dried', label: 'Kiln Dried' },
         { value: 'partially_dried', label: 'Partially Dried' },
-      ]
+      ],
+      gridSize: 6
     },
+    { name: 'kiln_dried', label: 'Kiln Dried', type: 'switch', required: false },
   ],
   Timber: [
     { name: 'species', label: 'Species', type: 'select', options: woodSpecies, searchable: true, required: true },
-    { name: 'nominal_dimension', label: 'Nominal Dimensions', type: 'select', options: TIMBER_NOMINAL_DIMENSIONS, searchable: true, required: true },
-    { name: 'length_in_feet', label: 'Length (feet)', type: 'number', required: true, icon: 'rulerVertical', min: 1 },
+    { name: 'nominal_dimension', label: 'Nominal Dimensions', type: 'select', options: TIMBER_NOMINAL_DIMENSIONS, searchable: true, required: true, gridSize: 6 },
+    { name: 'length_in_feet', label: 'Length (feet)', type: 'number', required: true, icon: 'rulerVertical', min: 1, gridSize: 6 },
     { name: 'grading_standard', label: 'Grading Standard', type: 'select', required: false, options: [
         { value: 'select_structural', label: 'Select Structural' },
         { value: 'no_1', label: 'No. 1' },
         { value: 'no_2', label: 'No. 2' },
         { value: 'custom_appearance', label: 'Custom Appearance Grade' },
         { value: 'none', label: 'None (As-Is)' },
-      ]
+      ],
+      gridSize: 6
     },
     { name: 'heart_content_type', label: 'Heart Content Type', type: 'select', required: false, options: [
         { value: 'boxed_heart', label: 'Boxed Heart' },
         { value: 'free_of_heart', label: 'Free of Heart' },
         { value: 'free_of_heart_center', label: 'Free of Heart Center' },
-      ]
+      ],
+      gridSize: 6
     },
     { name: 'surface_finish_type', label: 'Surface Finish Type', type: 'select', required: false, options: [
         { value: 'rough_sawn', label: 'Rough Sawn' },
@@ -167,13 +173,15 @@ export const productConfigs = {
         { value: 'hand_hewn', label: 'Hand Hewn' },
         { value: 's4s', label: 'Surfaced Four Sides (S4S)' },
         { value: 'resawn', label: 'Resawn' },
-      ]
+      ],
+      gridSize: 6
     },
     { name: 'moisture_condition', label: 'Moisture Condition', type: 'select', required: false, options: [
         { value: 'green', label: 'Green' },
         { value: 'air_dried', label: 'Air-Dried' },
         { value: 'kiln_dried', label: 'Kiln-Dried' },
-      ]
+      ],
+      gridSize: 6
     },
     { name: 'end_cut_style', label: 'End Cut Style', type: 'select', required: false, options: [
         { value: 'square', label: 'Square Cut (Standard)' },
@@ -182,7 +190,8 @@ export const productConfigs = {
         { value: 'tapered', label: 'Tapered (Gradual reduction for aesthetics)' },
         { value: 'mortise_tenon', label: 'Mortise and Tenon (Pre-cut joint)' },
         { value: 'custom_joinery', label: 'Custom Joinery (Specify in notes)' },
-      ]
+      ],
+      gridSize: 6
     },
     { name: 'preservative_treatment', label: 'Preservative Treatment', type: 'select', required: false, options: [
         { value: 'none', label: 'None' },
@@ -191,14 +200,12 @@ export const productConfigs = {
         { value: 'pt', label: 'PT (Pressure Treated) - Unknown Chemical' },
         { value: 'borate', label: 'Borate (Interior Fire/Insect Resistance)' },
         { value: 'fire_retardant', label: 'Fire Retardant Treated (FRT)' },
-      ]
+      ],
+      gridSize: 6
     },
   ],
   WoodBlock: [
     { name: 'species', label: 'Species', type: 'select', options: woodSpecies, searchable: true, required: true },
-    { name: 'thickness_in_inches', label: 'Thickness (inches)', type: 'number', required: true, icon: 'rulerVertical', step: 0.01, placeholder: 'e.g., 1.5' },
-    { name: 'width_in_inches', label: 'Width (inches)', type: 'number', required: true, icon: 'rulerHorizontal', step: 0.01, placeholder: 'e.g., 3.5' },
-    { name: 'length_in_inches', label: 'Length (inches)', type: 'number', required: true, icon: 'rulerVertical', step: 0.01, placeholder: 'e.g., 3.5' },
     {
       name: 'shape',
       label: 'Blank Shape',
@@ -212,6 +219,10 @@ export const productConfigs = {
         { value: 'other_irregular', label: 'Other/Irregular Shape' }
       ]
     },
+    { name: 'thickness_in_inches', label: 'Thickness (inches)', type: 'number', required: true, icon: 'rulerVertical', step: 0.01, placeholder: 'e.g., 1.5', gridSize: 6 },
+    { name: 'width_in_inches', label: 'Width (inches)', type: 'number', required: true, icon: 'rulerHorizontal', step: 0.01, placeholder: 'e.g., 3.5', gridSize: 6 },
+    { name: 'length_in_inches', label: 'Length (inches)', type: 'number', required: true, icon: 'rulerVertical', step: 0.01, placeholder: 'e.g., 3.5', gridSize: 6 },
+    { name: 'moisture_content_percent', label: 'Moisture Content (%)', type: 'number', required: true, icon: 'water', min: 0, max: 999, gridSize: 6 },
     {
       name: 'figure_types',
       label: 'Figure Types',
@@ -229,7 +240,8 @@ export const productConfigs = {
         { value: 'ambrosia', label: 'Ambrosia (Small beetle track marks and streaking)' },
         { value: 'mineral_streaks', label: 'Mineral Streaks (Dark streaks from mineral absorption)' },
         { value: 'straight_grain', label: 'Straight Grain (Uniform, clear, standard)' },
-      ]
+      ],
+      gridSize: 6
     },
     {
       name: 'grain_orientation',
@@ -244,9 +256,9 @@ export const productConfigs = {
         { value: 'end_grain', label: 'End Grain' },
         { value: 'radial_cut', label: 'Radial Cut' },
         { value: 'chaotic', label: 'Chaotic (Irregular Grain)' },
-      ]
+      ],
+      gridSize: 6
     },
-    { name: 'moisture_content_percent', label: 'Moisture Content (%)', type: 'number', required: true, icon: 'water', min: 0, max: 999 },
     { name: 'ideal_application', label: 'Ideal For', type: 'text', required: false },
     { name: 'is_reclaimed', label: 'Blank is reclaimed wood', type: 'switch', required: false },
     { name: 'is_carving_suitable', label: 'Blank is suitable for carving', type: 'switch', required: false },

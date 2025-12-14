@@ -2,10 +2,6 @@ import { woodSpecies } from "./woodSpecies.js";
 import {NOMINAL_DIMENSIONS, SHEET_MATERIAL_DIMENSIONS, TIMBER_NOMINAL_DIMENSIONS} from "./productDimensions.js";
 
 export const productFilterConfigs = {
-  //   def self.productable_permitted_attributes
-  //     [ :species, :length_in_feet, :diameter_at_small_end_in_inches, :diameter_at_large_end_in_inches, :weight_in_pounds,
-  //       :estimated_board_feet, :moisture_content_percent, :grade, :origin, :log_rule ]
-  //   end
   Log: [
     { name: 'species', label: 'Species', operator: 'eq', options: woodSpecies },
     { name: 'grade', label: 'Grade', operator: 'eq', options: [{ value: 'veneer', label: 'Veneer' }, { value: 'grade_1', label: 'Grade 1' }, { value: 'grade_2', label: 'Grade 2' }, { value: 'grade_3', label: 'Grade 3' }, { value: 'culls', label: 'Culls' }] },
@@ -48,7 +44,12 @@ export const productFilterConfigs = {
         {value: 'pressure_treated', label: 'Pressure Treated'},
         {value: 'fire_retardant', label: 'Fire Retardant'}
       ]
-    }
+    },
+    { name: 'thickness_in_inches', label: 'Thickness (inches)', operator: 'between', type: 'range', min: 0.25, max: 12 },
+    { name: 'width_in_inches', label: 'Width (inches)', operator: 'between', type: 'range', min: 1, max: 24 },
+    { name: 'length_in_feet', label: 'Length (feet)', operator: 'between', type: 'range', min: 1, max: 24 },
+    { name: 'board_feet', label: 'Board Feet', operator: 'between', type: 'range', min: 1, max: 2500 },
+    { name: 'moisture_content_percent', label: 'Moisture Content (%)', operator: 'between', type: 'range', min: 0, max: 250 },
   ],
   SheetGood: [
     { name: 'material_type', label: 'Material Type', operator: 'eq', options: [
@@ -81,10 +82,19 @@ export const productFilterConfigs = {
         { value: 'edge_glued', label: 'Edge Glued' }
       ]
     },
-    { name: 'length', label: 'Length (inches)', operator: 'between', type: 'range', min: 0, max: 240 },
-    { name: 'width', label: 'Width (inches)', operator: 'between', type: 'range', min: 0, max: 120 },
-    { name: 'height', label: 'Height (inches)', operator: 'between', type: 'range', min: 0, max: 24 },
-    { name: 'weight', label: 'Weight (lbs)', operator: 'between', type: 'range', min: 1, max: 10000 }
+    { name: 'drying_status', label: 'Drying Status', operator: 'eq', options: [
+        { value: 'green', label: 'Green' },
+        { value: 'air_dried', label: 'Air Dried' },
+        { value: 'kiln_dried', label: 'Kiln Dried' },
+      ]
+    },
+    { name: 'length_in_inches', label: 'Length (inches)', operator: 'between', type: 'range', min: 12, max: 300 },
+    { name: 'width_at_narrowest_in_inches', label: 'Width at Narrowest (inches)', operator: 'between', type: 'range', min: 6, max: 72 },
+    { name: 'width_at_widest_in_inches', label: 'Width at Widest (inches)', operator: 'between', type: 'range', min: 6, max: 72 },
+    { name: 'thickness_in_inches', label: 'Thickness (inches)', operator: 'between', type: 'range', min: 1, max: 12 },
+    { name: 'moisture_content_percent', label: 'Moisture Content (%)', operator: 'between', type: 'range', min: 0, max: 250 },
+    { name: 'weight_in_pounds', label: 'Weight (lbs)', operator: 'between', type: 'range', min: 1, max: 20000 },
+    { name: 'calculated_board_feet', label: 'Board Feet', operator: 'between', type: 'range', min: 1, max: 2500 },
   ],
   Timber: [
     { name: 'species', label: 'Species', operator: 'eq', options: woodSpecies },
@@ -134,7 +144,11 @@ export const productFilterConfigs = {
         { value: 'borate', label: 'Borate (Interior Fire/Insect Resistance)' },
         { value: 'fire_retardant', label: 'Fire Retardant Treated (FRT)' },
       ]
-    }
+    },
+    { name: 'board_feet', label: 'Board Feet', operator: 'between', type: 'range', min: 1, max: 5000 },
+    { name: 'thickness_in_inches', label: 'Thickness (inches)', operator: 'between', type: 'range', min: 1, max: 24 },
+    { name: 'width_in_inches', label: 'Width (inches)', operator: 'between', type: 'range', min: 1, max: 24 },
+    { name: 'length_in_feet', label: 'Length (feet)', operator: 'between', type: 'range', min: 1, max: 40 },
   ],
   WoodBlock: [
     { name: 'species', label: 'Species', operator: 'eq', options: woodSpecies },
