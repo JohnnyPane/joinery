@@ -19,7 +19,7 @@ class WoodBlockSerializer < BaseSerializer
       :ideal_application,
       :board_feet,
       :is_reclaimed,
-      :is_carving_suitable,
+      :is_carving_suitable
     ]
   end
 

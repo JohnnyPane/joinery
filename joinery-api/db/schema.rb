@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_12_14_163200) do
+ActiveRecord::Schema[8.0].define(version: 2025_12_17_171757) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -159,6 +159,34 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_14_163200) do
     t.index ["thickness_in_inches"], name: "index_lumbers_on_thickness_in_inches"
     t.index ["treatment"], name: "index_lumbers_on_treatment"
     t.index ["width_in_inches"], name: "index_lumbers_on_width_in_inches"
+  end
+
+  create_table "mouldings", force: :cascade do |t|
+    t.string "species", null: false
+    t.string "material_grade", null: false
+    t.string "substrate_material"
+    t.decimal "length_per_piece_feet", precision: 6, scale: 2, null: false
+    t.decimal "nominal_width_inches", precision: 6, scale: 2, null: false
+    t.decimal "nominal_thickness_inches", precision: 6, scale: 2, null: false
+    t.decimal "actual_width_inches", precision: 6, scale: 2, null: false
+    t.decimal "actual_thickness_inches", precision: 6, scale: 2, null: false
+    t.string "profile_type", null: false, comment: "baseboard, crown_moulding, casing, chair_rail, etc."
+    t.string "profile_style", comment: "historical, modern, colonial, shaker"
+    t.string "standard_id"
+    t.string "surfacing", null: false, comment: "S4S, S2S, rough_sawn"
+    t.boolean "finish_sanded", default: false, null: false
+    t.string "edge_treatment", default: "square_cut", comment: "square_cut, mitered_cut, eased_edge"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["actual_thickness_inches"], name: "index_mouldings_on_actual_thickness_inches"
+    t.index ["actual_width_inches"], name: "index_mouldings_on_actual_width_inches"
+    t.index ["edge_treatment"], name: "index_mouldings_on_edge_treatment"
+    t.index ["length_per_piece_feet"], name: "index_mouldings_on_length_per_piece_feet"
+    t.index ["nominal_thickness_inches"], name: "index_mouldings_on_nominal_thickness_inches"
+    t.index ["nominal_width_inches"], name: "index_mouldings_on_nominal_width_inches"
+    t.index ["profile_style"], name: "index_mouldings_on_profile_style"
+    t.index ["profile_type"], name: "index_mouldings_on_profile_type"
+    t.index ["surfacing"], name: "index_mouldings_on_surfacing"
   end
 
   create_table "order_items", force: :cascade do |t|
@@ -530,6 +558,37 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_14_163200) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  create_table "veneer_figures", id: false, force: :cascade do |t|
+    t.bigint "veneer_id", null: false
+    t.bigint "figure_type_id", null: false
+    t.index ["figure_type_id"], name: "index_veneer_figures_on_figure_type_id"
+    t.index ["veneer_id", "figure_type_id"], name: "index_figure_types_veneers_on_veneer_and_figure_type", unique: true
+    t.index ["veneer_id"], name: "index_veneer_figures_on_veneer_id"
+  end
+
+  create_table "veneers", force: :cascade do |t|
+    t.string "species", null: false
+    t.string "veneer_type", default: "raw_flitch", null: false
+    t.string "cut_style", default: "plain_sliced", null: false
+    t.decimal "thickness_value", precision: 10, scale: 4, null: false
+    t.string "thickness_unit", null: false
+    t.decimal "length_in_inches", precision: 10, scale: 4
+    t.decimal "width_in_inches", precision: 10, scale: 4
+    t.decimal "total_square_feet", precision: 10, scale: 4
+    t.string "match_type", default: "book_match"
+    t.integer "leaf_count"
+    t.boolean "sequenced", default: false
+    t.string "flitch_identifier"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cut_style"], name: "index_veneers_on_cut_style"
+    t.index ["leaf_count"], name: "index_veneers_on_leaf_count"
+    t.index ["match_type"], name: "index_veneers_on_match_type"
+    t.index ["thickness_unit"], name: "index_veneers_on_thickness_unit"
+    t.index ["total_square_feet"], name: "index_veneers_on_total_square_feet"
+    t.index ["veneer_type"], name: "index_veneers_on_veneer_type"
+  end
+
   create_table "wood_block_figures", force: :cascade do |t|
     t.bigint "wood_block_id", null: false
     t.bigint "figure_type_id", null: false
@@ -603,6 +662,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_14_163200) do
   add_foreign_key "store_users", "stores"
   add_foreign_key "store_users", "users"
   add_foreign_key "stores", "users", column: "owner_id"
+  add_foreign_key "veneer_figures", "figure_types"
+  add_foreign_key "veneer_figures", "veneers"
   add_foreign_key "wood_block_figures", "figure_types"
   add_foreign_key "wood_block_figures", "wood_blocks"
 end

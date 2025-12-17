@@ -45,10 +45,10 @@ const productCategories = {
     productableType: "Lumber",
     description: "",
   },
-  wood_blocks: {
-    title: "Wood Blocks",
-    productableType: "WoodBlock",
-    description: "Shaped by nature, ready for the workshop.",
+  moulding: {
+    title: "Moulding",
+    productableType: "Moulding",
+    description: "",
   },
   sheet_goods: {
     title: "Sheet Goods",
@@ -59,7 +59,17 @@ const productCategories = {
     title: "Timber",
     productableType: "Timber",
     description: "",
-  }
+  },
+  veneer: {
+    title: "Veneers",
+    productableType: "Veneer",
+    description: "Thinly sliced wood, naturally elegant.",
+  },
+  wood_blocks: {
+    title: "Turning Blanks & Burls",
+    productableType: "WoodBlock",
+    description: "Shaped by nature, ready for the workshop.",
+  },
 }
 
 const filterConfigs = [

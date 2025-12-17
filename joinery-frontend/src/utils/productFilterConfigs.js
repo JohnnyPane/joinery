@@ -51,6 +51,94 @@ export const productFilterConfigs = {
     { name: 'board_feet', label: 'Board Feet', operator: 'between', type: 'range', min: 1, max: 2500 },
     { name: 'moisture_content_percent', label: 'Moisture Content (%)', operator: 'between', type: 'range', min: 0, max: 250 },
   ],
+  Moulding: [
+    { name: 'species', label: 'Species', operator: 'eq', options: woodSpecies },
+    { name: 'material_grade', label: 'Material Grade', operator: 'eq', options: [{ value: 'stain_grade', label: 'Stain Grade (Clear/Select)' }, { value: 'paint_grade', label: 'Paint Grade (Smooth/Uniform)' }, { value: 'character_grade', label: 'Character / Rustic Grade (Knots/Color)' }, { value: 'primed', label: 'Primed / Ready for Paint' }] },
+    { name: 'substrate_material', label: 'Substrate Material', operator: 'eq',  options: [
+      { value: 'solid_hardwood', label: 'Solid Hardwood' },
+      { value: 'solid_softwood', label: 'Solid Softwood' },
+      { value: 'finger_jointed_pine', label: 'Finger-Jointed Pine' },
+      { value: 'mdf', label: 'MDF (Medium Density Fiberboard)' },
+      { value: 'hdf', label: 'HDF (High Density Fiberboard)' },
+      { value: 'pvc', label: 'PVC / Cellular PVC' },
+      { value: 'lvp', label: 'LVP (Luxury Vinyl)' },
+      { value: 'plywood_core', label: 'Plywood / Veneer Core' },
+      { value: 'reclaimed_wood', label: 'Reclaimed / Antique Wood' },
+      { value: 'composite', label: 'Wood Plastic Composite (WPC)' }
+    ] },
+    { name: 'length_per_piece_feet', label: 'Length per Piece (feet)', operator: 'between', type: 'range', min: 1, max: 20 },
+    { name: 'nominal_width_inches', label: 'Nominal Width (inches)', operator: 'eq', options: [
+        { value: '2.0', label: '2"' },
+        { value: '3.0', label: '3"' },
+        { value: '4.0', label: '4"' },
+        { value: '5.0', label: '5"' },
+        { value: '6.0', label: '6"' },
+        { value: '7.0', label: '7"' },
+        { value: '8.0', label: '8"' },
+        { value: '10.0', label: '10"' },
+        { value: '12.0', label: '12"' },
+        { value: 'custom', label: 'Custom Width' }
+      ]
+    },
+    { name: 'nominal_thickness_inches', label: 'Nominal Thickness (inches)', operator: 'eq', options: [
+        { value: '0.75', label: '3/4" (3/4 Nominal)' },
+        { value: '1.0', label: '4/4 (1" Nominal)' },
+        { value: '1.25', label: '5/4 (1-1/4" Nominal)' },
+        { value: '1.5', label: '6/4 (1-1/2" Nominal)' },
+        { value: '2.0', label: '8/4 (2" Nominal)' },
+        { value: 'custom', label: 'Custom Thickness' }
+      ]
+    },
+    { name: 'actual_width_inches', label: 'Actual Width (inches)', operator: 'between', type: 'range', min: 0.5, max: 12 },
+    { name: 'actual_thickness_inches', label: 'Actual Thickness (inches)', operator: 'between', type: 'range', min: 0.25, max: 4 },
+    { name: 'profile_type', label: 'Profile Type', operator: 'eq', options: [
+        { value: 'baseboard', label: 'Baseboard' },
+        { value: 'crown_moulding', label: 'Crown Moulding' },
+        { value: 'casing', label: 'Casing (Door & Window)' },
+        { value: 'chair_rail', label: 'Chair Rail' },
+        { value: 'picture_rail', label: 'Picture Rail' },
+        { value: 'cove', label: 'Cove' },
+        { value: 'quarter_round', label: 'Quarter Round' },
+        { value: 'shoe_moulding', label: 'Shoe Moulding' },
+        { value: 'door_jamb', label: 'Door Jamb' },
+        { value: 'window_sill', label: 'Window Sill' },
+        { value: 's4s_board', label: 'S4S Board (Square Stock)' },
+        { value: 'back_band', label: 'Back Band' },
+        { value: 'tongue_and_groove', label: 'Tongue & Groove (Paneling)' },
+        { value: 'custom_match', label: 'Custom Profile Match' }
+      ]
+    },
+    { name: 'profile_style', label: 'Profile Style', operator: 'eq', options: [
+        { value: 'modern_minimalist', label: 'Modern / Minimalist' },
+        { value: 'shaker_craftsman', label: 'Shaker / Craftsman' },
+        { value: 'colonial', label: 'Colonial' },
+        { value: 'victorian', label: 'Victorian' },
+        { value: 'art_deco', label: 'Art Deco' },
+        { value: 'traditional', label: 'Traditional' },
+        { value: 'rustic', label: 'Rustic' },
+        { value: 'industrial', label: 'Industrial' }
+      ]
+    },
+    { name: 'surfacing', label: 'Surfacing', operator: 'eq', options: [
+        { value: 's4s', label: 'S4S (Surfaced 4 Sides)' },
+        { value: 's2s', label: 'S2S (Surfaced 2 Sides)' },
+        { value: 'rough_sawn', label: 'Rough Sawn' },
+        { value: 'sanded', label: 'Sanded (Finish Ready)' },
+        { value: 'milled_to_pattern', label: 'Milled to Pattern (Unfinished)' }
+      ]
+    },
+    {
+      name: 'edge_treatment', label: 'Edge Treatment', operator: 'eq', options: [
+        {value: 'square_edge', label: 'Square Edge'},
+        {value: 'eased_edge', label: 'Eased Edge (Micro-bevel)'},
+        {value: 'beveled', label: 'Beveled'},
+        {value: 'bullnose', label: 'Bullnose (Full Round)'},
+        {value: 'chamfered', label: 'Chamfered'}
+      ]
+    }
+  ],
+
+
   SheetGood: [
     { name: 'material_type', label: 'Material Type', operator: 'eq', options: [
       { value: 'plywood', label: 'Plywood' },
@@ -149,6 +237,36 @@ export const productFilterConfigs = {
     { name: 'thickness_in_inches', label: 'Thickness (inches)', operator: 'between', type: 'range', min: 1, max: 24 },
     { name: 'width_in_inches', label: 'Width (inches)', operator: 'between', type: 'range', min: 1, max: 24 },
     { name: 'length_in_feet', label: 'Length (feet)', operator: 'between', type: 'range', min: 1, max: 40 },
+  ],
+  Veneer: [
+    { name: 'species', label: 'Species', operator: 'eq', options: woodSpecies },
+    { name: 'veneer_type', label: 'Veneer Type', operator: 'eq', options: [
+        { value: 'raw_flitch', label: 'Raw Flitch' },
+        { value: 'paper_backed', label: 'Paper Backed' },
+        { value: 'wood_on_wood', label: 'Wood on Wood' },
+        { value: 'phenolic_backed', label: 'Phenolic Backed' }
+      ]
+    },
+    { name: 'cut_style', label: 'Cut Style', operator: 'eq', options: [
+        { value: 'plain_sliced', label: 'Plain Sliced' },
+        { value: 'quarter_sawn', label: 'Quarter Sawn' },
+        { value: 'rift_cut', label: 'Rift Cut' },
+        { value: 'rotary_cut', label: 'Rotary Cut' },
+        { value: 'half_round', label: 'Half Round' }
+      ]
+    },
+    {
+      name: 'match_type', label: 'Match Type', operator: 'eq', options: [
+        { value: 'book_match', label: 'Book Match' },
+        { value: 'slip_match', label: 'Slip Match' },
+        { value: 'random_match', label: 'Random Match' },
+        { value: 'pleasing_match', label: 'Pleasing Match' }
+      ]
+    },
+    { name: 'leaf_count', label: 'Leaf Count', operator: 'between', type: 'range', min: 1, max: 100 },
+    { name: 'thickness_value', label: 'Thickness', operator: 'between', type: 'range', min: 0.001, max: 1 },
+    { name: 'thickness_unit', label: 'Thickness Unit', operator: 'eq', options: [{ value: 'inches', label: 'Inches' }, { value: 'millimeters', label: 'Millimeters' }, { value: 'thousandths', label: 'Thousandths of an Inch' }] },
+    { name: 'total_square_feet', label: 'Total Square Feet', operator: 'between', type: 'range', min: 1, max: 1000 },
   ],
   WoodBlock: [
     { name: 'species', label: 'Species', operator: 'eq', options: woodSpecies },

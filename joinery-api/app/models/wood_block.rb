@@ -35,7 +35,7 @@ class WoodBlock < ApplicationRecord
   end
 
   def self.association_attributes
-    [:figure_types]
+    [ :figure_types ]
   end
 
   private

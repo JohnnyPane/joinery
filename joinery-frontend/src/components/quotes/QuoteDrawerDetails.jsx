@@ -7,6 +7,15 @@ import { statusColors } from "../../utils/colorConfigs.js";
 import { productUnitDisplays } from "../../utils/productDimensions.js";
 import JoineryAvatar from "../ui/JoineryAvatar.jsx";
 
+const offerText = {
+  accepted: 'Final ',
+  declined: 'Final ',
+  cancelled: 'Final ',
+  responded: 'Latest ',
+  offered: 'Latest ',
+  requested: 'Latest ',
+}
+
 const QuoteDrawerDetails = ({ quote, closeDrawer }) => {
   if (!quote) return null;
   const { data: currentUser } = useMe();
@@ -40,7 +49,7 @@ const QuoteDrawerDetails = ({ quote, closeDrawer }) => {
       {/*</div>*/}
 
       <div className="flex row align-center">
-        <Title order={2}>Current offer: {moneyDisplay(latest_quote.amount_in_cents)}</Title>
+        <Title order={2}>{offerText[quote.status]} offer: {moneyDisplay(latest_quote.amount_in_cents)}</Title>
 
         <Badge className="margin-left" variant="default" color="violet" size="xl">{quote.quote_type} Quote</Badge>
       </div>

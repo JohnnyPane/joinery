@@ -1,5 +1,6 @@
 import { woodSpecies } from "./woodSpecies.js";
 import { NOMINAL_DIMENSIONS, ROUGH_THICKNESS_OPTIONS, ROUGH_WIDTH_OPTIONS, SHEET_MATERIAL_DIMENSIONS, TIMBER_NOMINAL_DIMENSIONS }  from "./productDimensions.js";
+import { FIGURE_TYPES } from "./woodDetails.js";
 
 export const productConfigs = {
   Log: [
@@ -77,6 +78,90 @@ export const productConfigs = {
       gridSize: 6
     },
     { name: 'moisture_content_percent', label: 'Moisture Content (%)', type: 'number', icon: 'water', min: 0, max: 999, gridSize: 6 },
+  ],
+  Moulding: [
+    { name: 'species', label: 'Species', type: 'select', options: woodSpecies, searchable: true, required: true },
+    { name: 'material_grade', label: 'Material Grade', type: 'select', required: true, options: [{ value: 'stain_grade', label: 'Stain Grade (Clear/Select)' }, { value: 'paint_grade', label: 'Paint Grade (Smooth/Uniform)' }, { value: 'character_grade', label: 'Character / Rustic Grade (Knots/Color)' }, { value: 'primed', label: 'Primed / Ready for Paint' }], gridSize: 6 },
+    { name: 'substrate_material', label: 'Substrate Material', type: 'select', required: true, options: [
+        { value: 'solid_hardwood', label: 'Solid Hardwood' },
+        { value: 'solid_softwood', label: 'Solid Softwood' },
+        { value: 'finger_jointed_pine', label: 'Finger-Jointed Pine' },
+        { value: 'mdf', label: 'MDF (Medium Density Fiberboard)' },
+        { value: 'hdf', label: 'HDF (High Density Fiberboard)' },
+        { value: 'pvc', label: 'PVC / Cellular PVC' },
+        { value: 'lvp', label: 'LVP (Luxury Vinyl)' },
+        { value: 'plywood_core', label: 'Plywood / Veneer Core' },
+        { value: 'reclaimed_wood', label: 'Reclaimed / Antique Wood' },
+        { value: 'composite', label: 'Wood Plastic Composite (WPC)' }
+      ],
+      gridSize: 6
+    },
+    { name: 'length_per_piece_feet', label: 'Length Per Piece (feet) - leave blank if no standard length', type: 'number', required: false, icon: 'rulerVertical' },
+    { name: 'nominal_width_inches', label: 'Nominal Width (inches)', type: 'select', options: [
+        { value: '2.0', label: '2"' },
+        { value: '3.0', label: '3"' },
+        { value: '4.0', label: '4"' },
+        { value: '5.0', label: '5"' },
+        { value: '6.0', label: '6"' },
+        { value: '7.0', label: '7"' },
+        { value: '8.0', label: '8"' },
+        { value: '10.0', label: '10"' },
+        { value: '12.0', label: '12"' },
+        { value: 'custom', label: 'Custom Width' }
+      ], gridSize: 6
+    },
+    { name: 'nominal_thickness_inches', label: 'Nominal Thickness (inches)', type: 'select', options: [
+        { value: '0.75', label: '3/4" (3/4 Nominal)' },
+        { value: '1.0', label: '4/4 (1" Nominal)' },
+        { value: '1.25', label: '5/4 (1-1/4" Nominal)' },
+        { value: '1.5', label: '6/4 (1-1/2" Nominal)' },
+        { value: '2.0', label: '8/4 (2" Nominal)' },
+        { value: 'custom', label: 'Custom Thickness' }
+      ], gridSize: 6 },
+    { name: 'actual_width_inches', label: 'Actual Width (inches)', type: 'number', required: false, icon: 'rulerHorizontal', step: 0.01, gridSize: 6 },
+    { name: 'actual_thickness_inches', label: 'Actual Thickness (inches)', type: 'number', required: false, icon: 'rulerVertical', step: 0.01, gridSize: 6 },
+    { name: 'profile_type', label: 'Profile Type', type: 'select', required: true, options: [
+        { value: 'baseboard', label: 'Baseboard' },
+        { value: 'crown_moulding', label: 'Crown Moulding' },
+        { value: 'casing', label: 'Casing (Door & Window)' },
+        { value: 'chair_rail', label: 'Chair Rail' },
+        { value: 'picture_rail', label: 'Picture Rail' },
+        { value: 'cove', label: 'Cove' },
+        { value: 'quarter_round', label: 'Quarter Round' },
+        { value: 'shoe_moulding', label: 'Shoe Moulding' },
+        { value: 'door_jamb', label: 'Door Jamb' },
+        { value: 'window_sill', label: 'Window Sill' },
+        { value: 's4s_board', label: 'S4S Board (Square Stock)' },
+        { value: 'back_band', label: 'Back Band' },
+        { value: 'tongue_and_groove', label: 'Tongue & Groove (Paneling)' },
+        { value: 'custom_match', label: 'Custom Profile Match' }
+      ], gridSize: 6},
+    { name: 'profile_style', label: 'Profile Style', type: 'select', options: [
+        { value: 'modern_minimalist', label: 'Modern / Minimalist' },
+        { value: 'shaker_craftsman', label: 'Shaker / Craftsman' },
+        { value: 'colonial', label: 'Colonial' },
+        { value: 'victorian', label: 'Victorian' },
+        { value: 'art_deco', label: 'Art Deco' },
+        { value: 'traditional', label: 'Traditional' },
+        { value: 'rustic', label: 'Rustic' },
+        { value: 'industrial', label: 'Industrial' }
+      ], gridSize: 6},
+    { name: 'surfacing', label: 'Surfacing', type: 'select', required: true, options: [
+        { value: 's4s', label: 'S4S (Surfaced 4 Sides)' },
+        { value: 's2s', label: 'S2S (Surfaced 2 Sides)' },
+        { value: 'rough_sawn', label: 'Rough Sawn' },
+        { value: 'sanded', label: 'Sanded (Finish Ready)' },
+        { value: 'milled_to_pattern', label: 'Milled to Pattern (Unfinished)' }
+      ], gridSize: 6 },
+    { name: 'edge_treatment', label: 'Edge Treatment', type: 'select', required: false, options: [
+        { value: 'square_edge', label: 'Square Edge' },
+        { value: 'eased_edge', label: 'Eased Edge (Micro-bevel)' },
+        { value: 'beveled', label: 'Beveled' },
+        { value: 'bullnose', label: 'Bullnose (Full Round)' },
+        { value: 'chamfered', label: 'Chamfered' }
+      ], gridSize: 6 },
+    { name: 'finish_sanded', label: 'Finish Sanded', type: 'switch', required: false },
+    { name: 'standard_id', label: 'Standard ID', type: 'text', required: false },
   ],
   SheetGood: [
     { name: 'material_type', label: 'Material Type', type: 'select', required: true,
@@ -204,6 +289,75 @@ export const productConfigs = {
       gridSize: 6
     },
   ],
+  Veneer: [
+    { name: 'species', label: 'Species', type: 'select', options: woodSpecies, searchable: true, required: true },
+    {
+      name: 'veneer_type',
+      label: 'Veneer Type',
+      type: 'select',
+      required: true,
+      options: [
+        { value: 'raw_flitch', label: 'Raw Flitch' },
+        { value: 'paper_backed', label: 'Paper Backed' },
+        { value: 'wood_on_wood', label: 'Wood on Wood' },
+        { value: 'phenolic_backed', label: 'Phenolic Backed' }
+      ],
+      gridSize: 6
+    },
+    {
+      name: 'cut_style',
+      label: 'Cut Style',
+      type: 'select',
+      required: true,
+      options: [
+        { value: 'plain_sliced', label: 'Plain Sliced' },
+        { value: 'quarter_sawn', label: 'Quarter Sawn' },
+        { value: 'rift_cut', label: 'Rift Cut' },
+        { value: 'rotary_cut', label: 'Rotary Cut' },
+        { value: 'half_round', label: 'Half Round' }
+      ],
+      gridSize: 6
+    },
+    {
+      name: 'figure_types',
+      label: 'Figure Types',
+      type: 'multi_select',
+      placeholder: 'Select a figure type',
+      searchable: true,
+      options: FIGURE_TYPES
+    },
+    { name: 'thickness_value', label: 'Thickness', type: 'number', required: true, step: 0.001, icon: 'rulerVertical', gridSize: 6 },
+    {
+      name: 'thickness_unit',
+      label: 'Thickness Unit',
+      type: 'select',
+      required: true,
+      options: [
+        { value: 'inches', label: 'Inches' },
+        { value: 'millimeters', label: 'Millimeters' },
+        { value: 'thousandths', label: 'Thousandths of an Inch' }
+      ],
+      gridSize: 6
+    },
+    { name: 'length_in_inches', label: 'Length (inches)', type: 'number', required: true, icon: 'rulerVertical', gridSize: 6 },
+    { name: 'width_in_inches', label: 'Width (inches)', type: 'number', required: true, icon: 'rulerHorizontal', gridSize: 6 },
+    {
+      name: 'match_type',
+      label: 'Match Type',
+      type: 'select',
+      required: false,
+      options: [
+        { value: 'book_match', label: 'Book Match' },
+        { value: 'slip_match', label: 'Slip Match' },
+        { value: 'random_match', label: 'Random Match' },
+        { value: 'pleasing_match', label: 'Pleasing Match' }
+      ],
+    },
+    { name: 'leaf_count', label: 'Leaf Count', type: 'number', required: false, min: 1, icon: 'number' },
+    { name: 'sequenced', label: 'Sequenced Veneer', type: 'switch', required: false },
+    { name: 'flitch_identifier', label: 'Flitch Identifier', type: 'text', required: false, icon: 'tag' },
+
+  ],
   WoodBlock: [
     { name: 'species', label: 'Species', type: 'select', options: woodSpecies, searchable: true, required: true },
     {
@@ -229,18 +383,7 @@ export const productConfigs = {
       type: 'multi_select',
       placeholder: 'Select a figure type',
       searchable: true,
-      options: [
-        { value: 'burl', label: 'Burl (Swirling, erratic grain knots)' },
-        { value: 'spalting', label: 'Spalting (Dark fungal lines/zones)' },
-        { value: 'curly', label: 'Curly/Fiddleback (3D ripples/ribbons)' },
-        { value: 'quilted', label: 'Quilted (Deep, wavy, cloud-like pattern)' },
-        { value: 'birdseye', label: 'Bird\'s Eye (Small, circular dots)' },
-        { value: 'crotch_figure', label: 'Crotch Figure (V-shaped, chaotic grain where branches meet)' },
-        { value: 'iridescent_shimmer', label: 'Iridescent Shimmer (Grain shifts hue with angle)' },
-        { value: 'ambrosia', label: 'Ambrosia (Small beetle track marks and streaking)' },
-        { value: 'mineral_streaks', label: 'Mineral Streaks (Dark streaks from mineral absorption)' },
-        { value: 'straight_grain', label: 'Straight Grain (Uniform, clear, standard)' },
-      ],
+      options: FIGURE_TYPES,
       gridSize: 6
     },
     {
@@ -270,18 +413,22 @@ export const productTypeDisplayName = {
   Slab: 'Slab',
   Log: 'Log',
   Lumber: 'Lumber',
+  Moulding: 'Moulding',
   SheetGood: 'Sheet Good',
   Timber: 'Timber',
+  Veneer: 'Veneer',
   WoodBlock: 'Wood Block',
 }
 
 export const productableConfig = {
   logs: { slug: 'logs', type: 'Log', plural: 'Logs' },
   lumber: { slug: 'lumber', type: 'Lumber', plural: 'Lumber' },
+  moulding: { slug: 'moulding', type: 'Moulding', plural: 'Moulding' },
   sheet_goods: { slug: 'sheet_goods', type: 'SheetGood', plural: 'Sheet Goods' },
-  wood_blocks: { slug: 'wood_blocks', type: 'WoodBlock', plural: 'Wood Blocks' },
   slabs: { slug: 'slabs', type: 'Slab', plural: 'Slabs' },
   timber: { slug: 'timber', type: 'Timber', plural: 'Timber' },
+  veneer: { slug: 'veneer', type: 'Veneer', plural: 'Veneer' },
+  wood_blocks: { slug: 'wood_blocks', type: 'WoodBlock', plural: 'Turning Blanks & Burls' },
 }
 
 export const productTypeOptions = Object.keys(productConfigs).map(key => ({
@@ -298,6 +445,8 @@ export const productableDetailsFilled = (formValues) => {
       return productableValues.species && productableValues.length_in_feet && productableValues.diameter_at_small_end_in_inches && productableValues.diameter_at_large_end_in_inches;
     case 'Lumber':
       return productableValues.species
+    case 'Moulding':
+      return productableValues.species && productableValues.material_grade && productableValues.substrate_material;
     case 'SheetGood':
       return productableValues.material_type && productableValues.face_species && productableValues.thickness_nominal && productableValues.width_in_feet && productableValues.length_in_feet;
     case 'Slab':

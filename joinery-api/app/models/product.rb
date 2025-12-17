@@ -2,7 +2,7 @@ class Product < ApplicationRecord
   include Imageable
   include Ownable
 
-  PRODUCTABLE_TYPES = %w[Log Slab Lumber Timber WoodBlock SheetGood].freeze
+  PRODUCTABLE_TYPES = %w[Log Lumber Moulding SheetGood Slab Timber Veneer WoodBlock].freeze
 
   belongs_to :store
   belongs_to :productable, polymorphic: true
@@ -18,7 +18,7 @@ class Product < ApplicationRecord
 
   accepts_nested_attributes_for :shipping_options, allow_destroy: true
 
-  enum :pricing_unit, { board_foot: 'BF', square_foot: 'SF', linear_foot: 'LF', cubic_foot: 'CF', each: 'EACH' }, prefix: true
+  enum :pricing_unit, { board_foot: "BF", square_foot: "SF", linear_foot: "LF", cubic_foot: "CF", each: "EACH" }, prefix: true
 
   acts_as_imageable_many :images
 
@@ -32,7 +32,7 @@ class Product < ApplicationRecord
   FINISHED_GOOD_TYPES = %w[FinishedGood].freeze
 
   scope :by_store, ->(store_id) { where(store_id: store_id) }
-  scope :in_stock, -> { where('available_volume > 0') }
+  scope :in_stock, -> { where("available_volume > 0") }
   # scope :available_to_shop, -> {
   #   joins(:shipping_options)
   #     .where(available_volume: 1.., is_active: true)
@@ -40,8 +40,8 @@ class Product < ApplicationRecord
   # }
   scope :with_images, -> { includes(images_attachments: :blob) }
   scope :by_productable_type, ->(productable_type) { where(productable_type: productable_type) }
-  scope :slabs, -> { where(productable_type: 'Slab') }
-  scope :logs, -> { where(productable_type: 'Log') }
+  scope :slabs, -> { where(productable_type: "Slab") }
+  scope :logs, -> { where(productable_type: "Log") }
   scope :finished_goods, -> { where(productable_type: FINISHED_GOOD_TYPES) }
   scope :raw_materials, -> { where(productable_type: RAW_MATERIAL_TYPES) }
   scope :lumber, -> { where(productable_type: LUMBER_TYPES) }
@@ -50,7 +50,7 @@ class Product < ApplicationRecord
   searchable_by :name
 
   before_validation :set_defaults_for_requestable, if: :requestable?
-  after_commit :process_image_variants, on: [:create, :update], if: -> { images.attached? }
+  after_commit :process_image_variants, on: [ :create, :update ], if: -> { images.attached? }
 
   def has_enough_stock?(requested_quantity)
     available_volume >= requested_quantity
