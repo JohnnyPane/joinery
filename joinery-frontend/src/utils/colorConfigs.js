@@ -3,7 +3,7 @@ export const statusColors = (status) => {
     case 'pending':
     case 'offered':
     case 'awaiting_pickup':
-    case 'awaiting_fulfillment':
+    case 'awaiting_shipping':
       return 'yellow';
     case 'completed':
       return 'green';

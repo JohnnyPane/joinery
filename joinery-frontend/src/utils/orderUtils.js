@@ -1,5 +1,5 @@
 export const orderStatusOptions = [
-  { value: 'awaiting_fulfillment', label: 'Awaiting Fulfillment' },
+  { value: 'awaiting_shipping', label: 'Awaiting Shipping' },
   { value: 'awaiting_pickup', label: 'Awaiting Pickup' },
   { value: 'shipped', label: 'Shipped' },
   { value: 'delivered', label: 'Delivered' },

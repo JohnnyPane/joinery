@@ -14,7 +14,7 @@ export const shippingOptionDisplayNames = {
 
 export const orderShippingStatuses = {
   awaiting_pickup: 'Awaiting Pickup',
-  awaiting_fulfillment: 'Awaiting Fulfillment',
+  awaiting_shipping: 'Awaiting Shipping',
   shipped: 'Shipped',
   delivered: 'Delivered',
   complete: 'Complete',

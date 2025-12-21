@@ -14,7 +14,7 @@ import StarRatingDisplay from "../ui/StarRatingDisplay.jsx";
 
 
 const orderStatusDisplayNames = {
-  awaiting_fulfillment: 'Awaiting Fulfillment',
+  awaiting_shipping: 'Awaiting Shipping',
   awaiting_pickup: 'Awaiting Pickup',
   shipped: 'Shipped',
   delivered: 'Delivered',

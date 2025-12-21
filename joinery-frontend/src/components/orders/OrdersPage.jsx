@@ -85,11 +85,11 @@ const OrdersPage = ({ currentUser, store }) => {
           {store && <Tabs.Tab value="store-orders"><Text className="bold" size="md">Store Orders</Text></Tabs.Tab>}
         </Tabs.List>
         <Tabs.Panel value="my-orders" pt="xs">
-          <OrdersTablePage onOrderClick={handleOrderClick} />
+          <OrdersTablePage onOrderClick={handleOrderClick} viewType="buyer" />
         </Tabs.Panel>
         {store && (
           <Tabs.Panel value="store-orders" pt="xs">
-            <OrdersTablePage onOrderClick={handleOrderClick} />
+            <OrdersTablePage onOrderClick={handleOrderClick} viewType="seller" />
           </Tabs.Panel>
         )}
       </Tabs>

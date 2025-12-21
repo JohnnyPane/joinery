@@ -55,7 +55,8 @@ class CreateOrderService
       pricing_unit: cart_item.pricing_unit,
       shipping_cost_in_cents: calculate_shipping_cost(cart_item),
       total_price_in_cents: (unit_price_per_volume_in_cents * cart_item.ordered_volume) + calculate_shipping_cost(cart_item),
-      quote_request: cart_item.quote_request
+      quote_request: cart_item.quote_request,
+      status: determine_order_item_status(cart_item.shipping_option)
     )
   end
 
@@ -73,7 +74,10 @@ class CreateOrderService
     else
       shipping_option.price_in_cents
     end
+  end
 
+  def determine_order_item_status(shipping_option)
+    shipping_option&.shipping_type == "pickup" ? "awaiting_pickup" : "awaiting_shipping"
   end
 
   def create_order_addresses

@@ -2,9 +2,10 @@ import {Text, Drawer, Button, Stack} from "@mantine/core";
 import { useMediaQuery, useDisclosure } from "@mantine/hooks";
 import JoineryTablePage from "../ui/JoineryTablePage.jsx";
 import JoineryFilters from "./JoineryFilters.jsx";
+import JoineryScopes from "./JoineryScopes.jsx";
 import { IconPlus } from "@tabler/icons-react";
 
-const ResponsiveList = ({ resources, total, columns, CardComponent, onClick, resourceName, filterConfigs = [] }) => {
+const ResponsiveList = ({ resources, total, columns, CardComponent, onClick, resourceName, filterConfigs = [], scopeConfigs = [] }) => {
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [filtersOpened, {open, close}] = useDisclosure(false)
 
@@ -31,6 +32,7 @@ const ResponsiveList = ({ resources, total, columns, CardComponent, onClick, res
 
         <Drawer size="xs" opened={filtersOpened} onClose={close} position="right">
           <Stack>
+            <JoineryScopes scopeConfigs={scopeConfigs} />
             <JoineryFilters filterConfigs={filterConfigs} orientation="vertical" />
           </Stack>
         </Drawer>
@@ -40,9 +42,9 @@ const ResponsiveList = ({ resources, total, columns, CardComponent, onClick, res
 
   return (
     <div className="page">
-      <div className="flex row to-right margin-bottom">
+      <div className="flex row to-right margin-bottom align-bottom">
+        <JoineryScopes scopeConfigs={scopeConfigs} />
         <JoineryFilters filterConfigs={filterConfigs} />
-
       </div>
 
       <JoineryTablePage onRowClick={onClick} resourceData={resources} columns={columns} resourceName={resourceName} />

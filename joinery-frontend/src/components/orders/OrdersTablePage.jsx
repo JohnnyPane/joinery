@@ -9,11 +9,11 @@ const orderItemTableColumns = [
   { header: 'Product', accessor: 'product.name', type: 'text' },
   { header: 'Seller', accessor: 'store.name', type: 'text' },
   { header: 'Status', accessor: 'status', type: 'badge', textMapping: orderShippingStatuses },
-  { header: 'Action Needed', accessor: 'requires_action', type: 'boolean' },
+  { header: 'Action Required', accessor: 'requires_action', type: 'boolean' },
   { header: 'Shipping Method', accessor: 'shipping_option.shipping_type', type: 'text', textMapping: shippingOptionDisplayNames },
 ];
 
-const OrdersTablePage = ({ onOrderClick }) => {
+const OrdersTablePage = ({ onOrderClick, viewType }) => {
   const { data: orders, total } = useResourceData('order_items');
 
   const filterConfig = [
@@ -25,6 +25,15 @@ const OrdersTablePage = ({ onOrderClick }) => {
     },
   ]
 
+  const requiresActionScope = viewType === 'buyer' ? 'awaiting_action_from_buyer' : 'awaiting_action_from_store';
+  const scopeConfig = [{
+    type: 'buttons',
+    buttonVariant: 'outline',
+    buttonColor: 'blue',
+    options: [
+      { label: 'Action Required', value: requiresActionScope },
+    ]
+  }]
 
   return (
     <ResponsiveList
@@ -35,6 +44,7 @@ const OrdersTablePage = ({ onOrderClick }) => {
       onClick={onOrderClick}
       resourceName="order_items"
       filterConfigs={filterConfig}
+      scopeConfigs={scopeConfig}
     />
   )
 }

@@ -1,9 +1,5 @@
 class OrderItemSerializer < BaseSerializer
-  attributes :id, :order_id, :product_id, :ordered_volume, :unit_price_per_volume_in_cents, :total_price_in_cents, :fulfillment_method
-
-  attribute :status do |order_item|
-    order_item.effective_status
-  end
+  attributes :id, :order_id, :product_id, :ordered_volume, :unit_price_per_volume_in_cents, :total_price_in_cents, :fulfillment_method, :status
 
   attribute :order do |order_item|
     OrderSerializer.shallow_serialize(order_item.order)
@@ -46,12 +42,6 @@ class OrderItemSerializer < BaseSerializer
   end
 
   def self.shallow_attributes_list
-    [ :id, :order_id, :product_id, :ordered_volume, :unit_price_per_volume_in_cents, :total_price_in_cents ]
-  end
-
-  def self.shallow_associations(order_item)
-    {
-      status: order_item.effective_status
-    }
+    [ :id, :order_id, :product_id, :ordered_volume, :unit_price_per_volume_in_cents, :total_price_in_cents, :status ]
   end
 end

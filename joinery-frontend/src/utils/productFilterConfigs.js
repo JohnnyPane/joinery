@@ -302,5 +302,12 @@ export const productFilterConfigs = {
         {value: 'chaotic', label: 'Chaotic (Irregular Grain)'},
       ]
     },
+    { name: 'is_reclaimed', label: 'Reclaimed Wood', operator: 'eq', options: [ { value: 'true', label: 'Yes' }, { value: 'false', label: 'No' } ] },
+    { name: 'is_carving_suitable', label: 'Carving Suitable', operator: 'eq', options: [ { value: 'true', label: 'Yes' }, { value: 'false', label: 'No' } ] },
+    { name: 'thickness_in_inches', label: 'Thickness (inches)', operator: 'between', type: 'range', min: 0.5, max: 24 },
+    { name: 'width_in_inches', label: 'Width (inches)', operator: 'between', type: 'range', min: 0.5, max: 24 },
+    { name: 'length_in_inches', label: 'Length (inches)', operator: 'between', type: 'range', min: 0.5, max: 24 },
+    { name: 'cubic_inches', label: 'Cubic Inches', operator: 'between', type: 'range', min: 1, max: 1000 },
+    { name: 'board_feet', label: 'Board Feet', operator: 'between', type: 'range', min: 1, max: 500 },
   ]
 };
