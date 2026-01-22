@@ -1,13 +1,15 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from '@mantine/form';
-import { TextInput, PasswordInput, Button, Card, Text } from '@mantine/core';
+import { TextInput, PasswordInput, Button, Card, Text, Alert } from '@mantine/core';
+import { IconInfoCircle } from '@tabler/icons-react';
 
 import RequestPasswordReset from "./RequestPasswordReset.jsx";
 import { useAuth } from "../../context/AuthContext.jsx";
 
 const LoginForm = () => {
   const [forgotPassword, setForgetPassword] = useState(false);
+  const [loginError, setLoginError] = useState(null);
 
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -25,11 +27,13 @@ const LoginForm = () => {
   });
 
   const handleSubmit = async (values) => {
+    setLoginError(null);
+
     try {
       await login(values.email, values.password);
       navigate('/');
     } catch (error) {
-      console.error('Login failed:', error);
+      setLoginError('Invalid email or password');
     }
   };
 
@@ -65,6 +69,11 @@ const LoginForm = () => {
             {...form.getInputProps('password')}
             className="margin-bottom"
           />
+
+          {loginError &&
+            <Alert variant="light" color="red" title="Login Error" icon={<IconInfoCircle />}>{loginError}</Alert>
+          }
+
           <div className="flex to-right full-width">
             <Button type="submit" color="teal" className="full-width double-margin-top">Log In</Button>
           </div>

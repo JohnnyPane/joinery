@@ -23,10 +23,11 @@ module Filterable
 
       filters_object.each do |field, conditions|
         next unless conditions.present? && conditions[:operator].present? && conditions[:value].present?
-        if field.to_s.include?(".")
+        parts = field.to_s.split(".")
+
+        if parts.size == 2
           association, attribute = field.to_s.split(".")
           reflection = reflect_on_association(association.to_sym)
-
 
           if reflection&.polymorphic?
             scope = apply_polymorphic_filter(
@@ -42,6 +43,10 @@ module Filterable
           end
         end
 
+        if parts.size > 2
+          scope = apply_joins_for_multiple_parts(scope: scope, parts: parts[0..-2])
+        end
+
         scope = apply_single_filter(scope, field, conditions[:operator], conditions[:value])
       end
 
@@ -50,50 +55,93 @@ module Filterable
 
     private
 
+    def apply_joins_for_multiple_parts(scope:, parts:)
+      joined_scope = scope
+
+      parts.each_with_index do |part, index|
+
+        if reflect_on_association(part.to_sym)&.polymorphic?
+          polymorphic_join = polymorphic_join_for(polymorphic_association: part, join_table_name: parts[index + 1])
+          joined_scope = joined_scope.joins(polymorphic_join)
+          next
+        end
+
+        part_model = part.classify.constantize rescue nil
+        next unless part_model && parts[index + 1]
+
+        joined_scope = joined_scope.merge(part_model.joins(parts[index + 1].to_sym))
+      end
+
+      joined_scope
+    end
+
     def apply_single_filter(scope, field, operator, value)
+      filter_column = field.to_s.split(".").last
+      qualified_column = field.split(".").last(2).join(".")
+
+      model_to_filter = if field.to_s.include?(".")
+                       table_name = field.to_s.split(".").first
+                       table_name.classify.constantize rescue scope.klass
+                     else
+                       scope.klass
+                     end
+
+      query_value = value
+      if model_to_filter.respond_to?(:defined_enums) && model_to_filter.defined_enums.has_key?(filter_column)
+        column_enum_values = model_to_filter.defined_enums[filter_column]
+
+        query_value = if operator.to_s == "in" && value.is_a?(Array)
+                        value.map { |v| column_enum_values[v.to_s] }.compact
+                      else
+                        column_enum_values[value.to_s]
+                      end
+      end
+
       case operator.to_s
       when "eq"
-        scope.where(field => value)
+        scope.where(qualified_column => query_value)
       when "not_eq"
-        scope.where.not(field => value)
+        scope.where.not(qualified_column => query_value)
       when "in"
-        scope.where("#{field} IN (?)", value)
+        scope.where("#{qualified_column} IN (?)", query_value)
       when "between"
-        scope.where("#{field} BETWEEN ? AND ?", value.first, value.last)
+        scope.where("#{qualified_column} BETWEEN ? AND ?", value.first, value.last)
       when "gt"
-        scope.where("#{field} > ?", value)
+        scope.where("#{qualified_column} > ?", query_value)
       when "lt"
-        scope.where("#{field} < ?", value)
+        scope.where("#{qualified_column} < ?", query_value)
       when "gte"
-        scope.where("#{field} >= ?", value)
+        scope.where("#{qualified_column} >= ?", query_value)
       when "lte"
-        scope.where("#{field} <= ?", value)
+        scope.where("#{qualified_column} <= ?", query_value)
       when "contains"
-        scope.where("#{field} && ARRAY[?]::varchar[]", value)
+        scope.where("#{qualified_column} && ARRAY[?]::varchar[]", query_value)
       else
         scope
-      end
+      end.distinct
     end
 
     def apply_polymorphic_filter(scope:, association:, field:, operator:, value:, polymorphic_types: [])
-      get_resource_polymorphic_types = "#{association}_types"
-      return scope unless respond_to?(get_resource_polymorphic_types)
+      applied_scope = scope
 
-      matching_ids = []
-      types = polymorphic_types || send(get_resource_polymorphic_types)
-
-      types.each do |type|
+      polymorphic_types.each do |type|
         table_name = type.constantize.table_name
-        joined_scope = scope.joins(
-          "INNER JOIN #{table_name} ON #{table_name}.id = #{self.table_name}.#{association}_id AND #{self.table_name}.#{association}_type = '#{type}'"
-        )
 
-        # MAJOR TODO: Figure out how to handle enums as values passed.
-        filtered_scope = apply_single_filter(joined_scope, "#{table_name}.#{field}", operator, value)
-        matching_ids += filtered_scope.pluck("#{self.table_name}.id")
+        applied_scope = apply_single_filter(
+          scope.joins(polymorphic_join_for(polymorphic_association: association, join_table_name: table_name)),
+          "#{table_name}.#{field}",
+          operator,
+          value
+        )
       end
 
-      scope.where(id: matching_ids.uniq)
+      applied_scope
+    end
+
+    def polymorphic_join_for(polymorphic_association:, join_table_name:)
+      type = join_table_name.to_s.classify
+
+      "INNER JOIN #{join_table_name} ON #{join_table_name}.id = #{self.table_name}.#{polymorphic_association}_id AND #{self.table_name}.#{polymorphic_association}_type = '#{type}'"
     end
   end
 end

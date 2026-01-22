@@ -27,6 +27,7 @@ body {
   /*display: flex;*/
   /*place-items: center;*/
   font-family: 'Lora', serif;
+  color: #1A1A1A;
   min-width: 320px;
   min-height: 100vh;
 }
@@ -57,7 +58,7 @@ button {
 
 @media (prefers-color-scheme: light) {
   :root {
-    color: #213547;
+    color: #1A1A1A;
     background-color: #ffffff;
   }
   a:hover {

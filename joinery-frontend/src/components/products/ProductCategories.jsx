@@ -157,7 +157,7 @@ const ProductCategories = () => {
       </div>
 
 
-      <Drawer opened={filterDrawerOpened} size="sm" onClose={close} position="right">
+      <Drawer opened={filterDrawerOpened} size="md" onClose={close} position="right">
         <Stack>
           <JoineryFilters filterConfigs={filterOptions} orientation="vertical" />
         </Stack>

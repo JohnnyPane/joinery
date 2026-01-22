@@ -8,7 +8,12 @@ export const AuthProvider = ({ children }) => {
   const queryClient = useQueryClient();
 
   const login = async(email, password) => {
-    await authService.login(email, password);
+    try {
+      await authService.login(email, password);
+    } catch (error) {
+      throw error;
+    }
+
     await queryClient.invalidateQueries({ queryKey: ['me'] });
   };
 

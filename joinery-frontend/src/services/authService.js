@@ -17,7 +17,7 @@ export const authService = {
 
       return response.data;
     } catch (error) {
-      throw new Error('Login failed');
+      throw new Error(error.response?.data?.error || 'Login failed');
     }
   },
 

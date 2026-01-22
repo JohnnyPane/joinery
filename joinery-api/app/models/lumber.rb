@@ -4,7 +4,7 @@ class Lumber < ApplicationRecord
 
   has_one :product, as: :productable, dependent: :destroy
 
-  enum :finish_type, { rough: 0, s2s: 1, s3s: 2, s4s: 3, resawn: 4 }
+  enum :finish_type, { rough: 0, s1s: 1, s2s: 2, s3s: 3, s4s: 4, resawn: 5 }
 
   sync_species_from :species
   sync_materials_from :species

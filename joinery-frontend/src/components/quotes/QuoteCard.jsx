@@ -1,6 +1,6 @@
-import {Badge, Card, Group, Image, Text, Title} from "@mantine/core";
-import {statusColors} from "../../utils/colorConfigs.js";
-import {getImageUrl} from "../../utils/imageConfigs.js";
+import { Badge, Card, Group, Image, Text } from "@mantine/core";
+import { statusColors } from "../../utils/colorConfigs.js";
+import { getImageUrl } from "../../utils/imageConfigs.js";
 
 const QuoteCard = ({ item, onClick }) => {
   const { id, attributes } = item;

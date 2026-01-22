@@ -1,88 +1,29 @@
-import { Select, RangeSlider, Text } from "@mantine/core"
-import { IconSearch } from "@tabler/icons-react"
+import SelectFilter from "./filters/SelectFilter.jsx";
+import RangeFilter from "./filters/RangeFilter.jsx";
+import InputRangeFilter from "./filters/InputRangeFilter.jsx";
+import SegmentedControlFilter from "./filters/SegmentedControlFilter.jsx";
+import MultiSelectFilter from "./filters/MultiSelectFilter.jsx";
 import { useResourceContext } from "../../context/ResourceContext.jsx";
 
 
 const transformValue = (value, operator, filterType) => {
-
   switch(operator) {
     case 'between':
-      if (filterType !== "range") {
+      if (filterType !== "range" && filterType !== "input_range") {
         return value.split('-').map(v => v.trim());
       } else {
         return value
       }
     case 'in':
+      if (filterType === "multi_select") {
+        return value;
+      }
+
       return value.split(',');
     default:
       return value;
   }
 }
-
-const untransformValue = (value, operator) => {
-  if (!value) return null;
-
-  switch(operator) {
-    case 'between':
-      return value.join('-');
-    default:
-      return value;
-  }
-}
-
-const rangeMarks = (min = 0, max = 100) => {
-  const range = max - min;
-  const oneQuarter = min + range / 4;
-  const threeQuarter = min + (3 * range) / 4;
-  const mid = min + range / 2;
-
-  return [
-    { value: min, label: `${min}` },
-    { value: oneQuarter, label: `${Math.floor(oneQuarter)}` },
-    { value: mid, label: `${Math.floor(mid)}` },
-    { value: threeQuarter, label: `${Math.floor(threeQuarter)}` },
-    { value: max, label: `${max}` },
-  ]
-}
-
-const RangeFilter = ({ filters, filter, handleFilterChange }) => {
-  return (
-    <div>
-      <Text size="sm" className="margin-bottom">{filter.label}</Text>
-
-      <RangeSlider
-        onChangeEnd={(value) => handleFilterChange(filter, value)}
-        defaultValue={filters[filter.name]?.value}
-        min={filter.min || 0}
-        max={filter.max || 100}
-        minRange={1}
-        marks={rangeMarks(filter.min, filter.max)}
-        mb={32}
-        styles={{ markLabel: { fontSize: '12px' } }}
-      />
-    </div>
-  )
-}
-
-const SelectFilter = ({ filters, filter, handleFilterChange, filterClass, size }) => {
-  return (
-    <Select
-      key={filter.name}
-      label={filter.label}
-      placeholder={filter.placeholder || `Select ${filter.label}`}
-      value={untransformValue(filters[filter.name]?.value, filter.operator) || ''}
-      data={filter.options}
-      onChange={(value) => handleFilterChange(filter, value)}
-      searchable={filter.searchable || false}
-      rightSectionPointerEvents="none"
-      rightSection={filter.searchable ? <IconSearch size={14} /> : null}
-      clearable
-      size={size}
-      className={filterClass}
-    />
-  )
-}
-
 
 const JoineryFilters = ({ filterConfigs, orientation = 'horizontal' }) => {
   const { filters, setFilters, setPage } = useResourceContext();
@@ -114,14 +55,26 @@ const JoineryFilters = ({ filterConfigs, orientation = 'horizontal' }) => {
     setPage(1);
   }
 
+  const clearFilter = (filterName) => {
+    const newFilters = { ...filters };
+    delete newFilters[filterName];
+    setFilters(newFilters);
+  }
+
   return (
     <div className={filterDirection}>
       {filterConfigs.map((filter) => {
         switch (filter.type) {
+          case 'multi_select':
+            return <MultiSelectFilter filters={filters} filter={filter} handleFilterChange={handleFilterChange} size={size} clearFilter={clearFilter} />
           case 'select':
             return <SelectFilter filters={filters} filter={filter} filterClass={filterClass} handleFilterChange={handleFilterChange} size={size} />
           case 'range':
             return <RangeFilter filters={filters} filter={filter} handleFilterChange={handleFilterChange} />
+          case 'input_range':
+            return <InputRangeFilter filters={filters} filter={filter} handleFilterChange={handleFilterChange} clearFilter={clearFilter} />
+          case 'segmented':
+            return <SegmentedControlFilter filters={filters} filter={filter} handleFilterChange={handleFilterChange} />
           default:
             return <SelectFilter filters={filters} filter={filter} filterClass={filterClass} handleFilterChange={handleFilterChange} size={size} />
         }
