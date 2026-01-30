@@ -1,9 +1,15 @@
+# Joinery
+
+Joinery is a platform that connects users to every step of the woodworking journey, from finding inspiration to sourcing materials and tools, to sharing finished projects with the community.
+
+Our mission is to empower woodworkers of all skill levels by providing a comprehensive resource hub that fosters creativity, learning, and collaboration.
+
 ## Deployment
 
 ### Staging Environment
 
 **Backend:** https://joinery-api-test.fly.dev  
-**Frontend:** https://bdf48e3f.joinery-frontend-staging.pages.dev
+**Frontend:** https://joinery-frontend-staging.pages.dev/
 
 ### Quick Deploy
 
